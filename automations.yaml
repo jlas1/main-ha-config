@@ -4764,11 +4764,16 @@
           ts_3h='', ts_5h='', ts_1h='', ts_start=999, ts_stop=0, found_start=false,
           ended=false, best_1h_idx=0) %}\n\n  {% for d in [5, 3, 2, 1] %}\n    {%
           set d_steps = d * 4 %}\n    {% set best = namespace(min_sum=999999, idx=0)
-          %}\n    {% for i in range((window | count - d_steps), -1, -1) %}\n      {%
+          %}\n\n    {# If d == 2 (Water heater), cap max start index so it finishes
+          before 07:30 (index 28 = 05:30 to 07030) #}\n    {# 22:00 to 07:00 is 9.5h
+          = 36 steps. 36 - 8 = 28 #}\n    {% set max_i = 28 if d == 2 else (window
+          | count - d_steps) %}\n\n    {% for i in range(max_i, -1, -1) %}\n      {%
           set current_sum = window[i:i+d_steps] | select('number') | map('float',
-          1000) | sum %}\n      {% if current_sum <= best.min_sum %}\n        {% set
-          best.min_sum = current_sum %}\n        {% set best.idx = i %}\n      {%
-          endif %}\n    {% endfor %}\n\n    {% set ts = (today_at(\"22:00\") + timedelta(minutes=best.idx
+          1000) | sum %}\n      {# Use '<' for d == 2 so ties keep the latest window,
+          '<=' for others #}\n      {% if (d == 2 and current_sum < best.min_sum)
+          or (d != 2 and current_sum <= best.min_sum) %}\n        {% set best.min_sum
+          = current_sum %}\n        {% set best.idx = i %}\n      {% endif %}\n    {%
+          endfor %}\n\n    {% set ts = (today_at(\"22:00\") + timedelta(minutes=best.idx
           * 15)).timestamp() | int | string %}\n\n    {% if d == 5 %}{% set ns.ts_5h
           = ts %}{% endif %}\n    {% if d == 3 %}{% set ns.ts_3h = ts %}{% endif %}\n
           \   {% if d == 2 %}{% set ns.ts_2h = ts %}{% endif %}\n    {% if d == 1
