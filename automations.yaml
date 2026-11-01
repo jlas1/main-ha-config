@@ -4714,8 +4714,8 @@
     system boot.
   triggers:
   - trigger: state
-    entity_id:
-    - sensor.edp_tri_horario_price
+    entity_id: sensor.edp_trihorario_price
+    attribute: tomorrow_hours
     id: market_data_updated
   - trigger: homeassistant
     event: start
