@@ -1,0 +1,72 @@
+  sensor:
+    - name: "freeDS PWM State"
+      state_topic: freeds/stat/pwm
+      expire_after: 60
+
+    - name: "freeDS Power"
+      state_topic: freeds/calcWatts
+      unique_id: freeDS_Power
+      expire_after: 120
+      state_class: measurement
+      device_class: power
+      unit_of_measurement: "W"
+
+    - name: "freeDS Water temp"
+      state_topic: freeds/tempTermo
+      expire_after: 60
+      state_class: measurement
+      device_class: temperature
+      unit_of_measurement: "°C"
+
+  switch:
+    - name: "freeDS PWM ON/OFF"
+      unique_id: freeDS_PWM_ON_OFF
+      command_topic: freeds/cmnd
+      device_class: switch
+      payload_on: '{"command":"pwm","payload":"3"}'
+      payload_off: '{"command":"pwm","payload":"2"}'
+      state_topic: freeds/stat/pwm
+      value_template: >
+        {{ 'OFF' if value == "OFF" else 'ON' }}
+      state_on: "ON"
+      state_off: "OFF"
+      qos: 0
+      optimistic: false
+      retain: true
+
+    - name: "freeDS Manual Mode"
+      unique_id: freeDS_MAN_AUTO
+      command_topic: freeds/cmnd
+      device_class: switch
+      payload_on: '{"command":"pwmman","payload":"1"}'
+      payload_off: '{"command":"pwmman","payload":"2"}'
+      state_topic: freeds/stat/pwm
+      value_template: >
+        {{ 'OFF' if value != "MAN" else 'ON' }}
+      state_on: "ON"
+      state_off: "OFF"
+      qos: 0
+      optimistic: false
+      retain: true
+
+  number:
+    - name: "freeDS PWM % adjust"
+      unique_id: freeDS_SetPWM
+      command_topic: freeds/cmnd
+      command_template: '{"command":"pwmmanvalue", "payload": "{{ value }}" }'
+      min: 0
+      max: 100
+      state_topic: freeds/pwm
+      unit_of_measurement: "%"
+
+    - name: "Victron AC Power Setpoint RAM"
+      unique_id: victron_ac_power_setpoint_ram
+      state_topic: "N/985dadd07b7f/hub4/0/Setpoint"
+      command_topic: "W/985dadd07b7/hub4/0/Setpoint"
+      value_template: "{{ value_json.value | float(0) }}"
+      command_template: '{"value": {{ value }}}'
+      min: -500
+      max: 500
+      step: 25
+      unit_of_measurement: "W"
+      device_class: "power"

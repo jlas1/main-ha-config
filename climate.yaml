@@ -1,0 +1,29 @@
+  - platform: smartir
+    name: Dinner AC
+    unique_id: dinner_ac_control
+    device_code: 9998
+    controller_data: zigbee2mqtt/Dinner AC/set/ir_code_to_send
+
+  - platform: smartir
+    name: TV AC
+    unique_id: tv_ac_control
+    device_code: 9998
+    controller_data: zigbee2mqtt/TV AC/set/ir_code_to_send
+
+  - platform: smartir
+    name: Suite AC
+    unique_id: suite_ac_control
+    device_code: 9999
+    controller_data: zigbee2mqtt/Suite AC/set/ir_code_to_send
+
+  - platform: smartir
+    name: Quarto Lara AC
+    unique_id: lara_ac_control
+    device_code: 9999
+    controller_data: zigbee2mqtt/Quarto Lara AC/set/ir_code_to_send
+
+  - platform: smartir
+    name: Quarto Lucas AC
+    unique_id: lucas_ac_control
+    device_code: 9999
+    controller_data: zigbee2mqtt/Quarto Lucas AC/set/ir_code_to_send

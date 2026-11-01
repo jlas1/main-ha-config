@@ -1,0 +1,24 @@
+  daily_energy:
+    source: sensor.grid_power_energy_energy
+    name: Consumo Casa Diario
+    unique_id: house_energy_daily
+    cycle: daily
+    tariffs:
+      - peak
+      - offpeak
+  monthly_energy:
+    source: sensor.grid_power_energy_energy
+    unique_id: house_energy_monthly
+    name: Consumo Casa Mensal
+    cycle: monthly
+    tariffs:
+      - peak
+      - offpeak
+  bmw_ce_monthly_energy:
+    source: sensor.box_ve1_energy
+    unique_id: bmw_ce_energy_monthly
+    name: Consumo BMW Mensal
+    cycle: monthly
+    tariffs:
+      - peak
+      - offpeak

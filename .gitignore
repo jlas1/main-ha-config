@@ -1,0 +1,36 @@
+# Home Assistant Core Secrets & Storage
+secrets.yaml
+.storage/
+.cloud/
+.cache/
+ip_bans.yaml
+
+# Databases & Runtime State
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.*
+home-assistant.log
+
+# Backups & Temp files
+backups/
+*.tar
+*.gz
+tmp/
+
+# SSL & Certificates
+*.pem
+*.key
+*.crt
+
+# Custom integration caches & virtual environments
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+
+# Media and TTS caches
+tts/
+media/
+known_devices.yaml

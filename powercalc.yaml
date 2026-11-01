@@ -1,0 +1,57 @@
+utility_meter_types:
+      - daily
+      - monthly
+      - yearly
+energy_sensor_naming: "{} Powercalc"
+sensors:
+  - entity_id: sensor.solax_local_battery_power
+    name: Battery charging/discharging Energy
+    fixed:
+      power: "{{states('sensor.solax_local_battery_power')}}"
+
+  - entity_id: sensor.solax_local_grid_power
+    name: Grid power Energy
+    fixed:
+      power: "{{states('sensor.solax_local_grid_power')}}"
+
+  - entity_id: sensor.solax_local_ac_power
+    name: Inverter output Energy
+    fixed:
+      power: "{{states('sensor.solax_local_ac_power')}}"
+
+  - entity_id: sensor.solax_local_pv_output
+    unique_id: solax_local_pv_output
+    create_utility_meters: true
+    name: Solar Panels Generation
+    fixed:
+      power: "{{states('sensor.solax_local_pv_output')}}"
+
+  - entity_id: sensor.solax_local_pv1_output
+    name: Solar Panels Generation string 1
+    fixed:
+      power: "{{states('sensor.solax_local_pv1_output')}}"
+
+  - entity_id: sensor.solax_local_pv2_output
+    name: Solar Panels Generation string 2
+    fixed:
+      power: "{{states('sensor.solax_local_pv2_output')}}"
+
+  - entity_id: sensor.house_export_power
+    name: "House exported Energy"
+    fixed:
+      power: "{{states('sensor.house_export_power')}}"
+
+  - entity_id: sensor.house_import_power
+    name: "House imported Energy"
+    fixed:
+      power: "{{states('sensor.house_import_power')}}"
+
+  - entity_id: sensor.battery_charge_power
+    name: "Battery Energy Charged"
+    fixed:
+      power: "{{states('sensor.battery_charge_power')}}"
+
+  - entity_id: sensor.battery_discharge_power
+    name: "Battery Energy Discharged"
+    fixed:
+      power: "{{states('sensor.battery_discharge_power')}}"

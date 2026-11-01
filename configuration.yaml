@@ -1,0 +1,190 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.10.10.0/24 #ip range of my home network
+    - 172.30.33.0/24 #nginx add-on
+    - 127.0.0.1 #more tests
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor: !include sensor.yaml
+template: !include template.yaml
+powercalc: !include powercalc.yaml
+utility_meter: !include utility_meter.yaml
+input_select: !include input_select.yaml
+input_number: !include input_number.yaml
+
+smartir:
+
+climate: !include climate.yaml
+
+frontend:
+  extra_module_url:
+    - /community/lovelace-card-mod/card-mod.js
+
+homeassistant:
+  allowlist_external_dirs:
+    - "/config"
+  external_url: https://home.infopat.pt
+  auth_providers:
+    - type: homeassistant
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+
+pyscript:
+  allow_all_imports: true
+  hass_is_global: true
+
+rest_command:
+
+  solax_local_set_charge_battery_from_grid:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_battery_grid_charge_level_payload
+
+  solax_local_charge_from_grid:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_charge_from_grid
+
+  solax_local_set_battery_min_soc:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_battery_min_soc_payload
+
+  solax_local_set_charger_max_current:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_charger_max_current
+
+  solax_local_set_period2_enable:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_period2_enable_payload
+
+  solax_local_set_forced_charge_start:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_battery_forced_charge_start
+
+  solax_local_set_forced_charge_stop:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_battery_forced_charge_stop
+
+  solax_local_set_forced_charge_stop2:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_battery_forced_charge_stop2
+
+  solax_local_set_inverter_mode:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_inverter_mode
+
+  solax_local_set_manual_mode_behaviour:
+    url: !secret solax_local_ip
+    method: post
+    payload: !secret solax_local_set_manual_mode_behaviour
+
+api:
+
+mqtt: !include mqtt.yaml
+
+#alexa:
+#  smart_home:
+
+emulated_hue:
+  listen_port: 80
+  host_ip: 10.10.10.80
+  expose_by_default: true
+  exposed_domains: ["switch", "light", "group", "input_boolean"]
+  
+#mysensors:
+#  gateways:
+#    - device: 'mqtt'
+#      topic_in_prefix: 'myRFM69-out'
+#      topic_out_prefix: 'myRFM69-in'
+#      nodes:
+#        1:
+#            name: 'Solar Heater Temperature'
+#        3:
+#            name: 'Main Power Meter'
+#        10:
+#            name: 'Solar Power Meter'
+#            
+#    - device: 'mqtt'
+#      topic_in_prefix: 'myNRF24-out'
+#      topic_out_prefix: 'myNRF24-in'     
+#      nodes:
+#        7:
+#            name: 'Blinds controller'
+#        8:
+#            name: 'Shader button'
+#        5:
+#            name: 'Shader controller'
+#  version: '2.3'
+
+recorder:
+ purge_keep_days: 3
+ auto_purge: true
+ auto_repack: false
+
+# Enables support for tracking state changes over time
+history:
+
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# Logger
+
+logger:
+  default: info
+  logs:
+    device_tracker: warning
+#    recorder: debug
+#    homeassistant.components.mysensors: debug
+#    homeassistant.components.rest: debug
+#   custom_components.powercalc: debug    
+#    custom_components.pyscript: info
+
+cover:
+  - platform: template
+    covers:
+      garage_door:
+        device_class: garage
+        friendly_name: "Garage Door"
+        unique_id: garage_door_cover
+        value_template: >-
+          {% if is_state('binary_sensor.porta_garagem_garage_door_contact', 'on') %}
+            open
+          {% else %}
+            closed
+          {% endif %}
+        open_cover:
+          service: switch.turn_off
+          target:
+            entity_id: switch.porta_garagem_trigger
+        close_cover:
+          service: switch.turn_off
+          target:
+            entity_id: switch.porta_garagem_trigger
+        stop_cover:
+          service: switch.turn_off
+          target:
+            entity_id: switch.porta_garagem_trigger

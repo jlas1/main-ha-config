@@ -1,0 +1,73 @@
+{
+    "config": {
+        "error": {"unknown": "Unexpected error"},
+        "step": {
+            "utility_meter": {
+                "data": {
+                    "utility_meter": "Utility Meter",
+                    "export_meter":	"Sensor Exportação"
+                },
+                "title": "Escolha o seu plano e Utility Meter"
+            },
+            "user": {
+                "data": {
+                    "operator": "Operador",
+                    "installed_power": "Installed Power",
+                    "plan": "Plan",
+                    "cycle": "Cycle"
+                },
+                "title": "Qual é o seu Operador"
+            },
+            "costs": {
+                "data": {
+                    "power_cost": "Custo Potência (diário)",
+                    "VAZIO": "Custo do kWh em Vazio",
+                    "FORA_DE_VAZIO": "Custo do kWh em Fora de Vazio",
+                    "NORMAL": "Custo do kWh em Normal",
+                    "CHEIAS": "Custo do kWh em Cheias",
+                    "PONTA": "Custo do kWh em Ponta",
+                    "VAZIO meter": "Sensor a medir Vazio",
+                    "FORA_DE_VAZIO meter": "Sensor a medir Fora de Vazio",
+                    "NORMAL meter": "Sensor a medir Normal",
+                    "CHEIAS meter": "Sensor a medir Cheias",
+                    "PONTA meter": "Sensor a medir Ponta"
+                },
+                "title": "Custos e Sensores"
+            }
+        },
+        "title": "Entidade Reguladora dos Servi\u00e7os Energ\u00e9ticos"
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "power_cost": "Custo Potência (diário)",
+                    "VAZIO": "Custo do kWh em Vazio",
+                    "FORA_DE_VAZIO": "Custo do kWh em Fora de Vazio",
+                    "NORMAL": "Custo do kWh em Normal",
+                    "CHEIAS": "Custo do kWh em Cheias",
+                    "PONTA": "Custo do kWh em Ponta"
+                }
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "total_cost": {
+                "name": "Custo Total"
+            },
+            "fixed_cost": {
+              "name": "Custo Fixo"
+            },
+            "tariff": {
+              "name": "Tarifa"
+            }
+        }
+    },
+	"issues": {
+		"unit_of_measurement_missmatch": {
+			"title": "{meter_entity} tem uma unidade de medida diferente de {export_entity}",
+			"description": "A unidade de medida de {meter_entity} é {meter_unit} e a unidade de medida de {export_entity} é {export_unit}. Todas as entidades devem ter a mesma unidade de medida."
+		}
+    }
+}

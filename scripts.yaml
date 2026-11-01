@@ -1,0 +1,57 @@
+turn_off_all_ac:
+  sequence:
+  - action: climate.turn_off
+    target:
+      entity_id:
+      - climate.dinner_ac
+      - climate.lara_ac_control
+      - climate.quarto_lucas_ac
+      - climate.suite_ac
+      - climate.tv_ac
+    data: {}
+  alias: Turn off all ac
+  description: ''
+actuate_external_garage_door_click:
+  alias: Actuate External Garage Door Click
+  description: Statelessly toggles the Fingerbot to force a physical hardware click,
+    preventing state machine desyncs.
+  mode: single
+  sequence:
+  - alias: Ensure Fingerbot is online and responsive
+    condition: template
+    value_template: '{{ not is_state(''switch.fingerbot'', ''unavailable'') and not
+      is_state(''switch.fingerbot'', ''unknown'') }}'
+  - alias: Toggle Fingerbot state to execute physical click
+    action: switch.toggle
+    target:
+      entity_id: switch.fingerbot
+  - alias: Log the successful hardware actuation
+    action: notify.send_message
+    target:
+      entity_id: notify.house_control_log
+    data:
+      message: Hardware Actuation - Fingerbot triggered statelessly via script.
+  icon: mdi:garage-variant
+actuate_internal_garage_door_click:
+  sequence:
+  - alias: Ensure Porta garagem is online and responsive
+    condition: template
+    value_template: '{{ not is_state(''switch.porta_garagem_trigger'', ''unavailable'')
+      and not is_state(''switch.porta_garagem_trigger'', ''unknown'') }}'
+  - alias: Toggle Fingerbot state to execute physical click
+    action: switch.toggle
+    target:
+      entity_id:
+      - switch.porta_garagem_trigger
+    data: {}
+  - alias: Log the successful hardware actuation
+    action: notify.send_message
+    target:
+      entity_id: notify.house_control_log
+    data:
+      message: Hardware Actuation - Porta Garagem triggered statelessly via script.
+  alias: Actuate Internal Garage Door Click
+  description: Statelessly toggles the physical hardware click, preventing state machine
+    desyncs.
+  mode: single
+  icon: mdi:garage-variant

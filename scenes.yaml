@@ -1,0 +1,220 @@
+- id: '1741208968970'
+  name: Night Blinds
+  entities:
+    cover.blinds_dinner:
+      current_position: 0
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-05T21:06:05+00:00'
+      linkquality: 43
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 0
+      device_class: shutter
+      friendly_name: Blinds Dinner
+      supported_features: 15
+      state: closed
+    cover.blinds_kitchen:
+      current_position: 50
+      calibration: 'OFF'
+      calibration_time: 12
+      last_seen: '2025-03-05T21:08:35+00:00'
+      linkquality: 87
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 50
+      device_class: shutter
+      friendly_name: Blinds Kitchen
+      supported_features: 15
+      state: open
+    cover.blinds_lara:
+      current_position: 0
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-05T21:06:34+00:00'
+      linkquality: 36
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 0
+      device_class: shutter
+      friendly_name: Blinds Lara
+      supported_features: 15
+      state: closed
+    cover.blinds_lucas:
+      current_position: 0
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-05T21:09:13+00:00'
+      linkquality: 80
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 0
+      device_class: shutter
+      friendly_name: Blinds Lucas
+      supported_features: 15
+      state: closed
+    cover.blinds_stairs:
+      current_position: 0
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-05T21:05:20+00:00'
+      linkquality: 40
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 0
+      device_class: shutter
+      friendly_name: Blinds Stairs
+      supported_features: 15
+      state: closed
+    cover.blinds_patio:
+      current_position: 50
+      calibration: 'OFF'
+      calibration_time: 21
+      last_seen: '2025-03-05T20:59:26+00:00'
+      linkquality: 29
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 50
+      device_class: shutter
+      friendly_name: Blinds Patio
+      supported_features: 15
+      state: open
+    cover.blinds_master_bathroom:
+      current_position: 0
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-05T21:08:59+00:00'
+      linkquality: 58
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 0
+      device_class: shutter
+      friendly_name: Blinds Master Bathroom
+      supported_features: 15
+      state: closed
+  icon: mdi:roller-shade
+  metadata:
+    cover.blinds_dinner:
+      entity_only: true
+    cover.blinds_kitchen:
+      entity_only: true
+    cover.blinds_lara:
+      entity_only: true
+    cover.blinds_lucas:
+      entity_only: true
+    cover.blinds_stairs:
+      entity_only: true
+    cover.blinds_patio:
+      entity_only: true
+    cover.blinds_master_bathroom:
+      entity_only: true
+- id: '1741250720299'
+  name: Mornimg Blinds
+  entities:
+    cover.blinds_dinner:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-06T08:31:52+00:00'
+      linkquality: 51
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Dinner
+      supported_features: 15
+      state: open
+    cover.blinds_kitchen:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 12
+      last_seen: '2025-03-06T08:40:19+00:00'
+      linkquality: 40
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Kitchen
+      supported_features: 15
+      state: open
+    cover.blinds_lara:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-06T08:44:41+00:00'
+      linkquality: 32
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Lara
+      supported_features: 15
+      state: open
+    cover.blinds_lucas:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-06T08:42:21+00:00'
+      linkquality: 76
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Lucas
+      supported_features: 15
+      state: open
+    cover.blinds_stairs:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-06T08:38:31+00:00'
+      linkquality: 32
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Stairs
+      supported_features: 15
+      state: open
+    cover.blinds_patio:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 21
+      last_seen: '2025-03-06T08:45:20+00:00'
+      linkquality: 36
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Patio
+      supported_features: 15
+      state: open
+    cover.blinds_master_bathroom:
+      current_position: 100
+      calibration: 'OFF'
+      calibration_time: 60
+      last_seen: '2025-03-06T08:34:04+00:00'
+      linkquality: 65
+      motor_reversal: 'ON'
+      moving: STOP
+      position: 100
+      device_class: shutter
+      friendly_name: Blinds Master Bathroom
+      supported_features: 15
+      state: open
+  icon: mdi:roller-shade
+  metadata:
+    cover.blinds_dinner:
+      entity_only: true
+    cover.blinds_kitchen:
+      entity_only: true
+    cover.blinds_lara:
+      entity_only: true
+    cover.blinds_lucas:
+      entity_only: true
+    cover.blinds_stairs:
+      entity_only: true
+    cover.blinds_patio:
+      entity_only: true
+    cover.blinds_master_bathroom:
+      entity_only: true

@@ -1,0 +1,267 @@
+- id: '1395837280000'
+  alias: SOLAX Set Solar Battery night charge Target Level
+  description: Set target battery level (charge from grid) based on anticipated solar
+    production
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition: []
+  action:
+  - repeat:
+      sequence:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.new_battery_target
+          value: "{% set solar = states('sensor.energy_production_tomorrow') | float
+            %} {% set target = 80 %} {% if is_number(solar) %}\n   {% set batt_needed
+            = ( 22 - solar | float) | float%} \n   {% if (batt_needed  <= 0) %}\n
+            \     {% set target = 10 %}\n   {% endif %}\n   {% if (batt_needed > 0)
+            and (batt_needed <= 1) %}\n      {% set target = 20 %}\n   {% endif %}\n
+            \  {% if (batt_needed > 1) and (batt_needed <= 2) %}\n      {% set target
+            = 30 %}\n   {% endif %}\n   {% if (batt_needed > 2) and (batt_needed <=
+            3) %}\n      {% set target = 40 %}\n   {% endif %}\n   {% if (batt_needed
+            > 3) and (batt_needed <= 4) %}\n      {% set target = 50 %}\n   {% endif
+            %}\n   {% if (batt_needed > 4) and (batt_needed <= 5) %}\n      {% set
+            target = 60 %}\n   {% endif %}\n   {% if (batt_needed > 5) and (batt_needed
+            <= 6) %}\n      {% set target = 70 %}\n   {% endif %}\n   {% if (batt_needed
+            > 6) and (batt_needed <= 7) %}\n      {% set target = 80 %}\n   {% endif
+            %}\n   {% if (batt_needed > 7) and (batt_needed <= 8) %}\n      {% set
+            target = 90 %}\n   {% endif %}\n   {% if (batt_needed > 8) %}\n      {%
+            set target = 95 %}\n   {% endif %}\n {% endif %}\n {{ target }}\n"
+      - service: rest_command.solax_local_set_charge_battery_from_grid
+        data:
+          level: '{{ states(''input_number.new_battery_target'') }}
+
+            '
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - service: homeassistant.update_entity
+        data: {}
+        target:
+          entity_id: sensor.solax_local_rest_settings_2
+      until:
+      - condition: template
+        value_template: "{{ states('sensor.solax_local_battery_charge_from_grid_to')|int
+          == states('input_number.new_battery_target')|int or\n    repeat.index ==
+          3 }}"
+  mode: single
+- id: '1703981854797'
+  alias: Start BMW CE Charger
+  description: ''
+  trigger:
+  - platform: time
+    at: 02:00:00
+  condition:
+  - condition: device
+    type: is_off
+    device_id: 4d1de10a2e52d1ce1cfe6a38a1811483
+    entity_id: af350353c77cc85cad56279ab7b75012
+    domain: switch
+  action:
+  - type: turn_on
+    device_id: 4d1de10a2e52d1ce1cfe6a38a1811483
+    entity_id: af350353c77cc85cad56279ab7b75012
+    domain: switch
+  mode: single
+- id: '1703982013166'
+  alias: Stop BMW CE Charger
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  condition:
+  - condition: device
+    type: is_on
+    device_id: 4d1de10a2e52d1ce1cfe6a38a1811483
+    entity_id: af350353c77cc85cad56279ab7b75012
+    domain: switch
+  action:
+  - type: turn_off
+    device_id: 4d1de10a2e52d1ce1cfe6a38a1811483
+    entity_id: af350353c77cc85cad56279ab7b75012
+    domain: switch
+  mode: single
+- id: '1703984523446'
+  alias: Control Luz Sala
+  description: ''
+  use_blueprint:
+    path: EPMatt/light.yaml
+    input:
+      controller_device: 10ec7fd877e921d37ac37c97ed71011d
+      controller_entity: sensor.0x847127fffe2666cd_action
+      controller_model: IKEA E1743 TRÅDFRI On/Off Switch & Dimmer
+      light: light.0x00124b001efe4bfd
+- id: '1703992927570'
+  alias: New Automation
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - repeat:
+      sequence:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.new_battery_target
+          value: "{% set solar = states('sensor.energy_production_tomorrow') | float
+            %} {% set target = 80 %} {% if is_number(solar) %}\n   {% set batt_needed
+            = ( 22 - solar | float) | float%} \n   {% if (batt_needed  <= 0) %}\n
+            \     {% set target = 25 %}\n   {% endif %}\n   {% if (batt_needed > 0)
+            and (batt_needed <= 1) %}\n      {% set target = 35 %}\n   {% endif %}\n
+            \  {% if (batt_needed > 1) and (batt_needed <= 2) %}\n      {% set target
+            = 45 %}\n   {% endif %}\n   {% if (batt_needed > 2) and (batt_needed <=
+            3) %}\n      {% set target = 55 %}\n   {% endif %}\n   {% if (batt_needed
+            > 3) and (batt_needed <= 4) %}\n      {% set target = 65 %}\n   {% endif
+            %}\n   {% if (batt_needed > 4) and (batt_needed <= 5) %}\n      {% set
+            target = 75 %}\n   {% endif %}\n   {% if (batt_needed > 5) and (batt_needed
+            <= 6) %}\n      {% set target = 85 %}\n   {% endif %}\n   {% if (batt_needed
+            > 6) %}\n      {% set target = 95 %}\n   {% endif %}\n {% endif %}\n {{
+            target }}\n"
+      until:
+      - condition: template
+        value_template: '{{ states(''input_number.new_battery_target'')|int == 100
+          or repeat.index == 3 }}'
+  mode: single
+- id: '1704129558395'
+  alias: SOLAX preserve battery during night time
+  description: sets the minimum battery level to the same value as it will have in
+    the morning
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.solax_local_battery_soc
+    above: 10
+  action:
+  - repeat:
+      sequence:
+      - service: rest_command.solax_local_set_battery_min_soc
+        data:
+          level: '{{ states(''input_number.input_number.new_battery_target'') }}
+
+            '
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - service: homeassistant.update_entity
+        data: {}
+        target:
+          entity_id: sensor.solax_local_rest_settings_2
+      until:
+      - condition: template
+        value_template: "{{ states('sensor.solax_local_battery_min_soc')|int == states('input_number.new_battery_minimum_SOC')|int
+          or\n    repeat.index == 3 }}"
+  mode: single
+- id: '1704130703175'
+  alias: SOLAX detect Solar Battery end of charge
+  description: Stops the battery charge if it has reached capacity
+  trigger:
+  - platform: time_pattern
+    hours: '5'
+    minutes: /5
+  - platform: time_pattern
+    hours: '6'
+    minutes: /5
+  - platform: time_pattern
+    hours: '7'
+    minutes: /5
+  condition:
+  - condition: time
+    after: 05:00:00
+    before: 07:31:00
+  - condition: template
+    value_template: "{{ states('sensor.solax_local_battery_soc')|int >= states('sensor.solax_local_battery_charge_from_grid_to')|int
+      or\n    repeat.index == 3 }}"
+  action:
+  - repeat:
+      sequence:
+      - service: rest_command.solax_local_set_forced_charge_stop
+        data:
+          value: '{{ 5 }}
+
+            '
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: rest_command.solax_local_set_battery_min_soc
+        data:
+          value: '{{ 10 }}
+
+            '
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - service: homeassistant.update_entity
+        data: {}
+        target:
+          entity_id: sensor.solax_local_rest_settings_2
+      until:
+      - condition: template
+        value_template: "{{ states('sensor.solax_local_battery_setting_stop_charge')
+          == '5:00' or\n    repeat.index == 3 }}"
+  mode: single
+- id: '1704138035442'
+  alias: HA start actions
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: homeassistant.update_entity
+    target:
+      entity_id: sensor.solax_rest_local_settings
+    data: {}
+  mode: single
+- id: '1704140044003'
+  alias: SOLAX reset settings
+  description: Resets the settings to sane defaults
+  trigger:
+  - platform: time_pattern
+    hours: '7'
+    minutes: '31'
+    seconds: '0'
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.solax_local_battery_min_soc'')|int != 10 }}'
+  action:
+  - repeat:
+      sequence:
+      - service: rest_command.solax_local_set_forced_charge_stop
+        data:
+          value: '{{ 7687 }}
+
+            '
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - service: rest_command.solax_local_set_battery_min_soc
+        data:
+          value: '{{ 10 }}
+
+            '
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - service: homeassistant.update_entity
+        data: {}
+        target:
+          entity_id: sensor.solax_local_rest_settings_2
+      until:
+      - condition: template
+        value_template: "{{ states('sensor.solax_local_battery_setting_stop_charge')
+          == '7:30' or\n    repeat.index == 3 }}"
+  mode: single

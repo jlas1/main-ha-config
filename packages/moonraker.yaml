@@ -1,0 +1,370 @@
+rest:
+  scan_interval: 5
+  resource_template: "http://10.10.10.53:7125/server/files/metadata?filename={{ states(('sensor.3d_printer_current_print')) | urlencode }}"
+  sensor:
+    - name: printer_3d_file_metadata
+      unique_id: "10.10.10.535ec44d90-419c-419c-802d-d34071639c08"
+      json_attributes_path: "$.result"
+      json_attributes:
+        - layer_height
+        - object_height
+        - thumbnails
+      value_template: "OK"
+
+#camera:
+# Loading generic IP camera via configuration.yaml is deprecated, it will be automatically imported. Once you have confirmed correct operation, please remove 'generic' (IP camera) section(s) from configuration.yaml
+# Directions in the README.md for how to add the Thumbnail now.
+#  - platform: generic
+#    name: "3D Printer Thumbnail"
+#    still_image_url: http://10.10.10.53:7125/server/files/gcodes/{{ states("sensor.3d_printer_object_thumbnails") }}
+#    verify_ssl: false
+
+#  This no longer works broken in current builds https://www.home-assistant.io/blog/2022/05/04/release-20225/#breaking-changes -> MJPEG IP Camera
+#  Directions in the README.md for how to add the MJPEG IP Camera now.
+#  - platform: mjpeg
+#    name: "3D Printer Camera"
+#    still_image_url: http://10.10.10.53/webcam/?action=snapshot
+#    mjpeg_url: http://10.10.10.53/webcam/?action=stream
+#    verify_ssl: false
+
+rest_command:
+  3d_printer_emergency_stop:
+    url: "http://10.10.10.53:7125/printer/emergency_stop"
+    method: post
+  3d_printer_firmware_restart:
+    url: "http://10.10.10.53:7125/printer/firmware_restart"
+    method: post
+  3d_printer_cancel:
+    url: "http://10.10.10.53:7125/printer/print/cancel"
+    method: post
+  3d_printer_pause:
+    url: "http://10.10.10.53:7125/printer/print/pause"
+    method: post
+  3d_printer_resume:
+    url: "http://10.10.10.53:7125/printer/print/resume"
+    method: post
+
+sensor:
+  - platform: rest
+    name: printer_3d_sensor
+    unique_id: "10.10.10.533a0c25fa-297d-4c19-b03c-ddf04840682b"
+    resource: "http://10.10.10.53:7125/printer/objects/query?heater_bed&extruder&print_stats&toolhead&display_status&virtual_sdcard&gcode_move&filament_motion_sensor%20btt_smart_filament&temperature_sensor%20Chamber_Temp"
+    json_attributes_path: "$.result.status"
+    json_attributes:
+      - heater_bed
+      - extruder
+      - print_stats
+      - toolhead
+      - display_status
+      - virtual_sdcard
+      - gcode_move
+      - "filament_motion_sensor btt_smart_filament_sensor"
+      - "temperature_sensor Chamber_Temp"
+    value_template: "OK"
+    force_update: true
+    scan_interval: 1
+
+  - platform: rest
+    name: printer_3d_info
+    unique_id: "10.10.10.531cba6677-02bd-4273-9083-b8301bf6943b"
+    scan_interval: 1
+    resource_template: "http://10.10.10.53:7125/printer/info"
+    json_attributes_path: "$.result"
+    json_attributes:
+      - state_message
+      - state
+    value_template: "OK"
+
+  - platform: rest
+    name: printer_3d_server
+    unique_id: "10.10.10.531cba6677-02bd-4273-9083-b8301bf6949"
+    scan_interval: 1
+    resource_template: "http://10.10.10.53:7125/server/database/item?namespace=mainsail&key=general"
+    json_attributes_path: "$.result.value"
+    json_attributes:
+      - printername
+    value_template: "OK"
+
+template:
+  - binary_sensor:
+    - name: 3d_printer_filament
+      unique_id: "10.10.10.535ce32fc9-5e95-49e7-80e7-bfdd2cf1d1fd"
+      device_class: motion
+      state: '{{ states.sensor.printer_3d_sensor.attributes["filament_switch_sensor Filament"]["filament_detected"] }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:printer-3d-nozzle-alert
+      attributes:
+        friendly_name: "Filament Detected"
+  - sensor:
+    - name: 3d_printer_printername
+      unique_id: "10.10.10.533a0f3144-a801-422f-adb6-e2ed35796074"
+      state: '{{ states.sensor.printer_3d_server.attributes["printername"]}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_server'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:printer-3d
+      attributes:
+        friendly_name: "Printer Name"
+    - name: 3d_printer_chamber_temp
+      unique_id: "10.10.10.53167e5dec-719c-42d3-9560-4f177573f741"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["temperature_sensor Chamber"]["temperature"]  | float(0) | round(1) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer
+      attributes:
+        friendly_name: "Chamber Actual"
+    - name: 3d_printer_hotend_target
+      unique_id: "10.10.10.53167e5dec-719c-42d3-9560-4f177573f740"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["extruder"]["target"]  | float(0) | round(1) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer
+      attributes:
+        friendly_name: "Hotend Target"
+    - name: 3d_printer_hotend_actual
+      unique_id: "10.10.10.537c2593fb-a7dd-4ed7-a865-2e4dddddbb40"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["extruder"]["temperature"]  | float(0) | round(1) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer
+      attributes:
+        friendly_name: "Hotend Actual"
+    - name: 3d_printer_hotend_power
+      unique_id: "10.10.10.53c57a1e35-92fa-403e-b3cf-ec1e97ef94cf"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["extruder"]["power"]  | float(0) | round(3) * 100}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "%"
+      icon: mdi:flash
+      attributes:
+        friendly_name: "Hotend Power"
+    - name: 3d_printer_bed_target
+      unique_id: "10.10.10.53eadec415-c281-4814-8fba-17c6c42670ec"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["heater_bed"]["target"]  | float(0) | round(1) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer
+      attributes:
+        friendly_name: "Bed Target"
+    - name: 3d_printer_bed_actual
+      unique_id: "10.10.10.53cb33503c-c5d4-4e06-b79b-c1cd64ca2d7a"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["heater_bed"]["temperature"]  | float(0) | round(1) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "°C"
+      icon: mdi:thermometer
+      attributes:
+        friendly_name: "Bed Actual"
+    - name: 3d_printer_bed_power
+      unique_id: "10.10.10.53abb2fc5b-8173-4131-a942-fb11e30f4efa"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["heater_bed"]["power"]  | float(0) | round(3) * 100 }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "%"
+      icon: mdi:flash
+      attributes:
+        friendly_name: "Bed Power"
+    - name: 3d_printer_state
+      unique_id: "10.10.10.53758ce84c-3210-4f29-b6b3-38139180de96"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["print_stats"]["state"] }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: >
+        {% set val =  states.sensor.printer_3d_sensor.attributes["print_stats"]["state"]  %}
+        {% if val == 'standby' %}
+          mdi:sleep
+        {% elif val == 'error' %}
+          mdi:alert-circle
+        {% elif val == 'printing' %}
+          mdi:printer-3d-nozzle
+        {% elif val == 'paused' %}
+          mdi:pause-circle
+        {% elif val == 'complete' %}
+          mdi:printer-3d
+        {% else %}
+          mdi:help-circle
+        {% endif %}
+      attributes:
+        friendly_name: "Printer State"
+    - name: 3d_printer_current_print
+      unique_id: "10.10.10.533a0f3144-a801-422f-adb6-e2ed35796072"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["print_stats"]["filename"]}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:file
+      attributes:
+        friendly_name: "Current Print"
+    - name: 3d_printer_current_progress
+      unique_id: "10.10.10.538ec7163b-be00-4a10-8051-48cf9a260a29"
+      state: '{{ ((states.sensor.printer_3d_sensor.attributes["display_status"]["progress"])*100) | round(0, "floor") }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "%"
+      icon: mdi:progress-clock
+      attributes:
+        friendly_name: "Progress"
+    - name: 3d_printer_print_time
+      unique_id: "10.10.10.53e1ac0fac-e8ba-4e05-8fa0-c8d8076f9f63"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["print_stats"]["print_duration"] |timestamp_custom("%H:%M:%S", 0)}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:camera-timer
+      attributes:
+        friendly_name: "Time Elapsed"
+    - name: 3d_printer_time_remaining
+      unique_id: "10.10.10.53e12c8def-5ebe-43a4-9f75-605a0c46fc0f"
+      state: '{{ (((states.sensor.printer_3d_sensor.attributes["print_stats"]["print_duration"]/states.sensor.printer_3d_sensor.attributes["display_status"]["progress"]- states.sensor.printer_3d_sensor.attributes["print_stats"]["print_duration"]) if states.sensor.printer_3d_sensor.attributes["display_status"]["progress"]>0 else 0)) | timestamp_custom("%H:%M:%S", 0)}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:timer-sand
+      attributes:
+        friendly_name: "Time Remaining"
+    - name: 3d_printer_eta
+      unique_id: "10.10.10.53a2b57068-9a32-4d2c-8cc9-57d2389a9082"
+      state: '{{ (as_timestamp(now())+((states.sensor.printer_3d_sensor.attributes["print_stats"]["print_duration"]/states.sensor.printer_3d_sensor.attributes["display_status"]["progress"]- states.sensor.printer_3d_sensor.attributes["print_stats"]["print_duration"]) if states.sensor.printer_3d_sensor.attributes["display_status"]["progress"]>0 else 0)) | timestamp_custom("%H:%M:%S", 1)}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:av-timer
+      attributes:
+        friendly_name: "ETA"
+    - name: 3d_printer_message
+      unique_id: "10.10.10.530c418c0d-e59e-4d4e-aa11-8fae53df58f8"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["display_status"]["message"]}}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:message-cog
+      attributes:
+        friendly_name: "Message"
+    - name: 3d_printer_layer_height
+      unique_id: "10.10.10.536cca455d-c327-4567-b886-4d7f99714265"
+      state: '{{ states.sensor.printer_3d_file_metadata.attributes["layer_height"] | float(0) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_file_metadata'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "mm"
+      icon: mdi:arrow-collapse-down
+      attributes:
+        friendly_name: "Layer Height"
+    - name: 3d_printer_object_height
+      unique_id: "10.10.10.536d6d9dc0-9a02-4ce4-a797-c84b42e011a6"
+      state: '{{ (states.sensor.printer_3d_file_metadata.attributes["object_height"] | float(0)) - (states.sensor.printer_3d_file_metadata.attributes["layer_height"] | float(0)) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_file_metadata'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "mm"
+      icon: mdi:arrow-expand-vertical
+      attributes:
+        friendly_name: "Object Height"
+    - name: 3d_printer_current_height
+      unique_id: "10.10.10.53d440e568-d4d1-4b3f-85c4-fdacd68c0e1a"
+      state: '{{ states.sensor.printer_3d_sensor.attributes["gcode_move"]["gcode_position"][2]  | float(0) | round(2) }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      unit_of_measurement: "mm"
+      icon: mdi:arrow-collapse-down
+      attributes:
+        friendly_name: "Current Height"
+    - name: 3d_printer_current_layer
+      unique_id: "10.10.10.536a77acc1-8134-4354-b2f6-390adab81993"
+      state: '{{ (states("sensor.3d_printer_current_height")|float(0) / states("sensor.3d_printer_layer_height")|float(0))|round(0) }}'
+      availability: >
+        {% set items = ['sensor.3d_printer_current_height','sensor.3d_printer_layer_height'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:counter
+      attributes:
+        friendly_name: "Current Layer"
+    - name: 3d_printer_total_layers
+      unique_id: "10.10.10.5353cfe906-28ec-44cd-926a-b08ffb8766e5"
+      state: '{{ (states("sensor.3d_printer_object_height")|float(0) / states("sensor.3d_printer_layer_height")|float(0))|round(0) }}'
+      availability: >
+        {% set items = ['sensor.3d_printer_object_height','sensor.3d_printer_layer_height'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:counter
+      attributes:
+        friendly_name: "Total Layer"
+    - name: 3d_printer_actual_layer
+      unique_id: "10.10.10.53167e5dec-719c-42d3-9560-4f177573f742"
+      state: '{{ states.sensor.printer_3d_sensor.attributes.print_stats["info"]["current_layer"] }} / {{ states.sensor.printer_3d_sensor.attributes.print_stats["info"]["total_layer"] }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_sensor'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:layers-triple
+      attributes:
+        friendly_name: "Actual Layer"
+    - name: 3d_printer_object_thumbnails
+      unique_id: "10.10.10.5359b37837-b751-4d31-98c2-516a52edf833"
+      state: >
+        {% set dir = states('sensor.3d_printer_current_print') %}
+        {% set thumb = state_attr('sensor.printer_3d_file_metadata','thumbnails') %}
+        {% set img = (thumb | last).relative_path if thumb else 'not available' %}
+        {{ (dir.split('/')[:-1] + [img]) | join('/') }}
+      availability: >
+        {% set items = ['sensor.printer_3d_file_metadata'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:image
+      attributes:
+        friendly_name: "Object Thumbnails"
+    - name: 3d_printer_state_message
+      unique_id: "10.10.10.539a5184c9-ac5b-44a9-a691-2b67c243d197"
+      state: '{{ states.sensor.printer_3d_info.attributes["state_message"] }}'
+      availability: >
+        {% set items = ['sensor.printer_3d_info'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:message-cog
+      attributes:
+        friendly_name: "State Message"
+    - name: 3d_printer_heaters_power
+      unique_id: "10.10.10.533988e9be-c910-4634-8205-38d53170d5a5"
+      state: '{{ states("sensor.3d_printer_bed_power")|float(0) | round(1) }}% / {{ states("sensor.3d_printer_hotend_power")|float(0) | round(1) }}%'
+      availability: >
+        {% set items = ['sensor.3d_printer_bed_power','sensor.3d_printer_hotend_power'] %}
+        {{ expand(items)|rejectattr('state','in',['unknown','unavailable'])
+          |list|count == items|count }}
+      icon: mdi:meter-electric-outline
+      attributes:
+        friendly_name: "Bed and Nozzle Power"

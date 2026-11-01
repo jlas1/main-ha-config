@@ -1,0 +1,55 @@
+ev2_power_monday:
+  name: EV2 Power Monday
+  options:
+    - High
+    - Medium
+    - Low
+    - None
+
+ev2_power_tuesday:
+  name: EV2 Power Tuesday
+  options:
+    - High
+    - Medium
+    - Low
+    - None
+
+ev2_power_wednesday:
+  name: EV2 Power Wednesday
+  options:
+    - High
+    - Medium
+    - Low
+    - None
+
+ev2_power_thursday:
+  name: EV2 Power Thursday
+  options:
+    - High
+    - Medium
+    - Low
+    - None
+
+ev2_power_friday:
+  name: EV2 Power Friday
+  options:
+    - High
+    - Medium
+    - Low
+    - None
+
+ev2_power_saturday:
+  name: EV2 Power Saturday
+  options:
+    - High
+    - Medium
+    - Low
+    - None
+
+ev2_power_sunday:
+  name: EV2 Power Sunday
+  options:
+    - High
+    - Medium
+    - Low
+    - None

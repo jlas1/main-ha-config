@@ -1,0 +1,968 @@
+- trigger:
+    - platform: time
+      at: "23:59"
+  sensor:
+    - name: "Estimated Solar Power Yesterday"
+      unique_id: estimated_solar_power_yesterday
+      unit_of_measurement: "kWh"
+      state: >
+        {{ states('sensor.energy_production_today') }}
+
+- sensor:
+
+    - name: "Grid Meter Power"
+      unique_id: grid_meter_power
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      icon: mdi:transmission-tower
+      state: >-
+        {% set pwr = states('sensor.power_monitor_1_power_a') | float(0) | abs %}
+        {% set flow = states('sensor.power_monitor_1_energy_flow_a') | string | lower %}
+        {% set direction = -1 if flow == 'producing' else 1 %}
+        {{ (pwr * direction) | round(2) }}
+      availability: >-
+        {{ has_value('sensor.power_monitor_1_power_a') and has_value('sensor.power_monitor_1_energy_flow_a') }}
+
+    - name: "Solax Local Inverter Operation Mode"
+      unique_id: solax_local_inverter_operation_mode
+      icon: mdi:solar-power-variant
+      state: >
+        {{ states('sensor.solax_run_mode') }}
+
+    - name: "Solax Cloud Yield Today"
+      state: "{{ states('sensor.solax_today_s_yield') }}"
+      unit_of_measurement: "kWh"
+      unique_id: solax_2
+      icon: mdi:flash
+      device_class: energy
+      state_class: total_increasing
+
+    - name: "Solax Cloud Yield Total"
+      state: "{{ states('sensor.solax_total_yield') }}"
+      unit_of_measurement: "kWh"
+      unique_id: solax_3
+      icon: mdi:flash
+      device_class: energy
+      state_class: total_increasing
+
+    - name: "Solax Cloud Inverter"
+      unit_of_measurement: "W"
+      state: "{{ states('sensor.solax_inverter_power') | default(0) }}"
+      unique_id: solax_cloud_inverter
+      icon: mdi:flash
+      device_class: power
+      state_class: measurement
+
+    - name: "Solax Cloud Battery Status"
+      state: "{{ states('sensor.solax_bdc_status') }}"
+      unique_id: solax_6
+      icon: mdi:battery
+
+    - name: "Solax Cloud Solar Panel"
+      state: "{{ states('sensor.solax_pv_power_total') }}"
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      unique_id: solax_cloud_solar_panel
+      icon: mdi:solar-power-variant
+
+    - name: "Solax Cloud Battery Use"
+      state: >
+       {{ states('sensor.solax_battery_power_charge') }}
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      unique_id: solax_cloud_battery_use
+      icon: mdi:battery
+
+    - name: "Solax Cloud Battery Adjusted"
+      state: >
+        {% set ac = states('sensor.solax_cloud_inverter')|int %}
+        {% set pv = states('sensor.solax_cloud_solar_panel')|int %}
+        {{ (0 - ac + pv) }}
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      unique_id: solax_cloud_battery_adjusted
+      icon: mdi:battery
+
+    - name: "Solax Cloud Battery Use In"
+      state: >
+        {% set batAdj = states('sensor.solax_cloud_battery_adjusted')|int(default=0) %}
+        {% set attr = states('sensor.solax_battery_power_charge') %}
+        {{ batAdj if is_number(batAdj) and (batAdj|int > 0) else 0 }}
+      unit_of_measurement: "W"
+      unique_id: solax_cloud_battery_use_in
+      icon: mdi:battery
+
+    - name: "Solax Cloud Battery Use Out"
+      state: >
+        {% set batAdj = states('sensor.solax_cloud_battery_adjusted')|int(default=0) %}
+        {% set attr = states('sensor.solax_battery_power_charge') %}
+        {{ (0 - batAdj) if is_number(batAdj) and (batAdj|int < 0) else 0 }}
+      unit_of_measurement: "W"
+      unique_id: solax_cloud_battery_use_out
+      icon: mdi:battery
+
+    - name: "Solax Cloud Battery"
+      state: "{{ states('sensor.solax_battery_capacity') }}"
+      unit_of_measurement: "%"
+      device_class: battery
+      state_class: measurement
+      unique_id: solax_12
+      icon: mdi:battery
+
+    - name: "Solax Cloud Grid Power"
+      state: >
+        {% set attr = states('sensor.solax_measured_power') %}
+        {{ (0 - attr|float) if is_number(attr) else 0 }}
+      unit_of_measurement: "W"
+      device_class: energy
+      state_class: measurement
+      unique_id: solax_13
+      icon: mdi:transmission-tower
+
+    - name: "Solax Cloud Grid Power in"
+      state: >
+        {% set attr = states('sensor.solax_measured_power') %}
+        {{ (0 - attr|float) if is_number(attr) and (attr|float < 0) else 0 }}
+      unit_of_measurement: "W"
+      unique_id: solax_14
+      icon: mdi:transmission-tower
+
+    - name: "Solax Cloud Grid Power out"
+      state: >
+        {% set attr = states('sensor.solax_measured_power') %}
+        {{ attr if is_number(attr) and (attr|float > 0) else 0 }}
+      unit_of_measurement: "W"
+      unique_id: solax_15
+      icon: mdi:transmission-tower
+
+    - name: "Solax Cloud Energy To Grid"
+      state: "{{ states('sensor.solax_today_s_export_energy') }}"
+      unit_of_measurement: "kWh"
+      unique_id: solax_16
+      icon: mdi:transmission-tower
+      device_class: energy
+      state_class: total_increasing
+
+    - name: "Solax Cloud Energy From Grid"
+      state: "{{ states('sensor.solax_today_s_import_energy') }}"
+      unit_of_measurement: "kWh"
+      unique_id: solax_19
+      icon: mdi:transmission-tower
+      device_class: energy
+      state_class: total_increasing
+
+    - name: "Solax Cloud Status"
+      unique_id: solax_20
+      icon: mdi:solar-power-variant
+      state: >
+          {{ states('sensor.solax_run_mode') }}
+
+    - name: SolaX Cloud Total Home Use
+      unique_id: home use
+      state: >
+          {% set battery = states('sensor.solax_battery_use') %}
+          {% set grid = states('sensor.solax_grid_power') %}
+          {% set solar = states('sensor.solar_panel_power') %}
+          {% set total = 0 - battery|float if is_number(battery) else 0 %}
+          {% set total = total + (solar|float if is_number(solar) else 0) %}
+          {% set total = total + (grid|float if is_number(grid) else 0) %}
+          {{ total }}
+      state_class: measurement
+      icon: 'mdi:flash'
+      unit_of_measurement: W
+      device_class: power
+
+### EDP
+
+- sensor:
+    - name: "EDP Tri-Horário Price"
+      unique_id: edp_campanha_desconto_para_sempre_trihorario
+      unit_of_measurement: "€/kWh"
+      state_class: measurement
+      icon: mdi:currency-eur
+      state: >-
+        {# --- CURRENT RATE (€/kWh) --- #}
+        {% set p_ponta  = 0.2580 %}
+        {% set p_cheias = 0.1620 %}
+        {% set p_vazio  = 0.1120 %}
+
+        {% set t = now() %}
+        {% set time_num = t.hour + (t.minute / 60) %}
+        {% set is_dst = (t.strftime('%z') == '+0100') %} {# Verão vs Inverno #}
+
+        {% if time_num >= 22.0 or time_num < 8.0 %}
+          {{ p_vazio }}
+        {% else %}
+          {% if is_dst %}
+            {# Horário de Verão #}
+            {% if (time_num >= 10.5 and time_num < 13.0) or (time_num >= 19.5 and time_num < 21.0) %}
+              {{ p_ponta }}
+            {% else %}
+              {{ p_cheias }}
+            {% endif %}
+          {% else %}
+            {# Horário de Inverno #}
+            {% if (time_num >= 9.5 and time_num < 12.0) or (time_num >= 18.5 and time_num < 21.0) %}
+              {{ p_ponta }}
+            {% else %}
+              {{ p_cheias }}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+
+      attributes:
+        tariff_name: "EDP Campanha Desconto para Sempre (DD+FE)"
+        contracted_power: "6.9 kVA"
+        price_ponta_mwh: 258.0
+        price_cheias_mwh: 162.0
+        price_vazio_mwh: 112.0
+
+### --- SIMULATED TODAY 15-MIN BLOCKS (€/MWh for Phase 1 Compatibility) --- #
+        today_hours: >-
+          {% set p_ponta  = 258.0 %}
+          {% set p_cheias = 162.0 %}
+          {% set p_vazio  = 112.0 %}
+          {% set ns = namespace(items=[]) %}
+          {% set base = today_at('00:00:00') %}
+          {% for i in range(96) %}
+            {% set dt = base + timedelta(minutes=i*15) %}
+            {% set time_num = dt.hour + (dt.minute / 60) %}
+            {% set is_dst = (dt.strftime('%z') == '+0100') %}
+            {% set p = p_vazio %}
+            {% if time_num >= 8.0 and time_num < 22.0 %}
+              {% if is_dst %}
+                {% if (time_num >= 10.5 and time_num < 13.0) or (time_num >= 19.5 and time_num < 21.0) %}
+                  {% set p = p_ponta %}
+                {% else %}
+                  {% set p = p_cheias %}
+                {% endif %}
+              {% else %}
+                {% if (time_num >= 9.5 and time_num < 12.0) or (time_num >= 18.5 and time_num < 21.0) %}
+                  {% set p = p_ponta %}
+                {% else %}
+                  {% set p = p_cheias %}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+            {% set ns.items = ns.items + [(dt.isoformat(), p)] %}
+          {% endfor %}
+          {{ dict(ns.items) }}
+
+        ### --- SIMULATED TOMORROW 15-MIN BLOCKS (€/MWh for Phase 1 Compatibility) --- #
+        tomorrow_hours: >-
+          {% set p_ponta  = 258.0 %}
+          {% set p_cheias = 162.0 %}
+          {% set p_vazio  = 112.0 %}
+          {% set ns = namespace(items=[]) %}
+          {% set base = today_at('00:00:00') + timedelta(days=1) %}
+          {% for i in range(96) %}
+            {% set dt = base + timedelta(minutes=i*15) %}
+            {% set time_num = dt.hour + (dt.minute / 60) %}
+            {% set is_dst = (dt.strftime('%z') == '+0100') %}
+            {% set p = p_vazio %}
+            {% if time_num >= 8.0 and time_num < 22.0 %}
+              {% if is_dst %}
+                {% if (time_num >= 10.5 and time_num < 13.0) or (time_num >= 19.5 and time_num < 21.0) %}
+                  {% set p = p_ponta %}
+                {% else %}
+                  {% set p = p_cheias %}
+                {% endif %}
+              {% else %}
+                {% if (time_num >= 9.5 and time_num < 12.0) or (time_num >= 18.5 and time_num < 21.0) %}
+                  {% set p = p_ponta %}
+                {% else %}
+                  {% set p = p_cheias %}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+            {% set ns.items = ns.items + [(dt.isoformat(), p)] %}
+          {% endfor %}
+          {{ dict(ns.items) }}
+
+### COOPERNICO bi-horario
+
+    - unique_id: coopernico_spot_price_bihorario
+      name: "Coopernico Spot Price Bihorario"
+      unit_of_measurement: '€/MWh'
+      availability: "{{ has_value('sensor.omie_spot_price_pt') }}"
+      state_class: measurement
+      state: >
+        {% set PM = states('sensor.omie_spot_price_pt') | float(0) %}
+        {% set CS_CR = 9.0 %}
+        {% set FP = 0.15 %}
+        {% set k = 9.0 %}
+        {% set TSE = 2.067 %}
+        {% set IEC = 1.0 %}
+        {% set TAR_vazio = 15.8 %}
+        {% set TAR_fora_vazio = 83.5 %}
+        {% set hour = now().hour + (now().minute / 60.0) %}
+        {% set TAR = TAR_vazio if hour < 8.0 or hour >= 22.0 else TAR_fora_vazio %}
+
+        {{ ((((PM + CS_CR) * (1 + FP)) + k + TSE + IEC + TAR) * 1.23) | round(2) }}
+      attributes:
+        friendly_name: "Coopérnico Base (Bi-horário)"
+        formula: "(((PM + CS_CR) * (1 + FP)) + k + TSE + IEC + TAR) * 1.23"
+        today_hours: >
+          {% set PM_data = state_attr('sensor.omie_spot_price_pt', 'today_hours') %}
+          {% if PM_data %}
+            {% set ns = namespace(hourly=[]) %}
+            {% for h, PM in PM_data.items() %}
+              {% if PM != None %}
+                {% set time_val = h.hour + (h.minute / 60.0) %}
+                {% set TAR = 15.8 if time_val < 8.0 or time_val >= 22.0 else 83.5 %}
+                {% set price = ((((PM + 9.0) * 1.15) + 9.0 + 2.067 + 1.0 + TAR) * 1.23) | round(2) %}
+              {% else %}
+                {% set price = None %}
+              {% endif %}
+              {% set ns.hourly = ns.hourly + [(h.isoformat(), price)] %}
+            {% endfor %}
+            {{ dict(ns.hourly) }}
+          {% else %}
+            {}
+          {% endif %}
+        tomorrow_hours: >
+          {% set PM_data = state_attr('sensor.omie_spot_price_pt', 'tomorrow_hours') %}
+          {% if PM_data %}
+            {% set ns = namespace(hourly=[]) %}
+            {% for h, PM in PM_data.items() %}
+              {% if PM != None %}
+                {% set time_val = h.hour + (h.minute / 60.0) %}
+                {% set TAR = 15.8 if time_val < 8.0 or time_val >= 22.0 else 83.5 %}
+                {% set price = ((((PM + 9.0) * 1.15) + 9.0 + 2.067 + 1.0 + TAR) * 1.23) | round(2) %}
+              {% else %}
+                {% set price = None %}
+              {% endif %}
+              {% set ns.hourly = ns.hourly + [(h.isoformat(), price)] %}
+            {% endfor %}
+            {{ dict(ns.hourly) }}
+          {% else %}
+            {}
+          {% endif %}
+
+### COOPERNICO tri-horario
+
+    - unique_id: coopernico_spot_price_trihorario
+      name: "Coopernico Spot Price Trihorario"
+      unit_of_measurement: '€/MWh'
+      availability: "{{ has_value('sensor.omie_spot_price_pt') }}"
+      state_class: measurement
+      state: >
+        {% set PM = states('sensor.omie_spot_price_pt') | float(0) %}
+        {% set CS_CR = 9.0 %}
+        {% set FP = 0.15 %}
+        {% set k = 9.0 %}
+        {% set TSE = 2.067 %}
+        {% set IEC = 1.0 %}
+        {% set TAR_vazio = 15.8 %}
+        {% set TAR_cheias = 41.2 %}
+        {% set TAR_ponta = 245.2 %}
+
+        {% set is_summer = now().dst() is not none and now().dst().total_seconds() > 0 %}
+        {% set hour = now().hour + (now().minute / 60.0) %}
+
+        {% if is_summer %}
+          {# Summer Schedule #}
+          {% if (hour >= 10.5 and hour < 13.0) or (hour >= 19.5 and hour < 21.0) %}
+            {% set TAR = TAR_ponta %}
+          {% elif (hour >= 8.0 and hour < 10.5) or (hour >= 13.0 and hour < 19.5) or (hour >= 21.0 and hour < 22.0) %}
+            {% set TAR = TAR_cheias %}
+          {% else %}
+            {% set TAR = TAR_vazio %}
+          {% endif %}
+        {% else %}
+          {# Winter Schedule #}
+          {% if (hour >= 9.0 and hour < 10.5) or (hour >= 18.0 and hour < 20.5) %}
+            {% set TAR = TAR_ponta %}
+          {% elif (hour >= 8.0 and hour < 9.0) or (hour >= 10.5 and hour < 18.0) or (hour >= 20.5 and hour < 22.0) %}
+            {% set TAR = TAR_cheias %}
+          {% else %}
+            {% set TAR = TAR_vazio %}
+          {% endif %}
+        {% endif %}
+
+        {{ ((((PM + CS_CR) * (1 + FP)) + k + TSE + IEC + TAR) * 1.23) | round(2) }}
+      attributes:
+        friendly_name: "Coopérnico Tri-horário (Luz)"
+        formula: "(((PM + CS_CR) * (1 + FP)) + k + TSE + IEC + TAR) * 1.23"
+        today_hours: >
+          {% set PM_data = state_attr('sensor.omie_spot_price_pt', 'today_hours') %}
+          {% if PM_data %}
+            {% set ns = namespace(hourly=[]) %}
+            {% for h, PM in PM_data.items() %}
+              {% if PM != None %}
+                {% set is_summer = h.dst() is not none and h.dst().total_seconds() > 0 %}
+                {% set time_val = h.hour + (h.minute / 60.0) %}
+                {% if is_summer %}
+                  {% if (time_val >= 10.5 and time_val < 13.0) or (time_val >= 19.5 and time_val < 21.0) %}
+                    {% set TAR = 245.2 %}
+                  {% elif (time_val >= 8.0 and time_val < 10.5) or (time_val >= 13.0 and time_val < 19.5) or (time_val >= 21.0 and time_val < 22.0) %}
+                    {% set TAR = 41.2 %}
+                  {% else %}
+                    {% set TAR = 15.8 %}
+                  {% endif %}
+                {% else %}
+                  {% if (time_val >= 9.0 and time_val < 10.5) or (time_val >= 18.0 and time_val < 20.5) %}
+                    {% set TAR = 245.2 %}
+                  {% elif (time_val >= 8.0 and time_val < 9.0) or (time_val >= 10.5 and time_val < 18.0) or (time_val >= 20.5 and time_val < 22.0) %}
+                    {% set TAR = 41.2 %}
+                  {% else %}
+                    {% set TAR = 15.8 %}
+                  {% endif %}
+                {% endif %}
+                {% set price = ((((PM + 9.0) * 1.15) + 9.0 + 2.067 + 1.0 + TAR) * 1.23) | round(2) %}
+              {% else %}
+                {% set price = None %}
+              {% endif %}
+              {% set ns.hourly = ns.hourly + [(h.isoformat(), price)] %}
+            {% endfor %}
+            {{ dict(ns.hourly) }}
+          {% else %}
+            {}
+          {% endif %}
+        tomorrow_hours: >
+          {% set PM_data = state_attr('sensor.omie_spot_price_pt', 'tomorrow_hours') %}
+          {% if PM_data %}
+            {% set ns = namespace(hourly=[]) %}
+            {% for h, PM in PM_data.items() %}
+              {% if PM != None %}
+                {% set is_summer = h.dst() is not none and h.dst().total_seconds() > 0 %}
+                {% set time_val = h.hour + (h.minute / 60.0) %}
+                {% if is_summer %}
+                  {% if (time_val >= 10.5 and time_val < 13.0) or (time_val >= 19.5 and time_val < 21.0) %}
+                    {% set TAR = 245.2 %}
+                  {% elif (time_val >= 8.0 and time_val < 10.5) or (time_val >= 13.0 and time_val < 19.5) or (time_val >= 21.0 and time_val < 22.0) %}
+                    {% set TAR = 41.2 %}
+                  {% else %}
+                    {% set TAR = 15.8 %}
+                  {% endif %}
+                {% else %}
+                  {% if (time_val >= 9.0 and time_val < 10.5) or (time_val >= 18.0 and time_val < 20.5) %}
+                    {% set TAR = 245.2 %}
+                  {% elif (time_val >= 8.0 and time_val < 9.0) or (time_val >= 10.5 and time_val < 18.0) or (time_val >= 20.5 and time_val < 22.0) %}
+                    {% set TAR = 41.2 %}
+                  {% else %}
+                    {% set TAR = 15.8 %}
+                  {% endif %}
+                {% endif %}
+                {% set price = ((((PM + 9.0) * 1.15) + 9.0 + 2.067 + 1.0 + TAR) * 1.23) | round(2) %}
+              {% else %}
+                {% set price = None %}
+              {% endif %}
+              {% set ns.hourly = ns.hourly + [(h.isoformat(), price)] %}
+            {% endfor %}
+            {{ dict(ns.hourly) }}
+          {% else %}
+            {}
+          {% endif %}
+
+### G9 SMART DYNAMIC bi-horario
+    
+    - unique_id: g9_smart_dynamic_bihorario
+      name: "G9 Smart Dynamic Price Bihorario"
+      unit_of_measurement: '€/MWh'
+      availability: "{{ has_value('sensor.omie_spot_price_pt') }}"
+      state_class: measurement
+      state: >
+        {% set PM = states('sensor.omie_spot_price_pt')|float -%}
+        {% set Fadeq = 1.02 -%}
+        {% set Perdas = 0.16 -%}
+        {% set GGS = 10.0 -%}
+        {% set AC = 5.5 -%}
+        {% set TSE = 2.0666 -%}
+        {% set TAR_vazio = 15.8 -%}
+        {% set TAR_fora_vazio = 83.5 -%}
+        {% set TAR = TAR_vazio if now().hour < 8 or now().hour > 21 else TAR_fora_vazio -%}
+        
+        {% set PE = (PM * Fadeq) * (1 + Perdas) + GGS + AC -%}
+        {{ (PE + TAR + TSE) | round(2) }}
+      attributes:
+        friendly_name: "G9 Smart Dynamic (Bi-horário)"
+        formula: "PE + TAR + TSE"
+        PM: "{{ states('sensor.omie_spot_price_pt')|float }}"
+        Fadeq: "{{ 1.02 }}"
+        Perdas: "{{ 0.16 }}"
+        GGS: "{{ 10.0 }}"
+        AC: "{{ 5.5 }}"
+        TAR_vazio: 15.8
+        TAR_fora_vazio: 83.5
+        today_hours: >
+            {% set Fadeq = 1.02 -%}
+            {% set Perdas = 0.16 -%}
+            {% set GGS = 10.0 -%}
+            {% set AC = 5.5 -%}
+            {% set TSE = 2.0666 -%}
+            
+            {% set ns = namespace(hourly_data=[]) %}
+            {% for h, PM in state_attr('sensor.omie_spot_price_pt', 'today_hours').items() -%}
+              {% set TAR = 15.8 if h.hour < 8 or h.hour > 21 else 83.5 -%}
+              {% if PM == None %}
+                {% set price = None %}
+              {% else %}
+                {% set PE = (PM * Fadeq) * (1 + Perdas) + GGS + AC -%}
+                {% set price = (PE + TAR + TSE) | round(2) %}
+              {% endif %}
+              {% set ns.hourly_data = ns.hourly_data + [(h.isoformat(), price)] %}
+            {% endfor -%}
+            {{ dict(ns.hourly_data) }}
+        tomorrow_hours: >
+            {% set Fadeq = 1.02 -%}
+            {% set Perdas = 0.16 -%}
+            {% set GGS = 10.0 -%}
+            {% set AC = 5.5 -%}
+            {% set TSE = 2.0666 -%}
+            
+            {% set ns = namespace(hourly_data=[]) %}
+            {% for h, PM in state_attr('sensor.omie_spot_price_pt', 'tomorrow_hours').items() -%}
+              {% set TAR = 15.8 if h.hour < 8 or h.hour > 21 else 83.5 -%}
+              {% if PM == None %}
+                {% set price = None %}
+              {% else %}
+                {% set PE = (PM * Fadeq) * (1 + Perdas) + GGS + AC -%}
+                {% set price = (PE + TAR + TSE) | round(2) %}
+              {% endif %}
+              {% set ns.hourly_data = ns.hourly_data + [(h.isoformat(), price)] %}
+            {% endfor -%}
+            {{ dict(ns.hourly_data) }}
+    
+### G9 SMART DYNAMIC tri-horario
+    
+    - unique_id: g9_smart_dynamic_trihorario
+      name: "G9 Smart Dynamic Price Trihorario"
+      unit_of_measurement: '€/MWh'
+      availability: "{{ has_value('sensor.omie_spot_price_pt') }}"
+      state_class: measurement
+      state: >
+        {% set PM = states('sensor.omie_spot_price_pt')|float -%}
+        {% set Fadeq = 1.02 -%}
+        {% set Perdas = 0.16 -%}
+        {% set GGS = 10.0 -%}
+        {% set AC = 5.5 -%}
+        {% set TSE = 2.0666 -%}
+        {% set TAR_vazio = 15.8 -%}
+        {% set TAR_cheias = 63.8 -%}
+        {% set TAR_ponta = 141.6 -%}
+        
+        {% set hour = now().hour %}
+        {% if hour >= 9 and hour < 10.5 or hour >= 18 and hour < 20.5 %}
+          {% set TAR = TAR_ponta %}
+        {% elif hour >= 7 and hour < 9 or hour >= 10.5 and hour < 18 or hour >= 20.5 and hour < 22 %}
+          {% set TAR = TAR_cheias %}
+        {% else %}
+          {% set TAR = TAR_vazio %}
+        {% endif %}
+    
+        {% set PE = (PM * Fadeq) * (1 + Perdas) + GGS + AC -%}
+        {{ (PE + TAR + TSE) | round(2) }}
+      attributes:
+        friendly_name: "G9 Smart Dynamic (Tri-horário)"
+        formula: "PE + TAR + TSE"
+        PM: "{{ states('sensor.omie_spot_price_pt')|float }}"
+        Fadeq: "{{ 1.02 }}"
+        Perdas: "{{ 0.16 }}"
+        GGS: "{{ 10.0 }}"
+        AC: "{{ 5.5 }}"
+        TAR_vazio: 15.8
+        TAR_cheias: 63.8
+        TAR_ponta: 141.6
+        today_hours: >
+            {% set Fadeq = 1.02 -%}
+            {% set Perdas = 0.16 -%}
+            {% set GGS = 10.0 -%}
+            {% set AC = 5.5 -%}
+            {% set TSE = 2.0666 -%}
+    
+            {% set ns = namespace(hourly_data=[]) %}
+            {% for h, PM in state_attr('sensor.omie_spot_price_pt', 'today_hours').items() -%}
+              {% set hour = h.hour %}
+              {% if hour >= 9 and hour < 10.5 or hour >= 18 and hour < 20.5 %}
+                {% set TAR = 141.6 %}
+              {% elif hour >= 7 and hour < 9 or hour >= 10.5 and hour < 18 or hour >= 20.5 and hour < 22 %}
+                {% set TAR = 63.8 %}
+              {% else %}
+                {% set TAR = 15.8 %}
+              {% endif %}
+    
+              {% if PM == None %}
+                {% set price = None %}
+              {% else %}
+                {% set PE = (PM * Fadeq) * (1 + Perdas) + GGS + AC -%}
+                {% set price = (PE + TAR + TSE) | round(2) %}
+              {% endif %}
+              {% set ns.hourly_data = ns.hourly_data + [(h.isoformat(), price)] %}
+            {% endfor -%}
+            {{ dict(ns.hourly_data) }}
+        tomorrow_hours: >
+            {% set Fadeq = 1.02 -%}
+            {% set Perdas = 0.16 -%}
+            {% set GGS = 10.0 -%}
+            {% set AC = 5.5 -%}
+            {% set TSE = 2.0666 -%}
+    
+            {% set ns = namespace(hourly_data=[]) %}
+            {% for h, PM in state_attr('sensor.omie_spot_price_pt', 'tomorrow_hours').items() -%}
+              {% set hour = h.hour %}
+              {% if hour >= 9 and hour < 10.5 or hour >= 18 and hour < 20.5 %}
+                {% set TAR = 141.6 %}
+              {% elif hour >= 7 and hour < 9 or hour >= 10.5 and hour < 18 or hour >= 20.5 and hour < 22 %}
+                {% set TAR = 63.8 %}
+              {% else %}
+                {% set TAR = 15.8 %}
+              {% endif %}
+    
+              {% if PM == None %}
+                {% set price = None %}
+              {% else %}
+                {% set PE = (PM * Fadeq) * (1 + Perdas) + GGS + AC -%}
+                {% set price = (PE + TAR + TSE) | round(2) %}
+              {% endif %}
+              {% set ns.hourly_data = ns.hourly_data + [(h.isoformat(), price)] %}
+            {% endfor -%}
+            {{ dict(ns.hourly_data) }}
+
+### Coppernico cost in euros/kwh
+
+    - unique_id: coopernico_current_price
+      name: "Coopernico current Price"
+      device_class: monetary
+      unit_of_measurement: "€/kWh"
+      state: >
+        {{ (states('sensor.template_coopernico_spot_price_trihorario')|float(0) / 1000 * 1.23 | round(6)) }}
+
+### Coppernico cost in euros/kwh
+
+    - unique_id: energy_adjusted_price
+      name: "Energy adjusted Price"
+      device_class: monetary
+      unit_of_measurement: "€/kWh"
+      state: >
+        {% set input_power = states('sensor.solax_grid_import')|int %}
+        {{ input_power/states('sensor.solax_house_load')|int * states('sensor.coopernico_current_price')|float | round(6) }}
+
+### Energy savings
+
+    - unique_id: energy_saved_price
+      name: "Price of energy saved"
+      device_class: monetary
+      unit_of_measurement: "€/kWh"
+      state: >
+        {% set input_power = states('sensor.solax_grid_import')|int %}
+        {% set percentage = (1-input_power/(states('sensor.solax_house_load')|int))|float %}
+        {% if percentage < 0 %}
+          {% set percentage = 0 %}
+        {% endif %}
+        {% if percentage > 1 %}
+          {% set percentage = 1 %}
+        {% endif %}
+        {{ percentage * states('sensor.coopernico_current_price')|float | round(6) }}
+
+###
+### Energy Costs and Savings calculations
+###
+
+
+### Current Total energy Saved
+
+    - unique_id: current_total_energy_savings
+      name: "Current Total_Energy Savings"
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.solax_house_load')|float(0) * states('sensor.price_of_energy_saved')|float(0) / 1000 }}
+
+### Current Total energy Cost
+
+    - unique_id: current_total_energy_cost
+      name: "Current Total_Energy cost"
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.solax_grid_import')|float(0) * states('sensor.coopernico_current_price')|float(0) | round(6) / 1000 }}
+
+### Current AQS energy Cost
+
+    - unique_id: current_aqs_energy_cost
+      name: "Current AQS_Energy cost"
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.tomada_aqs_power')|float(0) * states('sensor.energy_adjusted_price')|float(0) / 1000 }}
+
+### Current VE energy Cost
+
+    - unique_id: current_ve_energy_cost
+      name: "Current VE_Energy cost"
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.box_ve1_power')|float(0) * states('sensor.energy_adjusted_price')|float(0) / 1000 }}
+
+### Current VE2 energy Cost
+
+    - unique_id: current_ve2_energy_cost
+      name: "Current VE2_Energy cost"
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.box_ve2_power')|float(0) * states('sensor.energy_adjusted_price')|float(0) / 1000}}
+
+
+### Not specified costs
+
+    - unique_id: other_energy_cost_daily
+      name: "Other Energy costs Daily"
+      state_class: total
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.total_energy_cost_daily')|float(0) - states('sensor.bmw_energy_cost_daily')|float(0) - states('sensor.aqs_energy_cost_daily')|float(0) - states('sensor.dacia_daily_cost')|float(0) }}
+
+    - unique_id: other_energy_cost_monthly
+      name: "Other Energy costs Monthly"
+      state_class: total
+      device_class: monetary
+      unit_of_measurement: "EUR"
+      state: >
+        {{ states('sensor.total_energy_cost_monthly')|float(0) - states('sensor.bmw_energy_cost_monthly')|float(0) - states('sensor.aqs_energy_cost_monthly')|float(0) - states('sensor.dacia_monthly_cost')|float(0) }}
+
+
+###
+### SHADING CALCULATIONS
+###
+
+    # =========================================================
+    # 1. LATERAL SHADES (NW - 325°)
+    # =========================================================
+    - name: "Optimal Shade Position Lateral"
+      unique_id: optimal_shade_position_lateral
+      unit_of_measurement: "%"
+      state: >-
+        {% set az_wall = 325 %}
+        {% set h_win = 1.2 %}
+        {% set d_over = 0.1 %}
+        {% set h_over = 0.3 %}
+        {% set max_pen = 0.15 %}
+        
+        {% set az_sun = state_attr('sun.sun', 'azimuth') | float(0) %}
+        {% set el_sun = state_attr('sun.sun', 'elevation') | float(0) %}
+        {% set diff = (az_sun - az_wall) | abs %}
+        {% set gamma = diff if diff <= 180 else 360 - diff %}
+        {% set pi = 3.14159 %}
+        
+        {% if gamma > 90 %} 
+          100 
+        {% else %}
+          {% set tan_beta = tan(el_sun * pi / 180) / cos(gamma * pi / 180) %}
+          {% set shadow_drop = d_over * tan_beta %}
+          
+          {% if shadow_drop >= (h_over + h_win) %} 
+            100 
+          {% else %}
+            {% set h_open = max_pen * tan_beta %}
+            {% set raw_pct = (h_open / h_win) * 100 %}
+            {{ [[(15 + (raw_pct * 0.85)), 15] | max, 100] | min | round(0) }}
+          {% endif %}
+        {% endif %}
+
+    # =========================================================
+    # 2. PATIO SHADES (NE - 55°)
+    # (Also used for Dinner, Kitchen, Lara, and Lucas)
+    # =========================================================
+    - name: "Optimal Shade Position Patio"
+      unique_id: optimal_shade_position_patio
+      unit_of_measurement: "%"
+      state: >-
+        {% set az_wall = 55 %}
+        {% set h_win = 2.1 %}
+        {% set d_over = 0.1 %}
+        {% set h_over = 0.3 %}
+        {% set max_pen = 0.3 %}
+        
+        {% set az_sun = state_attr('sun.sun', 'azimuth') | float(0) %}
+        {% set el_sun = state_attr('sun.sun', 'elevation') | float(0) %}
+        {% set diff = (az_sun - az_wall) | abs %}
+        {% set gamma = diff if diff <= 180 else 360 - diff %}
+        {% set pi = 3.14159 %}
+        
+        {% if gamma > 90 %} 
+          100 
+        {% else %}
+          {% set tan_beta = tan(el_sun * pi / 180) / cos(gamma * pi / 180) %}
+          {% set shadow_drop = d_over * tan_beta %}
+          
+          {% if shadow_drop >= (h_over + h_win) %} 
+            100 
+          {% else %}
+            {% set h_open = max_pen * tan_beta %}
+            {% set raw_pct = (h_open / h_win) * 100 %}
+            {{ [[(15 + (raw_pct * 0.85)), 15] | max, 100] | min | round(0) }}
+          {% endif %}
+        {% endif %}
+
+    # =========================================================
+    # 3. MASTER SUITE (SW - 235°)
+    # =========================================================
+    - name: "Optimal Shade Position Master Suite"
+      unique_id: optimal_shade_position_master_suite
+      unit_of_measurement: "%"
+      state: >-
+        {% set az_wall = 235 %}
+        {% set h_win = 2.1 %}
+        {% set d_over = 0.1 %}
+        {% set h_over = 0.3 %}
+        {% set max_pen = 0.2 %}
+        
+        {% set az_sun = state_attr('sun.sun', 'azimuth') | float(0) %}
+        {% set el_sun = state_attr('sun.sun', 'elevation') | float(0) %}
+        {% set diff = (az_sun - az_wall) | abs %}
+        {% set gamma = diff if diff <= 180 else 360 - diff %}
+        {% set pi = 3.14159 %}
+        
+        {% if gamma > 90 %} 
+          100 
+        {% else %}
+          {% set tan_beta = tan(el_sun * pi / 180) / cos(gamma * pi / 180) %}
+          {% set shadow_drop = d_over * tan_beta %}
+          
+          {% if shadow_drop >= (h_over + h_win) %} 
+            100 
+          {% else %}
+            {% set h_open = max_pen * tan_beta %}
+            {% set raw_pct = (h_open / h_win) * 100 %}
+            {{ [[(15 + (raw_pct * 0.85)), 15] | max, 100] | min | round(0) }}
+          {% endif %}
+        {% endif %}
+
+    # =========================================================
+    # 4. MASTER BATHROOM (SW - 235°)
+    # =========================================================
+    - name: "Optimal Shade Position Master Bathroom"
+      unique_id: optimal_shade_position_master_bathroom
+      unit_of_measurement: "%"
+      state: >-
+        {% set az_wall = 235 %}
+        {% set h_win = 1.0 %}
+        {% set d_over = 0.1 %}
+        {% set h_over = 0.3 %}
+        {% set max_pen = 0.2 %}
+        
+        {% set az_sun = state_attr('sun.sun', 'azimuth') | float(0) %}
+        {% set el_sun = state_attr('sun.sun', 'elevation') | float(0) %}
+        {% set diff = (az_sun - az_wall) | abs %}
+        {% set gamma = diff if diff <= 180 else 360 - diff %}
+        {% set pi = 3.14159 %}
+        
+        {% if gamma > 90 %} 
+          100 
+        {% else %}
+          {% set tan_beta = tan(el_sun * pi / 180) / cos(gamma * pi / 180) %}
+          {% set shadow_drop = d_over * tan_beta %}
+          
+          {% if shadow_drop >= (h_over + h_win) %} 
+            100 
+          {% else %}
+            {% set h_open = max_pen * tan_beta %}
+            {% set raw_pct = (h_open / h_win) * 100 %}
+            {{ [[(15 + (raw_pct * 0.85)), 15] | max, 100] | min | round(0) }}
+          {% endif %}
+        {% endif %}
+
+    # =========================================================
+    # 5. ENTRADA SLIDING COVER (SW - 235°)
+    # =========================================================
+    - name: "Optimal Shade Position Entrada Cover"
+      unique_id: optimal_shade_position_entrada_cover
+      unit_of_measurement: "%"
+      state: >-
+        {% set az_wall = 235 %}
+        {% set h_win = 2.5 %}
+        {% set h_over = 0.2 %}
+        {% set min_ext = 0.8 %}
+        {% set max_ext = 3.5 %}
+        {% set angle_deg = 20 %}
+        
+        {% set az_sun = state_attr('sun.sun', 'azimuth') | float(0) %}
+        {% set el_sun = state_attr('sun.sun', 'elevation') | float(0) %}
+        {% set diff = (az_sun - az_wall) | abs %}
+        {% set gamma = diff if diff <= 180 else 360 - diff %}
+        {% set pi = 3.14159 %}
+        
+        {% if gamma > 90 %} 
+          0 
+        {% else %}
+          {% set gamma_rad = gamma * pi / 180 %}
+          {% set slope_rad = angle_deg * pi / 180 %}
+          {% set tan_beta = tan(el_sun * pi / 180) / cos(gamma_rad) %}
+          {% set denominator = sin(slope_rad) + (cos(slope_rad) * tan_beta) %}
+          
+          {% if denominator > 0 %}
+            {% set req_L = (h_over + h_win) / denominator %}
+          {% else %}
+            {% set req_L = max_ext %}
+          {% endif %}
+          
+          {% set final_L = [[req_L, min_ext] | max, max_ext] | min %}
+          {% set pct_extended = ((final_L - min_ext) / (max_ext - min_ext)) * 100 %}
+          
+          {{ [[pct_extended, 0] | max, 80] | min | round(0) }}
+        {% endif %}
+
+#####################################################################################
+#   VICTRON & SOLAX coordination
+#####################################################################################
+
+    - name: "Total House Load"
+      unique_id: total_house_load
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      icon: mdi:flash
+      state: >-
+        {% set solax = states('sensor.solax_house_load') | float(0) %}
+        {% set victron_grid = states('sensor.garage_gx_device_grid_power_l1') | float(0) %}
+        {% set victron_load = states('sensor.garage_gx_device_consumption_power_l1') | float(0) %}
+        {{ (solax - victron_grid + victron_load) }}
+
+    - name: "Total House SOC"
+      unique_id: total_house_soc
+      unit_of_measurement: "%"
+      device_class: battery
+      state_class: measurement
+      icon: mdi:battery-charging-50
+      state: >-
+        {% set solax_avail = has_value('sensor.solax_battery_capacity') %}
+        {% set victron_avail = has_value('sensor.garage_gx_device_dc_battery_charge') %}
+
+        {% set solax_soc = states('sensor.solax_battery_capacity') | float(0) if solax_avail else 0 %}
+        {% set victron_soc = states('sensor.garage_gx_device_dc_battery_charge') | float(0) if victron_avail else 0 %}
+
+        {% set w_solax = 11.6 if solax_avail else 0 %}
+        {% set w_victron = 6.4 if victron_avail else 0 %}
+
+        {% set total_weight = w_solax + w_victron %}
+
+        {% if total_weight > 0 %}
+          {% set raw_soc = ((solax_soc * w_solax) + (victron_soc * w_victron)) / total_weight %}
+          {{ [[raw_soc, 0] | max, 100] | min | round(1) }}
+        {% else %}
+          unavailable
+        {% endif %}
+      availability: >-
+        {{ has_value('sensor.solax_battery_capacity') or has_value('sensor.garage_gx_device_dc_battery_charge') }}
+
+    - name: "Total Battery Power Charge"
+      unique_id: total_battery_power_charge
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      icon: mdi:battery-charging
+      state: >-
+        {% set solax_pwr = states('sensor.solax_battery_power_charge') | float(0) %}
+        {% set victron_pwr = states('sensor.gx_device_dc_battery_power') | float(0) %}
+
+        {{ (solax_pwr + victron_pwr) | round(2) }}
+      availability: >-
+        {{ has_value('sensor.solax_battery_power_charge') or has_value('sensor.gx_device_dc_battery_power') }}

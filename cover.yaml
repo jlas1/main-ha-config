@@ -1,0 +1,22 @@
+- cover:
+  - device_class: garage
+    unique_id: garage_door_cover
+    open_cover:
+    - target:
+        entity_id:
+        - switch.porta_garagem_trigger
+      action: switch.turn_off
+    close_cover:
+    - target:
+        entity_id:
+        - switch.porta_garagem_trigger
+      action: switch.turn_off
+    stop_cover:
+    - target:
+        entity_id:
+        - switch.porta_garagem_trigger
+      action: switch.turn_off
+    default_entity_id: cover.garage_door
+    name: Garage Door
+    state: "{% if is_state('binary_sensor.porta_garagem_garage_door_contact', 'on')
+      %}\n  open\n{% else %}\n  closed\n{% endif %}"

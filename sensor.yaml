@@ -1,0 +1,86 @@
+###################################
+# Solax X1 Hybrid G4 Rest Sensors #
+###################################
+
+### Integrations to convert power into energy
+
+- platform: integration
+  source: sensor.house_export_power
+  unique_id: house_export_energy
+  name: "House exported Energy"
+  unit_prefix: k
+  round: 2
+
+- platform: integration
+  source: sensor.house_import_power
+  unique_id: house_import_energy
+  name: "House imported Energy"
+  unit_prefix: k
+  round: 2
+
+- platform: integration
+  source: sensor.battery_charge_power
+  unique_id: battery_charge_energy
+  name: "Battery Energy Charged"
+  unit_prefix: k
+  round: 2
+
+- platform: integration
+  source: sensor.battery_discharge_power
+  unique_id: battery_discharge_energy
+  name: "Battery Energy Discharged"
+  unit_prefix: k
+  round: 2
+
+### Schedule State
+
+- platform: schedule_state
+  name: Schedule for Water heating at night
+  # refresh: "6:00:00"                # this is the default
+  # default_state: default            # this is the default
+  # icon: mdi:calendar-check          # this is the default
+  # error_icon: mdi:calendar-alert    # this is the default
+  # minutes_to_refresh_on_error: 5    # this is the default
+  # allow_wrap: False                 # this is the default
+  default_state: "Off"
+  allow_wrap: True
+  events:
+    - state: "Off"
+    - start: "{{ as_timestamp(states('input_datetime.night_water_heating_start')) }}"
+      end: "{{ as_timestamp(states('input_datetime.night_water_heating_stop')) }}"
+      state: "On"
+
+- platform: average
+  name: "Box VE1 Power 5min Average"
+  duration:
+    minutes: 5
+  entities:
+      - sensor.box_ve1_power 
+
+- platform: average
+  name: "Box VE2 Power 5min Average"
+  duration:
+    minutes: 5
+  entities:
+      - sensor.box_ve2_power 
+
+- platform: average
+  name: "Solar Power 5min Average"
+  duration:
+    minutes: 5
+  entities:
+      - sensor.solax_pv_power_total
+
+- platform: average
+  name: "House Power 5min Average"
+  duration:
+    minutes: 5
+  entities:
+      - sensor.solax_house_load 
+
+- platform: average
+  name: "AQS Power 5min Average"
+  duration:
+    minutes: 5
+  entities:
+      - sensor.tomada_aqs_power
