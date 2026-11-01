@@ -179,16 +179,16 @@
 ### EDP
 
 - sensor:
-    - name: "EDP Tri-Horário Price"
-      unique_id: edp_campanha_desconto_para_sempre_trihorario
-      unit_of_measurement: "€/kWh"
+    - name: "EDP Trihorario Price"
+      unique_id: edp_trihorario
+      unit_of_measurement: "€/MWh"
       state_class: measurement
       icon: mdi:currency-eur
       state: >-
-        {# --- CURRENT RATE (€/kWh) --- #}
-        {% set p_ponta  = 0.2580 %}
-        {% set p_cheias = 0.1620 %}
-        {% set p_vazio  = 0.1120 %}
+        {# --- CURRENT RATE (€/MWh) --- #}
+        {% set p_ponta  = 337.7 %}
+        {% set p_cheias = 145.3 %}
+        {% set p_vazio  = 112.2 %}
 
         {% set t = now() %}
         {% set time_num = t.hour + (t.minute / 60) %}
@@ -217,15 +217,15 @@
       attributes:
         tariff_name: "EDP Campanha Desconto para Sempre (DD+FE)"
         contracted_power: "6.9 kVA"
-        price_ponta_mwh: 258.0
-        price_cheias_mwh: 162.0
-        price_vazio_mwh: 112.0
+        price_ponta_mwh: 337.7
+        price_cheias_mwh: 145.3
+        price_vazio_mwh: 112.2
 
 ### --- SIMULATED TODAY 15-MIN BLOCKS (€/MWh for Phase 1 Compatibility) --- #
         today_hours: >-
-          {% set p_ponta  = 258.0 %}
-          {% set p_cheias = 162.0 %}
-          {% set p_vazio  = 112.0 %}
+          {% set p_ponta  = 337.7 %}
+          {% set p_cheias = 145.3 %}
+          {% set p_vazio  = 112.2 %}
           {% set ns = namespace(items=[]) %}
           {% set base = today_at('00:00:00') %}
           {% for i in range(96) %}
@@ -254,9 +254,9 @@
 
         ### --- SIMULATED TOMORROW 15-MIN BLOCKS (€/MWh for Phase 1 Compatibility) --- #
         tomorrow_hours: >-
-          {% set p_ponta  = 258.0 %}
-          {% set p_cheias = 162.0 %}
-          {% set p_vazio  = 112.0 %}
+          {% set p_ponta  = 337.7 %}
+          {% set p_cheias = 145.3 %}
+          {% set p_vazio  = 112.2 %}
           {% set ns = namespace(items=[]) %}
           {% set base = today_at('00:00:00') + timedelta(days=1) %}
           {% for i in range(96) %}
@@ -630,7 +630,7 @@
       device_class: monetary
       unit_of_measurement: "€/kWh"
       state: >
-        {{ (states('sensor.template_coopernico_spot_price_trihorario')|float(0) / 1000 * 1.23 | round(6)) }}
+        {{ (states('sensor.edp_trihorario_price')|float(0) / 1000 * 1.23 | round(6)) }}
 
 ### Coppernico cost in euros/kwh
 

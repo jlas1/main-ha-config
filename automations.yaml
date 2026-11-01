@@ -4714,8 +4714,8 @@
     system boot.
   triggers:
   - trigger: state
-    entity_id: sensor.template_coopernico_spot_price_trihorario
-    attribute: tomorrow_hours
+    entity_id:
+    - sensor.edp_tri_horario_price
     id: market_data_updated
   - trigger: homeassistant
     event: start
@@ -4732,8 +4732,8 @@
     before: '23:59:00'
   actions:
   - alias: Wait for Coopernico sensor to initialize after boot
-    wait_template: '{{ states(''sensor.template_coopernico_spot_price_trihorario'')
-      not in [''unknown'', ''unavailable''] }}'
+    wait_template: '{{ states(''sensor.edp_trihorario_price'') not in [''unknown'',
+      ''unavailable''] }}'
     timeout:
       hours: 0
       minutes: 0
@@ -4741,9 +4741,9 @@
       milliseconds: 0
     continue_on_timeout: true
   - condition: template
-    value_template: '{% set today = state_attr(''sensor.template_coopernico_spot_price_trihorario'',
-      ''today_hours'') %} {{ today is not none and today.values() | select(''number'')
-      | list | count > 32 }}'
+    value_template: '{% set today = state_attr(''sensor.edp_trihorario_price'', ''today_hours'')
+      %} {{ today is not none and today.values() | select(''number'') | list | count
+      > 32 }}'
   - alias: 'BLOCK A: Night & General EV Calculations (Skips at 22:00)'
     if:
     - condition: template
@@ -4753,19 +4753,19 @@
       target:
         entity_id: input_text.automation_low_cost_coopernico
       data:
-        value: "{% set sensor = 'sensor.template_coopernico_spot_price_trihorario'
-          %} {% set today_dict = state_attr(sensor, 'today_hours') %} {% set tomorrow_dict
-          = state_attr(sensor, 'tomorrow_hours') %} {% if today_dict is not none and
-          tomorrow_dict is not none %}\n  {% set today_prices = today_dict.items()
-          | sort(attribute='0') | map(attribute='1') | list %}\n  {% set tomorrow_prices
-          = tomorrow_dict.items() | sort(attribute='0') | map(attribute='1') | list
-          %}\n\n  {% set window = today_prices[88:] + tomorrow_prices[:32] %}\n  {%
-          set min_price = window | select('number') | map('float', 1000) | min %}\n\n
-          \ {% set ns = namespace(ts_2h='', ts_3h='', ts_5h='', ts_1h='', ts_start=999,
-          ts_stop=0, found_start=false, ended=false, best_1h_idx=0) %}\n\n  {% for
-          d in [5, 3, 2, 1] %}\n    {% set d_steps = d * 4 %}\n    {% set best = namespace(min_sum=999999,
-          idx=0) %}\n    {% for i in range((window | count - d_steps), -1, -1) %}\n
-          \     {% set current_sum = window[i:i+d_steps] | select('number') | map('float',
+        value: "{% set sensor = 'sensor.edp_trihorario_price' %} {% set today_dict
+          = state_attr(sensor, 'today_hours') %} {% set tomorrow_dict = state_attr(sensor,
+          'tomorrow_hours') %} {% if today_dict is not none and tomorrow_dict is not
+          none %}\n  {% set today_prices = today_dict.items() | sort(attribute='0')
+          | map(attribute='1') | list %}\n  {% set tomorrow_prices = tomorrow_dict.items()
+          | sort(attribute='0') | map(attribute='1') | list %}\n\n  {% set window
+          = today_prices[88:] + tomorrow_prices[:32] %}\n  {% set min_price = window
+          | select('number') | map('float', 1000) | min %}\n\n  {% set ns = namespace(ts_2h='',
+          ts_3h='', ts_5h='', ts_1h='', ts_start=999, ts_stop=0, found_start=false,
+          ended=false, best_1h_idx=0) %}\n\n  {% for d in [5, 3, 2, 1] %}\n    {%
+          set d_steps = d * 4 %}\n    {% set best = namespace(min_sum=999999, idx=0)
+          %}\n    {% for i in range((window | count - d_steps), -1, -1) %}\n      {%
+          set current_sum = window[i:i+d_steps] | select('number') | map('float',
           1000) | sum %}\n      {% if current_sum <= best.min_sum %}\n        {% set
           best.min_sum = current_sum %}\n        {% set best.idx = i %}\n      {%
           endif %}\n    {% endfor %}\n\n    {% set ts = (today_at(\"22:00\") + timedelta(minutes=best.idx
@@ -4864,14 +4864,14 @@
     target:
       entity_id: input_text.automation_afternoon_low_cost_coopernico
     data:
-      value: "{% set sensor = 'sensor.template_coopernico_spot_price_trihorario' %}
-        {% set tomorrow_dict = state_attr(sensor, 'tomorrow_hours') %} {% set today_dict
-        = state_attr(sensor, 'today_hours') %} {% if now().hour >= 20 and tomorrow_dict
-        is not none and tomorrow_dict.values() | select('number') | list | count >
-        32 %}\n  {% set source_dict = tomorrow_dict %}\n  {% set day_offset = 1 %}\n{%
-        else %}\n  {% set source_dict = today_dict %}\n  {% set day_offset = 0 %}\n{%
-        endif %} {% if source_dict is not none %}\n  {% set all_prices = source_dict.items()
-        | sort(attribute='0') | map(attribute='1') | list %}\n  {# Index 32 is 08:00,
+      value: "{% set sensor = 'sensor.edp_trihorario_price' %} {% set tomorrow_dict
+        = state_attr(sensor, 'tomorrow_hours') %} {% set today_dict = state_attr(sensor,
+        'today_hours') %} {% if now().hour >= 20 and tomorrow_dict is not none and
+        tomorrow_dict.values() | select('number') | list | count > 32 %}\n  {% set
+        source_dict = tomorrow_dict %}\n  {% set day_offset = 1 %}\n{% else %}\n  {%
+        set source_dict = today_dict %}\n  {% set day_offset = 0 %}\n{% endif %} {%
+        if source_dict is not none %}\n  {% set all_prices = source_dict.items() |
+        sort(attribute='0') | map(attribute='1') | list %}\n  {# Index 32 is 08:00,
         Index 80 is 20:00 (48 blocks total) #}\n  {% set window = all_prices[32:80]
         %}\n  {% set d_steps = 8 %}\n\n  {# 1. Find absolute 2-hour minimum sum and
         average #}\n  {% set ns_min = namespace(min_sum=999999, min_idx=0) %}\n  {%
@@ -4929,21 +4929,20 @@
   - alias: 'BLOCK C: Rolling 24-Hour Evaluation & Direct Input_Datetime Update'
     if:
     - condition: template
-      value_template: '{% set sensor = ''sensor.template_coopernico_spot_price_trihorario''
-        %} {% set today_d = state_attr(sensor, ''today_hours'') or {} %} {% set tomorrow_d
-        = state_attr(sensor, ''tomorrow_hours'') or {} %} {{ (today_d.values() | select(''number'')
-        | list | count + tomorrow_d.values() | select(''number'') | list | count)
-        >= 32 }}'
+      value_template: '{% set sensor = ''sensor.edp_trihorario_price'' %} {% set today_d
+        = state_attr(sensor, ''today_hours'') or {} %} {% set tomorrow_d = state_attr(sensor,
+        ''tomorrow_hours'') or {} %} {{ (today_d.values() | select(''number'') | list
+        | count + tomorrow_d.values() | select(''number'') | list | count) >= 32 }}'
     then:
     - variables:
-        cheap_24h: "{% set sensor = 'sensor.template_coopernico_spot_price_trihorario'
-          %} {% set today_d = state_attr(sensor, 'today_hours') or {} %} {% set tomorrow_d
-          = state_attr(sensor, 'tomorrow_hours') or {} %} {% set now_ts = now().timestamp()
-          - 890 %}\n{% set ns = namespace(future=[]) %}\n{% for h, price in today_d.items()
-          %}\n  {% if price is number and as_timestamp(h) >= now_ts %}\n    {% set
-          ns.future = ns.future + [(as_timestamp(h), price, h)] %}\n  {% endif %}\n{%
-          endfor %}\n{% for h, price in tomorrow_d.items() %}\n  {% if price is number
-          and as_timestamp(h) >= now_ts %}\n    {% set ns.future = ns.future + [(as_timestamp(h),
+        cheap_24h: "{% set sensor = 'sensor.edp_trihorario_price' %} {% set today_d
+          = state_attr(sensor, 'today_hours') or {} %} {% set tomorrow_d = state_attr(sensor,
+          'tomorrow_hours') or {} %} {% set now_ts = now().timestamp() - 890 %}\n{%
+          set ns = namespace(future=[]) %}\n{% for h, price in today_d.items() %}\n
+          \ {% if price is number and as_timestamp(h) >= now_ts %}\n    {% set ns.future
+          = ns.future + [(as_timestamp(h), price, h)] %}\n  {% endif %}\n{% endfor
+          %}\n{% for h, price in tomorrow_d.items() %}\n  {% if price is number and
+          as_timestamp(h) >= now_ts %}\n    {% set ns.future = ns.future + [(as_timestamp(h),
           price, h)] %}\n  {% endif %}\n{% endfor %}\n{% set items = ns.future | sort(attribute='0')
           %} {% set window = items[:96] %}\n{% if window | count >= 8 %}\n  {% set
           prices = window | map(attribute='1') | list %}\n  {% set d_steps = 8 %}\n\n
