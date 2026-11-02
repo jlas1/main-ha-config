@@ -66,6 +66,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import HomeAssistant, ServiceCall, callback
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.service import async_register_admin_service
 
 from .const import DOMAIN
 
@@ -372,6 +373,59 @@ def _unit_class_for(unit: str | None) -> str | None:
     return converter.UNIT_CLASS if converter is not None else None
 
 
+def _format_number(value: float) -> str:
+    """A factor as a person would type it: 1000, 0.001, 1.8."""
+    return f"{value:.12g}"
+
+
+def _suggest_unit_adjustment(
+    from_unit: str | None,
+    to_unit: str | None,
+    declared_classes: tuple[str | None, ...] = (),
+) -> dict[str, Any] | None:
+    """The value adjustment that converts `from_unit` into `to_unit`, or None.
+
+    Only a suggestion for the panel to offer: nothing is applied unless the
+    user fills it in, and they can change it. Offered only when both units
+    belong to the same Home Assistant converter, and when no `unit_class`
+    recorded in either sensor's metadata names a different class (HA's
+    unit-keyed map resolves a unit to one class even where it is shared, such
+    as temperature and temperature difference, which convert differently).
+
+    Returns {"scale_factor": a} for a plain factor, {"value_function": ...}
+    when the conversion also has an offset (temperature), or None.
+    """
+    try:
+        converter = STATISTIC_UNIT_TO_UNIT_CONVERTER.get(from_unit)
+        if (
+            converter is None
+            or STATISTIC_UNIT_TO_UNIT_CONVERTER.get(to_unit) is not converter
+        ):
+            return None
+        valid = getattr(converter, "VALID_UNITS", ())
+        if from_unit not in valid or to_unit not in valid:
+            return None
+        if any(c is not None and c != converter.UNIT_CLASS for c in declared_classes):
+            return None
+        offset = float(converter.convert(0.0, from_unit, to_unit))
+        factor = float(converter.convert(1.0, from_unit, to_unit)) - offset
+        check = float(converter.convert(1000.0, from_unit, to_unit))
+    except Exception:
+        return None
+    if not all(math.isfinite(x) for x in (offset, factor, check)) or factor <= 0:
+        return None
+    # Only a straight line can be expressed as an adjustment.
+    if abs(check - (factor * 1000.0 + offset)) > 1e-9 * max(1.0, abs(check)):
+        return None
+    if abs(offset) < 1e-12:
+        if abs(factor - 1.0) < 1e-12:
+            return None
+        return {"scale_factor": float(_format_number(factor))}
+    sign = "+" if offset > 0 else "-"
+    scaled = "v" if abs(factor - 1.0) < 1e-12 else f"v * {_format_number(factor)}"
+    return {"value_function": f"{scaled} {sign} {_format_number(abs(offset))}"}
+
+
 def _ensure_unit_class(metadata: dict[str, Any]) -> None:
     """Populate ``unit_class`` on import metadata when it is absent.
 
@@ -418,6 +472,23 @@ def _resolve_target_unit(
         return state.attributes.get("unit_of_measurement")
 
     return source_unit if allow_source_fallback else None
+
+
+def _is_utility_meter(hass: HomeAssistant, entity_id: str) -> bool:
+    """Whether the entity belongs to the Utility Meter integration.
+
+    Display only. A Utility Meter keeps its running value inside the helper,
+    so its state carries on from there whatever history is imported, and the
+    panel explains the resulting drop in the History graph. Nothing else reads
+    this, and any failure here only means the note is not shown.
+    """
+    try:
+        from homeassistant.helpers import entity_registry as er
+
+        entry = er.async_get(hass).async_get(entity_id)
+        return entry is not None and entry.platform == "utility_meter"
+    except Exception:
+        return False
 
 
 def _hash_panel_file(panel_path: str) -> str:
@@ -532,7 +603,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 result.get("states_overwritten", 0),
             )
 
-    hass.services.async_register(
+    # Admin-only, like the panel and its websocket commands: an import writes to
+    # (and with overwrite, deletes from) the recorder database, so a non-admin
+    # user must not be able to call it through the API either.
+    async_register_admin_service(
+        hass,
         DOMAIN,
         "import_history",
         handle_import_history,
@@ -827,6 +902,7 @@ async def _async_import_pair(
         "stats_detached": None,  # Detected restart-from-zero cliff, repairable on request
         "stats_unit_mismatch": None,  # Set when source and destination units differ
         "stats_unit": None,  # Unit of measurement for display
+        "dest_is_utility_meter": False,  # Display only: explains the History drop
         # Short-term statistics (5-minute) — populated only when fill_gaps=True
         "stats_short_source_total": 0,
         "stats_short_imported": 0,
@@ -915,6 +991,7 @@ async def _do_import(
 ) -> None:
     """Execute the actual import. Separated for clean lock/error handling."""
     recorder = get_instance(hass)
+    result["dest_is_utility_meter"] = _is_utility_meter(hass, dest_id)
 
     # --- 1. Read ALL source states ---
     # Use get_significant_states with significant_changes_only=False to capture
@@ -1146,17 +1223,22 @@ async def _do_import(
     # --- 5. Realign the destination series for a clean head-fill energy import ---
     # See the "series realignment" note in _async_import_statistics_for_pair.
     # Queued last so it runs on the recorder thread AFTER the import tasks commit,
-    # lifting every row (imported + existing + future) by the same constant. We
-    # skip it if short-term rows were imported this run, since a blanket lift would
-    # break the level of those recently gap-filled short-term slots — in that case
-    # the splice offset stays applied and we report it (with the first-hour caveat).
+    # lifting every row (imported + existing + future) by the same constant.
+    #
+    # This runs whatever the short-term step did. The lift starts at the oldest
+    # imported hour, so every row in both tables moves by the same amount and no
+    # two rows change relative to each other, gap-filled 5-minute slots included.
+    # Their level is right for the same reason: the realignment is only ever
+    # planned for a pure head-fill, where the destination's earliest hourly sum
+    # row and its earliest 5-minute sum row are the same instant, so both paths
+    # spliced against the same point with the same offset. Skipping the lift
+    # here used to leave the destination shifted down to meet the source, which
+    # made the lifetime total wrong for exactly the people re-running with
+    # Overwrite or Fill gaps after a bad import.
     realign = result.pop("_realign", None)
     if realign:
         original_offset = -float(realign["adjustment"])
-        if result.get("stats_short_imported", 0):
-            result["stats_realigned_by"] = None
-            result["stats_sum_offset"] = original_offset
-        elif dry_run:
+        if dry_run:
             # Preview: stats_realigned_by is already set for display ("would be
             # realigned"); skip the actual adjustment queueing.
             _LOGGER.info(
@@ -2358,6 +2440,8 @@ async def _async_import_statistics_for_pair(
         out["stats_unit_mismatch"] = {
             "source": target["source_unit"],
             "destination": target["unit"],
+            # Offered in the panel for the user to fill in; never applied here.
+            "suggestion": target["suggestion"],
         }
         _LOGGER.warning(
             "Source %s stores its statistics in %s but the destination %s "
@@ -2607,8 +2691,8 @@ async def _async_import_statistics_for_pair(
             out["stats_sum_seeded"] = merged_sums[max(merged_sums)]
 
     if not to_import_rows:
-        if sum_offset is not None:
-            out["stats_sum_offset"] = sum_offset
+        # No offset is reported: with nothing imported, nothing is shifted, and
+        # the panel would otherwise announce an offset "would be applied".
         return out
 
     # -- Build StatisticData entries --
@@ -2656,10 +2740,11 @@ async def _async_import_statistics_for_pair(
     # the ENTIRE series — imported rows, the destination's existing rows, and all
     # future compiled rows — by -offset via HA's official adjust API. The oldest
     # hour then reads its true value and old/new join seamlessly. The adjust itself
-    # is queued in _do_import, after the imports, and only when no short-term rows
-    # were imported (a blanket lift could otherwise disrupt recently gap-filled
-    # short-term slots). A re-run recomputes a ~zero offset against the now-aligned
-    # destination, so this stays idempotent.
+    # is queued in _do_import, after the imports, and it runs whatever the
+    # short-term step did: both tables are spliced against the same instant in a
+    # head-fill, so one constant is right for both (see the note there). A re-run
+    # recomputes a ~zero offset against the now-aligned destination, so this
+    # stays idempotent.
     #
     # Restart-safe by construction (verified against HA's compile source): the lift
     # is a constant added to the `sum` column of both the short-term and long-term
@@ -2999,12 +3084,26 @@ def _fetch_period_snapshot(
     finally:
         session.close()
 
+    # Both sides are read as stored, so a difference here is a real difference
+    # in the numbers, not a display setting.
+    units_differ = bool(source_entry and source_unit != target_unit)
+    dest_entry = dest_metadata.get(dest_id) if dest_metadata else None
     target = {
         "unit": target_unit,
         "source_unit": source_unit,
-        # Both sides are read as stored, so a difference here is a real
-        # difference in the numbers, not a display setting.
-        "units_differ": bool(source_entry and source_unit != target_unit),
+        "units_differ": units_differ,
+        "suggestion": (
+            _suggest_unit_adjustment(
+                source_unit,
+                target_unit,
+                (
+                    source_entry[1].get("unit_class") if source_entry else None,
+                    dest_entry[1].get("unit_class") if dest_entry else None,
+                ),
+            )
+            if units_differ
+            else None
+        ),
     }
     return {source_id: source_rows}, {dest_id: dest_rows}, dest_metadata, target
 

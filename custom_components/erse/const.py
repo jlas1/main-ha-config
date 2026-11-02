@@ -4,6 +4,7 @@ DOMAIN = "erse"
 
 CONF_OPERATOR = "operator"
 CONF_INSTALLED_POWER = "installed_power"
+CONF_LARGE_FAMILY = "large_family"
 CONF_PLAN = "plan"
 CONF_CYCLE = "cycle"
 
@@ -27,6 +28,8 @@ ATTR_COST = "unitary_cost"
 ATTR_CURRENT_COST = "current_unitary_cost"
 ATTR_TARIFFS = "tariffs"
 ATTR_UTILITY_METERS = "utility meters"
+ATTR_NEXT_TARIFF = "next_tariff"
+ATTR_NEXT_CHANGE = "next_change"
 
 COST_PRECISION = 2
 ENERGY_PRECISION = 3

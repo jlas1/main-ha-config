@@ -1,6 +1,5 @@
 """Platform for sensor integration."""
 
-from collections.abc import Mapping
 from dataclasses import dataclass, field
 import logging
 from typing import Any, cast
@@ -23,11 +22,13 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 import homeassistant.helpers.entity_registry as er
 from homeassistant.helpers.entity_registry import (
     EVENT_ENTITY_REGISTRY_UPDATED,
+    EventEntityRegistryUpdatedData,
     RegistryEntryDisabler,
 )
 from homeassistant.helpers.issue_registry import IssueSeverity, async_create_issue
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
-import voluptuous as vol
+
+from custom_components.powercalc.validation import vol
 
 from .analytics.analytics import collect_analytics
 from .common import (
@@ -90,6 +91,7 @@ from .device_binding import (
     assign_device_to_entities,
     resolve_source_device,
 )
+from .device_naming import should_follow_device_name
 from .errors import (
     PowercalcSetupError,
     SensorAlreadyConfiguredError,
@@ -98,6 +100,7 @@ from .errors import (
 from .group_include.filter import FilterOperator, create_composite_filter
 from .group_include.include import find_entities
 from .measure import MeasureAppCoordinator
+from .sensors.abstract import BaseEntity
 from .sensors.cost import CostSensor, create_cost_sensor_for_energy_entity
 from .sensors.daily_energy import (
     create_daily_fixed_energy_power_sensor,
@@ -265,9 +268,9 @@ def _register_entity_id_change_listener(
     """
 
     @callback
-    def _entity_rename_listener(event: Event) -> None:
+    def _entity_rename_listener(event: Event[EventEntityRegistryUpdatedData]) -> None:
         """Handle renaming of the entity"""
-        old_entity_id = event.data["old_entity_id"]
+        old_entity_id = event.data.get("old_entity_id")
         new_entity_id = event.data[CONF_ENTITY_ID]
         _LOGGER.debug(
             "Entity id has been changed, updating powercalc config. old_id=%s, new_id=%s",
@@ -280,11 +283,8 @@ def _register_entity_id_change_listener(
         )
 
     @callback
-    def _filter_entity_id(event: Mapping[str, Any] | Event) -> bool:
-        """Only dispatch the listener for update events concerning the source entity"""
-
-        # Breaking change in 2024.4.0, check for Event for versions prior to this
-        event_data = event.data if isinstance(event, Event) else event
+    def _filter_entity_id(event_data: EventEntityRegistryUpdatedData) -> bool:
+        """Only dispatch the listener for update events concerning the source entity."""
         return (
             event_data["action"] == "update"
             and "old_entity_id" in event_data
@@ -701,12 +701,23 @@ async def create_individual_sensors(
         if sensor_config.get(CONF_CREATE_STANDBY_ENERGY_SENSOR) and isinstance(power_sensor, VirtualPowerSensor):
             entities_to_add.append(create_standby_energy_sensor(hass, sensor_config, power_sensor, source_entity))
 
+    follow_device_name = should_follow_device_name(hass, sensor_config, config_entry, source_entity)
+
     if energy_sensor:
         entities_to_add.extend(
-            create_energy_related_sensors(hass, sensor_config, energy_sensor, source_entity, config_entry),
+            create_energy_related_sensors(
+                hass,
+                sensor_config,
+                energy_sensor,
+                source_entity,
+                config_entry,
+                follow_device_name=follow_device_name,
+            ),
         )
 
     assign_device_to_entities(hass, config_entry, entities_to_add, source_entity, sensor_config)
+    if follow_device_name:
+        _enable_device_naming(entities_to_add)
     hass.data[DOMAIN][DATA_CONFIGURED_ENTITIES].update(
         {source_entity.entity_id: [(entity, context.is_yaml) for entity in entities_to_add]},
     )
@@ -719,6 +730,12 @@ async def create_individual_sensors(
     collect_analytics(hass, config_entry).inc(DATA_SOURCE_DOMAINS, source_entity.domain)
 
     return EntitiesBucket(new=entities_to_add, existing=[])
+
+
+def _enable_device_naming(entities: list[Entity]) -> None:
+    for entity in entities:
+        if isinstance(entity, BaseEntity):
+            entity.enable_device_naming()
 
 
 async def _create_daily_fixed_energy_sensors(
