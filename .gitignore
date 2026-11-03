@@ -5,6 +5,11 @@ secrets.yaml
 .cache/
 ip_bans.yaml
 
+custom_components/
+solcast_solar/
+www/
+
+
 # Databases & Runtime State
 *.db
 *.db-shm
@@ -12,6 +17,7 @@ ip_bans.yaml
 *.log
 *.log.*
 home-assistant.log
+.ha_run.lock
 
 # Backups & Temp files
 backups/
