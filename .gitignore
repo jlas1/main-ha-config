@@ -8,6 +8,11 @@ ip_bans.yaml
 custom_components/
 solcast_solar/
 www/
+image/
+mysensors/
+older/
+packages/
+pyscript/
 
 
 # Databases & Runtime State
