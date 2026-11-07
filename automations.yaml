@@ -4422,9 +4422,6 @@
   - trigger: time
     at: '22:05:00'
     id: evening_calc
-  - trigger: time
-    at: 02:19:00
-    id: pre_night_start_calc
   - trigger: template
     value_template: '{{ now().strftime(''%H:%M'') == ((state_attr(''input_datetime.solax_night_charge_start'',
       ''timestamp'') | int(0) - 300) | timestamp_custom(''%H:%M'', true)) }}'
@@ -6448,13 +6445,13 @@
       cfg: "{% if is_summer %}\n  {{ {\n    'water_heater_night': ['04:30', '06:00'],\n
         \   'water_heater_day':   ['17:30', '19:29'],\n    'solax_night':        ['06:00',
         '08:00'],\n    'solax_day':          ['17:29', '19:29'],\n    'ev_normal':
-        \         ['03:00', '08:00'],\n    'ev2_normal':         ['00:00', '05:00'],\n
+        \         ['01:00', '06:00'],\n    'ev2_normal':         ['22:00', '03:00'],\n
         \   'ev_cheap':           ['05:00', '06:00'],\n    'vazio_window':       ['22:00',
         '08:00'],\n    'cheap_24h':          ['05:30', '07:30']\n  } }}\n{% else %}\n
         \ {{ {\n    'water_heater_night': ['04:30', '06:00'],\n    'water_heater_day':
         \  ['16:00', '17:59'],\n    'solax_night':        ['06:00', '08:00'],\n    'solax_day':
-        \         ['16:00', '17:59'],\n    'ev_normal':          ['03:00', '08:00'],\n
-        \   'ev2_normal':         ['00:00', '05:00'],\n    'ev_cheap':           ['05:00',
+        \         ['16:00', '17:59'],\n    'ev_normal':          ['01:00', '06:00'],\n
+        \   'ev2_normal':         ['22:00', '03:00'],\n    'ev_cheap':           ['05:00',
         '06:00'],\n    'vazio_window':       ['22:00', '08:00'],\n    'cheap_24h':
         \         ['05:00', '07:00']\n  } }}\n{% endif %}"
       p_vazio: 112.2
