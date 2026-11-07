@@ -36,7 +36,8 @@ frontend:
 homeassistant:
   allowlist_external_dirs:
     - "/config"
-  external_url: https://home.infopat.pt
+  external_url: "http://10.10.9.80:8123"
+  internal_url: "http://10.10.10.80:8123"
   auth_providers:
     - type: homeassistant
   customize: !include customize.yaml

@@ -104,4 +104,68 @@ sensor.solar_power_meter_6:
 sensor.solar_power_meter_7:
   friendly_name: Solar Power Meter Radio RSSI
   icon: mdi:wifi
+sensor.garage_dacia_spring_battery_cell_max_v:
+  friendly_name: Battery Cell Max Voltage
+  unit_of_measurement: "V"
+  device_class: voltage
+  state_class: measurement
+  icon: mdi:battery-high
 
+sensor.garage_dacia_spring_battery_cell_min_v:
+  friendly_name: Battery Cell Min Voltage
+  unit_of_measurement: "V"
+  device_class: voltage
+  state_class: measurement
+  icon: mdi:battery-low
+
+sensor.garage_dacia_spring_battery_temp:
+  friendly_name: Battery Mean Temperature
+  unit_of_measurement: "°C"
+  device_class: temperature
+  state_class: measurement
+  icon: mdi:thermometer-auto
+
+sensor.garage_dacia_spring_battery_temp_min:
+  friendly_name: Battery Min Temperature
+  unit_of_measurement: "°C"
+  device_class: temperature
+  state_class: measurement
+  icon: mdi:thermometer-chevron-down
+
+sensor.garage_dacia_spring_battery_temp_max:
+  friendly_name: Battery Max Temperature
+  unit_of_measurement: "°C"
+  device_class: temperature
+  state_class: measurement
+  icon: mdi:thermometer-chevron-up
+
+sensor.garage_dacia_spring_charger_temp:
+  friendly_name: Charger Temperature (OBC)
+  unit_of_measurement: "°C"
+  device_class: temperature
+  state_class: measurement
+  icon: mdi:car-electric
+sensor.garage_dacia_spring_battery_energy_charged:
+  friendly_name: Battery Lifetime Energy Charged
+  unit_of_measurement: "kWh"
+  device_class: energy
+  state_class: total_increasing
+  icon: mdi:battery-charging
+sensor.garage_dacia_spring_battery_energy_discharged:
+  friendly_name: Battery Lifetime Energy Discharged
+  unit_of_measurement: "kWh"
+  device_class: energy
+  state_class: total_increasing
+  icon: mdi:battery-minus
+sensor.garage_dacia_spring_battery_pack_voltage:
+  friendly_name: Battery Pack Voltage
+  unit_of_measurement: "V"
+  device_class: voltage
+  state_class: measurement
+  icon: mdi:flash
+sensor.garage_dacia_spring_battery_current:
+  friendly_name: Battery Live Current
+  unit_of_measurement: "A"
+  device_class: current
+  state_class: measurement
+  icon: mdi:current-dc

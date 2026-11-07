@@ -2782,6 +2782,46 @@
   actions: []
   mode: single
 - id: '1776737700339'
+  alias: DACIA - Restore the 6000W capacity
+  description: Restores Dacia current only after house power has had safe headroom
+    for 5 continuous minutes
+  triggers:
+  - trigger: template
+    value_template: '{% set import_w = states(''sensor.power_monitor_1_power_a'')
+      | float(6000) %} {% set saved_a = states(''input_number.ve2_saved_current'')
+      | float(16) %} {% set current_a = states(''input_number.ev2_suggested_current'')
+      | float(6) %} {% set projected_w = import_w + ((saved_a - current_a) * 220)
+      %} {{ projected_w < 5400 and is_state(''input_boolean.ve2_is_throttled'', ''on'')
+      }}'
+    for:
+      minutes: 5
+  conditions:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_boolean.automatic_ve2_switch
+      state: 'on'
+    - condition: state
+      entity_id: input_boolean.manual_override_ve2_switch
+      state: 'on'
+  actions:
+  - variables:
+      saved_current: '{{ states(''input_number.ve2_saved_current'') | int(16) }}'
+  - action: input_number.set_value
+    target:
+      entity_id: input_number.ev2_suggested_current
+    data:
+      value: '{{ saved_current }}'
+  - action: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.ve2_is_throttled
+  - action: notify.send_message
+    target:
+      entity_id: notify.ev_fleet_log
+    data:
+      message: DACIA throttling restored to {{ saved_current }}A after 5m stable headroom.
+  mode: single
+- id: '1776738345940'
   alias: DACIA- Limit Power to 6000W
   description: ''
   triggers:
@@ -2823,43 +2863,6 @@
       entity_id: notify.ev_fleet_log
     data:
       message: DACIA throttled to {{ new_current }}A due to high house import.
-  mode: single
-- id: '1776738345940'
-  alias: DACIA - Restore the 6000W capacity
-  description: ''
-  triggers:
-  - value_template: '{% set import_w = states(''sensor.power_monitor_1_power_a'')
-      | float(6000) %} {% set saved_a = states(''input_number.ve2_saved_current'')
-      | float(16) %} {% set current_a = states(''input_number.ev2_suggested_current'')
-      | float(6) %} {% set projected_w = import_w + ((saved_a - current_a) * 220)
-      %} {{ projected_w < 5400 and is_state(''input_boolean.ve2_is_throttled'', ''on'')
-      }}'
-    trigger: template
-  conditions:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: input_boolean.automatic_ve2_switch
-      state: 'on'
-    - condition: state
-      entity_id: input_boolean.manual_override_ve2_switch
-      state: 'on'
-  actions:
-  - variables:
-      saved_current: '{{ states(''input_number.ve2_saved_current'') | int(16) }}'
-  - action: input_number.set_value
-    target:
-      entity_id: input_number.ev2_suggested_current
-    data:
-      value: '{{ saved_current }}'
-  - action: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.ve2_is_throttled
-  - action: notify.send_message
-    target:
-      entity_id: notify.ev_fleet_log
-    data:
-      message: DACIA throttling restored to {{ saved_current }}A.
   mode: single
 - id: '1776803914159'
   alias: SolaX - EV Discharge Limiter
@@ -4419,16 +4422,15 @@
   - trigger: time
     at: '22:05:00'
     id: evening_calc
+  - trigger: time
+    at: 02:19:00
+    id: pre_night_start_calc
   - trigger: template
     value_template: '{{ now().strftime(''%H:%M'') == ((state_attr(''input_datetime.solax_night_charge_start'',
       ''timestamp'') | int(0) - 300) | timestamp_custom(''%H:%M'', true)) }}'
     id: pre_night_start_calc
   - trigger: template
     value_template: '{{ now().strftime(''%H:%M'') == ((state_attr(''input_datetime.solax_day_charge_start'',
-      ''timestamp'') | int(0) - 300) | timestamp_custom(''%H:%M'', true)) }}'
-    id: pre_day_charge_calc
-  - trigger: template
-    value_template: '{{ now().strftime(''%H:%M'') == ((state_attr(''input_datetime.solax_day_charge_stop'',
       ''timestamp'') | int(0) - 300) | timestamp_custom(''%H:%M'', true)) }}'
     id: pre_day_charge_calc
   conditions: []
@@ -4538,32 +4540,38 @@
             \ {% set end_of_day = as_timestamp(d~' 23:59:59') %}\n  {% set ts_max_start,
             ts_min_start = (afternoon_stop, night_stop) if afternoon_is_better else
             (night_stop, afternoon_stop) %}\n  \n  {% set full = namespace(max=0,
-            min=0, batt=0) %}\n  {% for r in t_data %}\n    {% set ts = as_timestamp(d
-            ~ ' ' ~ (r.period_start | as_datetime).strftime('%H:%M:%S')) %}\n    {%
-            if ts_max_start <= ts <= end_of_day %}\n      {% set pv = (r.pv_estimate
+            min=0, batt=0, aqs_rem=f_offset) %}\n    {% for r in t_data %}\n      {%
+            set ts = as_timestamp(d ~ ' ' ~ (r.period_start | as_datetime).strftime('%H:%M:%S'),
+            0) %}\n      {% if ts_max_start <= ts <= end_of_day %}\n        {% set
+            pv = (r.pv_estimate | float(0) * w_p50) + (r.pv_estimate10 | default(r.pv_estimate
+            | float(0)) * w_p10) %}\n        {% set net_solar = pv - average_energy
+            %}\n        \n        {# If solar exceeds base load and water heater needs
+            heat, dump solar to AQS first #}\n        {% if net_solar > 0 and full.aqs_rem
+            > 0 %}\n          {% set dumped = [net_solar, full.aqs_rem] | min %}\n
+            \         {% set full.aqs_rem = full.aqs_rem - dumped %}\n          {%
+            set to_batt = net_solar - dumped %}\n        {% elif net_solar > 0 %}\n
+            \         {% set to_batt = net_solar %}\n        {% else %}\n          {%
+            set to_batt = net_solar %}\n        {% endif %}\n        \n        {%
+            set full.batt = full.batt + to_batt %}\n        {% set full.max = [full.max,
+            full.batt] | max %}\n        {% set full.min = [full.min, full.batt] |
+            min %}\n      {% endif %}\n    {% endfor %}\n  {% set TargetMaxKW = [[usable_max_kw
+            - full.max, (0 - full.min) if full.min < 0 else 0] | max, usable_max_kw]
+            | min %}\n  \n  {% set bare = namespace(max=0, min=0, batt=-b_offset)
+            %}\n  {% for r in t_data %}\n    {% set ts = as_timestamp(d ~ ' ' ~ (r.period_start
+            | as_datetime).strftime('%H:%M:%S')) %}\n    {% if ts_min_start <= ts
+            <= end_of_day %}\n      {% if (ts_min_start < ts_max_start and ts <= ts_max_start)
+            or ts_min_start > ts_max_start %}\n        {% set pv = (r.pv_estimate
             | float(0) * w_p50) + (r.pv_estimate10 | default(r.pv_estimate | float(0))
-            * w_p10) %}\n      {% set load = f_offset if (ts <= aqs_afternoon_ts <
-            ts + 3600) else 0 %}\n      {% set full.batt = full.batt + pv - average_energy
-            - load %}\n      {% set full.max = [full.max, full.batt] | max %}\n      {%
-            set full.min = [full.min, full.batt] | min %}\n    {% endif %}\n  {% endfor
-            %}\n  {% set TargetMaxKW = [[usable_max_kw - full.max, (0 - full.min)
-            if full.min < 0 else 0] | max, usable_max_kw] | min %}\n  \n  {% set bare
-            = namespace(max=0, min=0, batt=-b_offset) %}\n  {% for r in t_data %}\n
-            \   {% set ts = as_timestamp(d ~ ' ' ~ (r.period_start | as_datetime).strftime('%H:%M:%S'))
-            %}\n    {% if ts_min_start <= ts <= end_of_day %}\n      {% if (ts_min_start
-            < ts_max_start and ts <= ts_max_start) or ts_min_start > ts_max_start
-            %}\n        {% set pv = (r.pv_estimate | float(0) * w_p50) + (r.pv_estimate10
-            | default(r.pv_estimate | float(0)) * w_p10) %}\n        {% set load =
-            f_offset if (ts <= aqs_afternoon_ts < ts + 3600) else 0 %}\n        {%
-            set bare.batt = bare.batt + pv - average_energy - load %}\n      {% endif
-            %}\n      {% set bare.min = [bare.min, bare.batt] | min %}\n    {% endif
-            %}\n  {% endfor %}\n  {% set TargetMinKW = [[(0 - bare.min), 0] | max,
-            usable_max_kw] | min %}\n  {% set target_night_kw = TargetMinKW if afternoon_is_better
-            else TargetMaxKW %}\n  {% set batt_night = [[(target_night_kw * pct_per_kw
-            + min_soc) | round(0), min_soc] | max, max_soc] | min %}\n  {{ batt_night
-            | int }}|VALID_RUN|{{ full.max | round(3) }}|{{ full.min | round(3) }}|{{
-            afternoon_is_better }}|{{ f_offset }}|0|{{ bare.min | round(3) }}|{{ current_temp
-            | round(1) }}\n{% endif %}"
+            * w_p10) %}\n        {% set load = f_offset if (ts <= aqs_afternoon_ts
+            < ts + 3600) else 0 %}\n        {% set bare.batt = bare.batt + pv - average_energy
+            - load %}\n      {% endif %}\n      {% set bare.min = [bare.min, bare.batt]
+            | min %}\n    {% endif %}\n  {% endfor %}\n  {% set TargetMinKW = [[(0
+            - bare.min), 0] | max, usable_max_kw] | min %}\n  {% set target_night_kw
+            = TargetMinKW if afternoon_is_better else TargetMaxKW %}\n  {% set batt_night
+            = [[(target_night_kw * pct_per_kw + min_soc) | round(0), min_soc] | max,
+            max_soc] | min %}\n  {{ batt_night | int }}|VALID_RUN|{{ full.max | round(3)
+            }}|{{ full.min | round(3) }}|{{ afternoon_is_better }}|{{ f_offset }}|0|{{
+            bare.min | round(3) }}|{{ current_temp | round(1) }}\n{% endif %}"
       - alias: Write Night Target Metric to Storage Vector
         choose:
         - alias: Process Standard Cloud Computation Output
@@ -4637,34 +4645,40 @@
             \ {% endfor %}\n  \n  {% set night_stop = [as_timestamp(d~' '~ns_t), as_timestamp(d~'
             '~nc_t)] | max %}\n  {% set ts_max_start, ts_min_start = (afternoon_stop,
             night_stop) if afternoon_is_better else (night_stop, afternoon_stop) %}\n
-            \ \n  {% set full = namespace(max=0, min=0, batt=0) %}\n  {% for r in
-            today_data %}\n    {% set ts = as_timestamp(d ~ ' ' ~ (r.period_start
-            | as_datetime).strftime('%H:%M:%S')) %}\n    {% if ts_max_start <= ts
-            <= end_of_day %}\n      {% set pv = (r.pv_estimate | float(0) * w_p50)
-            + (r.pv_estimate10 | default(r.pv_estimate | float(0)) * w_p10) %}\n      {%
-            set load = f_offset if (ts <= aqs_afternoon_ts < ts + 3600) else 0 %}\n
-            \     {% set full.batt = full.batt + pv - average_energy - load %}\n      {%
-            set full.max = [full.max, full.batt] | max %}\n      {% set full.min =
-            [full.min, full.batt] | min %}\n    {% endif %}\n  {% endfor %}\n  {%
-            set TargetMaxKW = [[usable_max_kw - full.max, (0 - full.min) if full.min
-            < 0 else 0] | max, usable_max_kw] | min %}\n  \n  {% set bare = namespace(max=0,
-            min=0, batt=-b_offset) %}\n  {% for r in today_data %}\n    {% set ts
-            = as_timestamp(d ~ ' ' ~ (r.period_start | as_datetime).strftime('%H:%M:%S'))
-            %}\n    {% if ts_min_start <= ts <= end_of_day %}\n      {% if (ts_min_start
-            < ts_max_start and ts <= ts_max_start) or ts_min_start > ts_max_start
-            %}\n        {% set pv = (r.pv_estimate | float(0) * w_p50) + (r.pv_estimate10
-            | default(r.pv_estimate | float(0)) * w_p10) %}\n        {% set load =
-            f_offset if (ts <= aqs_afternoon_ts < ts + 3600) else 0 %}\n        {%
-            set bare.batt = bare.batt + pv - average_energy - load %}\n      {% endif
-            %}\n      {% set bare.min = [bare.min, bare.batt] | min %}\n    {% endif
-            %}\n  {% endfor %}\n  {% set TargetMinKW = [[(0 - bare.min), 0] | max,
-            usable_max_kw] | min %}\n  \n  {% set target_afternoon_kw = [TargetMaxKW
-            - window.excess, 0] | max if afternoon_is_better else [TargetMinKW - window.excess,
-            0] | max %}\n  {% set batt_afternoon = [[(target_afternoon_kw * pct_per_kw
-            + min_soc) | round(0), min_soc] | max, max_soc] | min %}\n  DayCalcOnly|{{
-            batt_afternoon | int }}|{{ full.max | round(3) }}|{{ full.min | round(3)
-            }}|{{ afternoon_is_better }}|{{ f_offset }}|{{ window.excess | round(3)
-            }}|{{ bare.min | round(3) }}|{{ current_temp | round(1) }}\n{% endif %}"
+            \ \n  {% set full = namespace(max=0, min=0, batt=0, aqs_rem=f_offset)
+            %}\n    {% for r in today_data %}\n      {% set ts = as_timestamp(d ~
+            ' ' ~ (r.period_start | as_datetime).strftime('%H:%M:%S'), 0) %}\n      {%
+            if ts_max_start <= ts <= end_of_day %}\n        {% set pv = (r.pv_estimate
+            | float(0) * w_p50) + (r.pv_estimate10 | default(r.pv_estimate | float(0))
+            * w_p10) %}\n        {% set net_solar = pv - average_energy %}\n        \n
+            \       {# Absorb surplus solar into water heater deficit first before
+            counting battery accumulation #}\n        {% if net_solar > 0 and full.aqs_rem
+            > 0 %}\n          {% set dumped = [net_solar, full.aqs_rem] | min %}\n
+            \         {% set full.aqs_rem = full.aqs_rem - dumped %}\n          {%
+            set to_batt = net_solar - dumped %}\n        {% else %}\n          {%
+            set to_batt = net_solar %}\n        {% endif %}\n        \n        {%
+            set full.batt = full.batt + to_batt %}\n        {% set full.max = [full.max,
+            full.batt] | max %}\n        {% set full.min = [full.min, full.batt] |
+            min %}\n      {% endif %}\n    {% endfor %}\n  {% set TargetMaxKW = [[usable_max_kw
+            - full.max, (0 - full.min) if full.min < 0 else 0] | max, usable_max_kw]
+            | min %}\n  \n  {% set bare = namespace(max=0, min=0, batt=-b_offset)
+            %}\n  {% for r in today_data %}\n    {% set ts = as_timestamp(d ~ ' '
+            ~ (r.period_start | as_datetime).strftime('%H:%M:%S')) %}\n    {% if ts_min_start
+            <= ts <= end_of_day %}\n      {% if (ts_min_start < ts_max_start and ts
+            <= ts_max_start) or ts_min_start > ts_max_start %}\n        {% set pv
+            = (r.pv_estimate | float(0) * w_p50) + (r.pv_estimate10 | default(r.pv_estimate
+            | float(0)) * w_p10) %}\n        {% set load = f_offset if (ts <= aqs_afternoon_ts
+            < ts + 3600) else 0 %}\n        {% set bare.batt = bare.batt + pv - average_energy
+            - load %}\n      {% endif %}\n      {% set bare.min = [bare.min, bare.batt]
+            | min %}\n    {% endif %}\n  {% endfor %}\n  {% set TargetMinKW = [[(0
+            - bare.min), 0] | max, usable_max_kw] | min %}\n  \n  {% set target_afternoon_kw
+            = [TargetMaxKW - window.excess, 0] | max if afternoon_is_better else [TargetMinKW
+            - window.excess, 0] | max %}\n  {% set batt_afternoon = [[(target_afternoon_kw
+            * pct_per_kw + min_soc) | round(0), min_soc] | max, max_soc] | min %}\n
+            \ DayCalcOnly|{{ batt_afternoon | int }}|{{ full.max | round(3) }}|{{
+            full.min | round(3) }}|{{ afternoon_is_better }}|{{ f_offset }}|{{ window.excess
+            | round(3) }}|{{ bare.min | round(3) }}|{{ current_temp | round(1) }}\n{%
+            endif %}"
       - alias: Write Day Target Metric to Storage Vector
         choose:
         - alias: Process Standard Mid-Day Cloud Output

@@ -206,7 +206,7 @@
             {% endif %}
           {% else %}
             {# Horário de Inverno #}
-            {% if (time_num >= 9.5 and time_num < 12.0) or (time_num >= 18.5 and time_num < 21.0) %}
+            {% if (time_num >= 9 and time_num < 10.5) or (time_num >= 18 and time_num < 20.5) %}
               {{ p_ponta }}
             {% else %}
               {{ p_cheias }}
@@ -241,7 +241,7 @@
                   {% set p = p_cheias %}
                 {% endif %}
               {% else %}
-                {% if (time_num >= 9.5 and time_num < 12.0) or (time_num >= 18.5 and time_num < 21.0) %}
+                {% if (time_num >= 9.0 and time_num < 10.5) or (time_num >= 18.0 and time_num < 20.5) %}
                   {% set p = p_ponta %}
                 {% else %}
                   {% set p = p_cheias %}
@@ -272,7 +272,7 @@
                   {% set p = p_cheias %}
                 {% endif %}
               {% else %}
-                {% if (time_num >= 9.5 and time_num < 12.0) or (time_num >= 18.5 and time_num < 21.0) %}
+                {% if (time_num >= 9.0 and time_num < 10.5) or (time_num >= 18.0 and time_num < 20.5) %}
                   {% set p = p_ponta %}
                 {% else %}
                   {% set p = p_cheias %}
@@ -728,6 +728,16 @@
       state: >
         {{ states('sensor.total_energy_cost_monthly')|float(0) - states('sensor.bmw_energy_cost_monthly')|float(0) - states('sensor.aqs_energy_cost_monthly')|float(0) - states('sensor.dacia_monthly_cost')|float(0) }}
 
+    - name: "Dacia Spring Battery Power"
+      unique_id: dacia_spring_battery_live_power
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      icon: mdi:flash
+      state: >
+        {% set v = states('sensor.garage_dacia_spring_battery_pack_voltage') | float(0) %}
+        {% set a = states('sensor.garage_dacia_spring_battery_current') | float(0) %}
+        {{ ((v * a) ) | round(2) }}
 
 ###
 ### SHADING CALCULATIONS
