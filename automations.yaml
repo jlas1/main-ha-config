@@ -3037,7 +3037,8 @@
 - id: '1777496169203'
   alias: EV Master Load Controller
   description: Dynamically adjusts EV chargers based on total capacity and suggested
-    inputs, featuring an execution gatekeeper to prevent feedback loops.
+    inputs, featuring an execution gatekeeper to prevent feedback loops. EV2 is restricted
+    to >= 13A only.
   triggers:
   - alias: Trigger on EV suggested or charging current changes
     trigger: state
@@ -3061,24 +3062,19 @@
       ev1_sug: '{{ states(''input_number.ev1_suggested_current'') | float(0) }}'
       ev2_cur: '{{ states(''number.ev_charger_2_charging_current'') | float(0) }}'
       ev1_cur: '{{ states(''number.ev_charger_charging_current'') | float(0) }}'
-      ev2_target: '{% if ev2_sug >= 16 %} 16  {% elif ev2_sug >= 13 %} 13  {% elif
-        ev2_sug >= 10 %} 10  {% elif ev2_sug >= 8 %} 8  {% elif ev2_sug >= 6 %} 6  {%
-        else %} 0 {% endif %}
-
-        '
+      ev2_target: '{% if ev2_sug >= 16 %} 16 {% elif ev2_sug >= 13 %} 13 {% else %}
+        0 {% endif %}'
       rem_capacity: '{{ max_total - ev2_target }}'
       ev1_raw: '{{ [ev1_sug, rem_capacity] | min }}'
-      ev1_target: '{% if ev1_raw >= 16 %} 16  {% elif ev1_raw >= 13 %} 13  {% elif
-        ev1_raw >= 10 %} 10  {% elif ev1_raw >= 8 %} 8  {% elif ev1_raw >= 6 %} 6  {%
-        else %} 0 {% endif %}
-
-        '
+      ev1_target: '{% if ev1_raw >= 16 %} 16 {% elif ev1_raw >= 13 %} 13 {% elif ev1_raw
+        >= 10 %} 10 {% elif ev1_raw >= 8 %} 8 {% elif ev1_raw >= 6 %} 6 {% else %}
+        0 {% endif %}'
   - alias: Execute EV2 Changes
     choose:
     - conditions:
-      - alias: Target is > 0 but current does not match
+      - alias: Target is >= 13A but current does not match
         condition: template
-        value_template: '{{ ev2_target > 0 and ev2_cur != ev2_target }}'
+        value_template: '{{ ev2_target >= 13 and ev2_cur != ev2_target }}'
       sequence:
       - alias: Log EV2 Adjustment to Fleet Log
         action: notify.send_message
@@ -3095,15 +3091,47 @@
           seconds: 5
       - alias: Set EV2 Current
         action: number.set_value
-        data:
-          value: '{{ ev2_target }}'
         target:
           entity_id: number.ev_charger_2_charging_current
+        data:
+          value: '{{ ev2_target }}'
       - alias: Allow current settings to propagate
         delay:
           seconds: 2
       - alias: Turn On EV2 Master Switch
         action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ev2_master_switch
+    - conditions:
+      - alias: Target is >= 13A, current matches, but master switch is OFF
+        condition: template
+        value_template: '{{ ev2_target >= 13 and ev2_cur == ev2_target and not ev2_master
+          }}'
+      sequence:
+      - alias: Log EV2 Resume to Fleet Log
+        action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: Resuming EV2 charging at {{ ev2_target }}A.
+      - alias: Turn On EV2 Master Switch
+        action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ev2_master_switch
+    - conditions:
+      - alias: Target is 0 (< 13A) and EV2 master switch is ON
+        condition: template
+        value_template: '{{ ev2_target == 0 and ev2_master }}'
+      sequence:
+      - alias: Log EV2 Pause to Fleet Log
+        action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: 'Pausing EV2 charging: suggested current ({{ ev2_sug }}A) is below
+            the 13A minimum threshold.'
+      - alias: Turn Off EV2 Master Switch to stop charging
+        action: input_boolean.turn_off
         target:
           entity_id: input_boolean.ev2_master_switch
   - alias: Execute EV1 Changes
