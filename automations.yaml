@@ -3353,16 +3353,25 @@
     enabled: false
   - trigger: template
     value_template: '{% set current_soc = states(''sensor.solax_battery_capacity'')
-      | float(100) %} {% set p50 = states(''sensor.solcast_pv_forecast_forecast_remaining_today'')
-      | float(0) %} {% set remaining_pv = state_attr(''sensor.solcast_pv_forecast_forecast_remaining_today'',
-      ''estimate10'') | float(p50) %} {% set battery_capacity = 11.6 %} {% set projected_soc
-      = current_soc + (remaining_pv / battery_capacity * 100) %} {{ projected_soc
-      < 40 }}
+      | float(100) %}
+
+      {% set p50 = states(''sensor.solcast_pv_forecast_forecast_remaining_today'')
+      | float(0) %}
+
+      {% set remaining_pv = state_attr(''sensor.solcast_pv_forecast_forecast_remaining_today'',
+      ''estimate10'') | float(p50) %}
+
+      {% set battery_capacity = 11.6 %}
+
+      {% set projected_soc = current_soc + (remaining_pv / battery_capacity * 100)
+      %}
+
+      {{ projected_soc < 40 }}
 
       '
   conditions:
   - condition: time
-    after: '15:54:00'
+    after: '17:05:00'
     before: '17:55:00'
   - condition: numeric_state
     entity_id: input_number.new_day_battery_target
@@ -3906,6 +3915,14 @@
     data: {}
   - delay:
       seconds: 2
+  - alias: Enable Period 2
+    action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.garage_solax_inverter_charge_and_discharge_period2
+  - delay:
+      seconds: 2
   - alias: 'Period 2: Reset Start to Midnight (Prevents Start > End Validation Error)'
     action: time.set_value
     target:
@@ -3930,14 +3947,6 @@
     data:
       time: '{{ state_attr(''input_datetime.solax_day_charge_start'', ''timestamp'')
         | timestamp_custom(''%H:%M:%S'', true) }}'
-  - delay:
-      seconds: 2
-  - alias: Enable Period 2
-    action: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.garage_solax_inverter_charge_and_discharge_period2
   - action: notify.send_message
     target:
       entity_id: notify.energy_log
@@ -4482,14 +4491,14 @@
       usable_max_kw: 14.28
       inlet_temp: '{{ 16.5 - 4.5 * cos((3.14159 / 6) * (now().month - 2)) }}'
       tank_deficit_day: '{{ 150 * ([states(''input_number.water_heater_dinner_target'')
-        | float(50) - states(''sensor.sonoff_1001dabf03_temperature'') | float(45),
+        | float(55) -  ([states(''sensor.sonoff_1001dabf03_temperature'') | float(45),
+        states(''input_number.water_heater_minimum_target'') | float(40)] | max),
         0] | max) * 0.001162 }}'
       shower_day: '{{ 100 * ([[states(''sensor.sonoff_1001dabf03_temperature'') |
         float(45), 45] | min - (16.5 - 4.5 * cos((3.14159 / 6) * (now().month - 2))),
         0] | max) * 0.001162 }}'
       b_offset: 1
-      f_offset: '{{ (tank_deficit_day | float(0) + shower_day | float(0)) | round(2)
-        }}'
+      f_offset: '{{ tank_deficit_day | float(0) | round(2) }}'
       ns_t: '{{ states(''input_datetime.solax_night_charge_stop'')[-8:] }}'
       nc_t: '{{ states(''input_datetime.solax_night_charge_cheap_stop'')[-8:] }}'
       ds_t: '{{ states(''input_datetime.solax_day_charge_start'')[-8:] }}'
@@ -5949,7 +5958,9 @@
     at: input_datetime.solax_day_charge_start
     id: start_day
   - trigger: time
-    at: input_datetime.solax_day_charge_stop
+    at:
+      entity_id: input_datetime.solax_day_charge_stop
+      offset: '-30'
     id: stop_day
   - trigger: template
     value_template: '{{ states(''sensor.solax_battery_capacity'') | float(100) <=
@@ -6009,10 +6020,10 @@
         - alias: Collapse Night Window (Start = End)
           action: time.set_value
           target:
-            entity_id: input_datetime.solax_night_charge_start
+            entity_id: time.garage_solax_inverter_charge_start_1
           data:
             time: '{{ state_attr(''input_datetime.solax_night_charge_stop'', ''timestamp'')
-              | timestamp_custom(''%H:%M:%S'', true) }}'
+              | timestamp_custom(''%H:%M'', true) }}'
         - delay:
             seconds: 2
         - alias: Set Discharge Floor to Target SOC
@@ -6021,6 +6032,7 @@
             entity_id: number.solax_selfuse_discharge_min_soc
           data:
             value: '{{ states(''input_number.new_battery_target'') | int(60) }}'
+          enabled: false
         - action: notify.send_message
           target:
             entity_id: notify.energy_log
@@ -6130,6 +6142,7 @@
             entity_id: number.solax_selfuse_discharge_min_soc
           data:
             value: '{{ states(''input_number.new_day_battery_target'') | int(60) }}'
+          enabled: false
         - action: notify.send_message
           target:
             entity_id: notify.energy_log
@@ -6198,8 +6211,12 @@
         id: drain_night_reached
       - condition: template
         value_template: '{% set start = state_attr(''input_datetime.solax_night_charge_start'',
-          ''timestamp'') | float(0) %} {% set stop = state_attr(''input_datetime.solax_night_charge_stop'',
-          ''timestamp'') | float(0) %} {{ start <= now().timestamp() < stop }}'
+          ''timestamp'') | float(0) %}
+
+          {% set stop = state_attr(''input_datetime.solax_night_charge_stop'', ''timestamp'')
+          | float(0) %}
+
+          {{ start <= now().timestamp() < stop }}'
       - condition: template
         alias: Corrected entity comparison for collapsed night window
         value_template: '{{ states(''time.garage_solax_inverter_charge_start_1'')
@@ -6232,9 +6249,9 @@
       - alias: 'Rebuild Window: Set Start Time to Now'
         action: time.set_value
         target:
-          entity_id: tinput_datetime.solax_night_charge_start
+          entity_id: time.garage_solax_inverter_charge_start_1
         data:
-          time: '{{ now().strftime(''%H:%M:%S'') }}'
+          time: '{{ now().strftime(''%H:%M'') }}'
       - action: notify.send_message
         target:
           entity_id: notify.energy_log
@@ -6278,11 +6295,16 @@
         id: drain_day_reached
       - condition: template
         value_template: '{% set start = state_attr(''input_datetime.solax_day_charge_start'',
-          ''timestamp'') | float(0) %} {% set stop = state_attr(''input_datetime.solax_day_charge_stop'',
-          ''timestamp'') | float(0) %} {{ start <= now().timestamp() < stop }}'
+          ''timestamp'') | float(0) %}
+
+          {% set stop = state_attr(''input_datetime.solax_day_charge_stop'', ''timestamp'')
+          | float(0) %}
+
+          {{ start <= now().timestamp() < stop }}'
       - condition: state
         entity_id: switch.garage_solax_inverter_charge_and_discharge_period2
         state: 'off'
+        enabled: false
       sequence:
       - alias: Unlock Inverter Settings
         action: select.select_option
@@ -6291,15 +6313,17 @@
         data:
           option: Unlocked - Advanced
       - delay:
-          seconds: 2
+          seconds: 1
       - alias: Restore Safety Floor
         action: number.set_value
         target:
           entity_id: number.solax_selfuse_discharge_min_soc
         data:
           value: 11
+        enabled: false
       - delay:
-          seconds: 2
+          seconds: 1
+        enabled: false
       - alias: Set Day Target SOC to lock battery
         action: number.set_value
         target:
@@ -6308,19 +6332,20 @@
           value: '{{ states(''input_number.new_day_battery_target'') | int(60) - 5
             }}'
       - delay:
-          seconds: 2
+          seconds: 1
       - alias: Set Start Time to Actual Time
         action: time.set_value
         target:
           entity_id: time.garage_solax_inverter_charge_start_2
         data:
-          time: '{{ now().strftime(''%H:%M:%S'') }}'
+          time: '{{ now().strftime(''%H:%M'') }}'
       - delay:
           seconds: 1
       - alias: Re-Enable Day Period
         action: switch.turn_on
         target:
           entity_id: switch.garage_solax_inverter_charge_and_discharge_period2
+        data: {}
       - action: notify.send_message
         target:
           entity_id: notify.energy_log
@@ -6365,21 +6390,6 @@
       - condition: trigger
         id: stop_night
       sequence:
-      - action: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.force_battery_charge
-      - action: input_number.set_value
-        target:
-          entity_id: input_number.victron_minimum_soc
-        alias: Restore Victron Safety Minimum SOC Floor to 20%
-        data:
-          value: '20'
-      - action: input_number.set_value
-        target:
-          entity_id: input_number.victron_battery_charge_level
-        alias: Reset Victron Battery Charge Level Target to 20%
-        data:
-          value: '20'
       - alias: Unlock Inverter Settings
         action: select.select_option
         target:
@@ -6394,6 +6404,21 @@
           entity_id: number.solax_selfuse_discharge_min_soc
         data:
           value: 11
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_minimum_soc
+        alias: Restore Victron Safety Minimum SOC Floor to 20%
+        data:
+          value: '20'
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_battery_charge_level
+        alias: Reset Victron Battery Charge Level Target to 20%
+        data:
+          value: '20'
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.force_battery_charge
       - action: notify.send_message
         target:
           entity_id: notify.energy_log
@@ -6405,6 +6430,32 @@
       - condition: trigger
         id: stop_day
       sequence:
+      - alias: Unlock Inverter Settings
+        action: select.select_option
+        target:
+          entity_id: select.solax_lock_state
+        data:
+          option: Unlocked - Advanced
+      - delay:
+          seconds: 2
+      - alias: Restore Safety Discharge Floor to 11
+        action: number.set_value
+        target:
+          entity_id: number.solax_selfuse_discharge_min_soc
+        data:
+          value: 11
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_minimum_soc
+        alias: Restore Victron Safety Minimum SOC Floor to 20%
+        data:
+          value: '20'
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_battery_charge_level
+        alias: Reset Victron Battery Charge Level Target to 20%
+        data:
+          value: '20'
       - action: input_boolean.turn_off
         target:
           entity_id: input_boolean.force_battery_charge
@@ -6420,32 +6471,6 @@
         data:
           timestamp: '{{ states(''input_text.automation_afternoon_low_cost_coopernico'').split(''|'')[0]
             | int + 7200 }}              '
-      - action: input_number.set_value
-        target:
-          entity_id: input_number.victron_minimum_soc
-        alias: Restore Victron Safety Minimum SOC Floor to 20%
-        data:
-          value: '20'
-      - action: input_number.set_value
-        target:
-          entity_id: input_number.victron_battery_charge_level
-        alias: Reset Victron Battery Charge Level Target to 20%
-        data:
-          value: '20'
-      - alias: Unlock Inverter Settings
-        action: select.select_option
-        target:
-          entity_id: select.solax_lock_state
-        data:
-          option: Unlocked - Advanced
-      - delay:
-          seconds: 2
-      - alias: Restore Safety Discharge Floor to 11
-        action: number.set_value
-        target:
-          entity_id: number.solax_selfuse_discharge_min_soc
-        data:
-          value: 11
       - action: notify.send_message
         target:
           entity_id: notify.energy_log
@@ -6475,13 +6500,13 @@
     variables:
       is_summer: '{{ now().dst() is not none and now().dst().total_seconds() > 0 }}'
       cfg: "{% if is_summer %}\n  {{ {\n    'water_heater_night': ['04:30', '06:00'],\n
-        \   'water_heater_day':   ['17:30', '19:29'],\n    'solax_night':        ['06:00',
+        \   'water_heater_day':   ['17:30', '19:29'],\n    'solax_night':        ['05:00',
         '08:00'],\n    'solax_day':          ['17:29', '19:29'],\n    'ev_normal':
         \         ['01:00', '06:00'],\n    'ev2_normal':         ['22:00', '03:00'],\n
         \   'ev_cheap':           ['05:00', '06:00'],\n    'vazio_window':       ['22:00',
         '08:00'],\n    'cheap_24h':          ['05:30', '07:30']\n  } }}\n{% else %}\n
         \ {{ {\n    'water_heater_night': ['04:30', '06:00'],\n    'water_heater_day':
-        \  ['16:00', '17:59'],\n    'solax_night':        ['06:00', '08:00'],\n    'solax_day':
+        \  ['16:00', '17:59'],\n    'solax_night':        ['05:00', '08:00'],\n    'solax_day':
         \         ['16:00', '17:59'],\n    'ev_normal':          ['01:00', '06:00'],\n
         \   'ev2_normal':         ['22:00', '03:00'],\n    'ev_cheap':           ['05:00',
         '06:00'],\n    'vazio_window':       ['22:00', '08:00'],\n    'cheap_24h':
@@ -6666,12 +6691,12 @@
   mode: single
 - id: '1794093623877'
   alias: DACIA Charging - Smart SOC Limiter (WiCAN)
-  description: Charges Dacia at 16A during OMIE start/stop windows, capped at 90%
-    SOC on weekdays and 100% on weekends. Supports mid-window plug-in detection and
-    disconnect resets.
+  description: Charges Dacia at 16A during OMIE start/stop windows. Caps at 90% SOC
+    on weekdays. On weekends, allows charging to 100% until battery current drops
+    below 1A (cell balancing complete).
   triggers:
   - trigger: time
-    at: input_datetime.ev2_charge_start
+    at: input_datetime.automation_ev2_charge_start
     id: EV2_charge_start
   - trigger: state
     entity_id: switch.ev_charger_2
@@ -6685,13 +6710,19 @@
     - charging
     id: EV2_car_connected
   - trigger: time
-    at: input_datetime.ev2_charge_stop
+    at: input_datetime.automation_ev2_charge_stop
     id: EV2_charge_stop
   - trigger: template
-    value_template: '{% set soc_entity = ''sensor.wican_obd_soc'' %} {% set soc =
-      states(soc_entity) | float(-1) %} {% set target_soc = 100 if now().weekday()
-      in [5, 6] else 90 %} {{ soc >= target_soc and is_state(''input_boolean.automatic_ve2_switch'',
-      ''on'') }}'
+    value_template: "{% set soc_entity = 'sensor.garage_dacia_spring_soc' %} {% set
+      current_entity = 'sensor.garage_dacia_spring_battery_current' %} {% set soc
+      = states(soc_entity) | float(-1) %} {% set batt_current = states(current_entity)
+      | float(99) | abs %} {% set is_weekend = now().weekday() in [5, 6] %}\n{# Weekday:
+      Stop at 80%. Weekend: Must reach 100% AND taper current below 1A #} {% if is_weekend
+      %}\n  {% set stop_condition = (soc >= 100 and batt_current < 1.0) %}\n{% else
+      %}\n  {% set stop_condition = (soc >= 80) %}\n{% endif %}\n{{ stop_condition
+      and is_state('input_boolean.automatic_ve2_switch', 'on') }}"
+    for:
+      seconds: 30
     id: EV2_target_soc_reached
   - trigger: state
     entity_id: sensor.ev_charger_2_status
@@ -6702,17 +6733,19 @@
   actions:
   - variables:
       soc_sensor: sensor.garage_dacia_spring_soc
+      current_sensor: sensor.garage_dacia_spring_battery_current
       current_soc: '{{ states(soc_sensor) | float(0) }}'
-      target_soc: '{{ 100 if now().weekday() in [5, 6] else 90 }}'
+      target_soc: '{{ 100 if now().weekday() in [5, 6] else 80 }}'
       car_is_connected: "{{ is_state('switch.ev_charger_2', 'on') or \n   states('sensor.ev_charger_2_status')
-        in ['plugged_in', 'waiting', 'charging'] }}"
-      in_window: "{% set s_raw = states('input_datetime.ev2_charge_start') %} {% set
-        e_raw = states('input_datetime.ev2_charge_stop') %} {% if '-' in s_raw %}\n
-        \ {% set s_ts = as_timestamp(s_raw, 0) %}\n  {% set e_ts = as_timestamp(e_raw,
-        0) %}\n  {% set n_ts = as_timestamp(now()) %}\n  {{ s_ts <= n_ts < e_ts }}\n{%
-        else %}\n  {% set t_now = now().strftime('%H:%M:%S') %}\n  {% if s_raw <=
-        e_raw %}\n    {{ s_raw <= t_now < e_raw }}\n  {% else %}\n    {{ t_now >=
-        s_raw or t_now < e_raw }}\n  {% endif %}\n{% endif %}"
+        in ['plugged_in', 'waiting', 'charging', 'charged'] }}"
+      in_window: "{% set s_raw = states('input_datetime.automation_ev2_charge_start')
+        %} {% set e_raw = states('input_datetime.automation_ev2_charge_stop') %} {%
+        if '-' in s_raw %}\n   {% set s_ts = as_timestamp(s_raw, 0) %}\n   {% set
+        e_ts = as_timestamp(e_raw, 0) %}\n   {% set n_ts = as_timestamp(now()) %}\n
+        \  {{ s_ts <= n_ts < e_ts }}\n {% else %}\n   {% set t_now = now().strftime('%H:%M:%S')
+        %}\n   {% if s_raw <= e_raw %}\n     {{ s_raw <= t_now < e_raw }}\n   {% else
+        %}\n     {{ t_now >= s_raw or t_now < e_raw }}\n   {% endif %}\n {% endif
+        %}"
   - choose:
     - conditions:
       - condition: or
@@ -6744,6 +6777,7 @@
       - action: input_boolean.turn_on
         target:
           entity_id: input_boolean.automatic_ve2_switch
+        data: {}
       - action: notify.send_message
         target:
           entity_id: notify.ev_fleet_log
@@ -6766,18 +6800,389 @@
       - action: input_boolean.turn_off
         target:
           entity_id: input_boolean.automatic_ve2_switch
+        data: {}
       - action: input_number.set_value
         target:
           entity_id: input_number.ev2_suggested_current
         data:
-          value: 0
+          value: 6
       - action: input_boolean.turn_off
         target:
           entity_id: input_boolean.ve2_is_throttled
+        data: {}
       - action: notify.send_message
         target:
           entity_id: notify.ev_fleet_log
         data:
           message: 'DACIA charging stopped (automatic_ve2_switch OFF).  Reason: {{
-            trigger.id }} (SOC: {{ states(soc_sensor) }}%).'
+            ''Target reached ('' ~ target_soc ~ ''% - Current: '' ~ states(current_sensor)
+            ~ ''A)'' if trigger.id == ''EV2_target_soc_reached'' else trigger.id }}  (Final
+            SOC: {{ states(soc_sensor) }}%).'
   mode: restart
+- id: '1794177291565'
+  alias: BMW Charging - Smart SOC Limiter (WiCAN)
+  description: Charges BMW C Evo during OMIE start/stop windows. Caps at 90% SOC on
+    weekdays. On weekends, allows charging to 100% until battery current drops below
+    1A (cell balancing complete).
+  triggers:
+  - trigger: time
+    at: input_datetime.automation_ev_charge_start
+    id: EV1_charge_start
+  - trigger: state
+    entity_id:
+    - switch.ev_charger
+    to:
+    - 'on'
+    id: EV1_car_connected
+  - trigger: state
+    entity_id:
+    - sensor.ev_charger_status
+    to:
+    - plugged_in
+    - waiting
+    - charging
+    id: EV1_car_connected
+  - trigger: time
+    at: input_datetime.automation_ev_charge_stop
+    id: EV1_charge_stop
+  - trigger: template
+    value_template: "{% set soc_entity = 'sensor.garage_bmw_c_evolution_soc' %}  {%
+      set current_entity = 'sensor.garage_bmw_c_evolution_battery_current' %}  {%
+      set soc = states(soc_entity) | float(-1) %}  {% set batt_current = states(current_entity)
+      | float(99) | abs %}  {% set is_weekend = now().weekday() in [5, 6] %}\n{# Weekday:
+      Stop at 90%. Weekend: Must reach 100% AND taper current below 1A #}  {% if is_weekend
+      %}\n  {% set stop_condition = (soc >= 100 and batt_current < 1.0) %}\n{% else
+      %}\n  {% set stop_condition = (soc >= 90) %}\n{% endif %}\n{{ stop_condition
+      and is_state('input_boolean.automatic_ve_switch', 'on') }}"
+    for:
+      seconds: 30
+    id: EV1_target_soc_reached
+  - trigger: state
+    entity_id:
+    - sensor.ev_charger_status
+    to:
+    - disconnected
+    - standby
+    id: EV1_car_unplugged
+  actions:
+  - variables:
+      soc_sensor: sensor.garage_bmw_c_evolution_soc
+      current_sensor: sensor.garage_bmw_c_evolution_battery_current
+      current_soc: '{{ states(soc_sensor) | float(0) }}'
+      target_soc: '{{ 100 if now().weekday() in [5, 6] else 95 }}'
+      car_is_connected: "{{ is_state('switch.ev_charger', 'on') or \n   states('sensor.ev_charger_status')
+        in ['plugged_in', 'waiting', 'charging', 'charged'] }}"
+      in_window: "{% set s_raw = states('input_datetime.automation_ev_charge_start')
+        %} {% set e_raw = states('input_datetime.automation_ev_charge_stop') %} {%
+        if '-' in s_raw %}\n  {% set s_ts = as_timestamp(s_raw, 0) %}\n  {% set e_ts
+        = as_timestamp(e_raw, 0) %}\n  {% set n_ts = as_timestamp(now()) %}\n  {{
+        s_ts <= n_ts < e_ts }}\n{% else %}\n  {% set t_now = now().strftime('%H:%M:%S')
+        %}\n  {% if s_raw <= e_raw %}\n    {{ s_raw <= t_now < e_raw }}\n  {% else
+        %}\n    {{ t_now >= s_raw or t_now < e_raw }}\n  {% endif %}\n{% endif %}"
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: EV1_charge_start
+        - condition: trigger
+          id: EV1_car_connected
+      - alias: Must be inside the OMIE window
+        condition: template
+        value_template: '{{ in_window }}'
+      - alias: Car must be physically connected
+        condition: template
+        value_template: '{{ car_is_connected }}'
+      - alias: SOC must be below limit (or WiCAN asleep)
+        condition: template
+        value_template: '{{ states(soc_sensor) in [''unknown'', ''unavailable''] or
+          current_soc < target_soc }}'
+      - alias: Prevent redundant triggers if already charging
+        condition: state
+        entity_id: automation.new_ev_automatic_mode
+        state:
+        - 'off'
+      sequence:
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.ev1_suggested_current
+        data:
+          value: 16
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.automatic_ve_switch
+        data: {}
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: 'BMW C Evo charging initiated at 16A (Trigger: {{ trigger.id }}).  Current
+            SOC: {{ current_soc }}% (Target: {{ target_soc }}%).'
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: EV1_charge_stop
+        - condition: trigger
+          id: EV1_target_soc_reached
+        - condition: trigger
+          id: EV1_car_unplugged
+      - condition: state
+        entity_id: input_boolean.automatic_ve_switch
+        state:
+        - 'on'
+      sequence:
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.automatic_ve_switch
+        data: {}
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: 'BMW C Evo charging stopped (automatic_ve1_switch OFF).  Reason:
+            {{ ''Target reached ('' ~ target_soc ~ ''% - Current: '' ~ states(current_sensor)
+            ~ ''A)'' if trigger.id == ''EV1_target_soc_reached'' else trigger.id }}  (Final
+            SOC: {{ states(soc_sensor) }}%).'
+  mode: restart
+- id: '1794361105529'
+  alias: Emergency Storm Reserve (Hardware Backup Mode)
+  description: Programs fixed Cheia/Vazio charge periods into SolaX hardware in Backup
+    Mode. Autonomously flips Victron force-charge based on Ponta hours while keeping
+    SolaX registers intact.
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.emergency_battery_reserve
+    id: toggle_flipped
+  - trigger: state
+    entity_id:
+    - input_number.emergency_battery_target
+    - input_number.emergency_battery_minimum
+    id: targets_changed
+  - trigger: state
+    entity_id:
+    - sensor.tariff_period
+    id: tariff_changed
+  actions:
+  - variables:
+      emergency_on: '{{ is_state(''input_boolean.emergency_battery_reserve'', ''on'')
+        }}'
+      is_ponta: '{{ is_state(''sensor.tariff_period'', ''ponta'') }}'
+      solax_charge: '{{ states(''input_number.emergency_battery_target'') | int(100)
+        }}'
+      solax_floor: '{{ states(''input_number.emergency_battery_minimum'') | int(70)
+        }}'
+      victron_charge: '{{ [ (states(''input_number.emergency_battery_target'') | int(90))
+        + 10, 100 ] | min }}'
+      victron_floor: '{{ [ (states(''input_number.emergency_battery_minimum'') | int(60))
+        + 10, 100 ] | min }}'
+      is_dst: '{{ now().strftime(''%z'') == ''+0100'' }}'
+      p1_start: '{{ ''21:01:00'' if is_dst else ''20:31:00'' }}'
+      p1_end: '{{ ''10:29:00'' if is_dst else ''08:59:00'' }}'
+      p2_start: '{{ ''13:01:00'' if is_dst else ''10:31:00'' }}'
+      p2_end: '{{ ''19:29:00'' if is_dst else ''17:59:00'' }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ not emergency_on and trigger.id == ''toggle_flipped''
+          }}'
+      sequence:
+      - action: select.select_option
+        target:
+          entity_id: select.solax_lock_state
+        data:
+          option: Unlocked - Advanced
+      - delay:
+          seconds: 2
+      - action: select.select_option
+        target:
+          entity_id: select.solax_charger_use_mode
+        data:
+          option: Self Use Mode
+      - delay:
+          seconds: 1
+      - action: number.set_value
+        target:
+          entity_id: number.solax_selfuse_discharge_min_soc
+        data:
+          value: 11
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_minimum_soc
+        data:
+          value: 20
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.force_battery_charge
+      - action: automation.turn_on
+        target:
+          entity_id:
+          - automation.phase_4_5_battery_execution_ev_throttle_via_modbus
+          - automation.inverter_window_update_scheduling
+          - automation.solax_automations_modbus
+          - automation.power_management_pre_peak_battery_guard
+      - action: automation.trigger
+        target:
+          entity_id: automation.inverter_window_update_scheduling
+        data:
+          skip_condition: true
+      - action: notify.send_message
+        target:
+          entity_id: notify.energy_log
+        data:
+          message: '✅ Emergency Mode Deactivated: SolaX returned to Self-Use (11%
+            floor), normal window scheduling resumed.'
+    - conditions:
+      - condition: template
+        value_template: '{{ emergency_on and trigger.id == ''tariff_changed'' }}'
+      sequence:
+      - if:
+        - condition: template
+          value_template: '{{ is_ponta }}'
+        then:
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.force_battery_charge
+          data: {}
+        - action: notify.send_message
+          target:
+            entity_id: notify.energy_log
+          data:
+            message: '⚠️ Emergency Mode [Ponta]: Victron force charge paused.'
+        else:
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.force_battery_charge
+          data: {}
+        - action: notify.send_message
+          target:
+            entity_id: notify.energy_log
+          data:
+            message: '⚡ Emergency Mode [Non-Ponta]: Victron force charge resumed.'
+    - conditions:
+      - condition: template
+        value_template: '{{ emergency_on and trigger.id in [''toggle_flipped'', ''targets_changed'']
+          }}'
+      sequence:
+      - action: automation.turn_off
+        target:
+          entity_id:
+          - automation.phase_4_5_battery_execution_ev_throttle_via_modbus
+          - automation.power_management_pre_peak_battery_guard
+          - automation.solax_automations_modbus
+          - automation.inverter_window_update_scheduling
+        data:
+          stop_actions: true
+      - action: select.select_option
+        target:
+          entity_id: select.solax_lock_state
+        data:
+          option: Unlocked - Advanced
+      - delay:
+          seconds: 1
+        enabled: false
+      - action: button.press
+        target:
+          entity_id: button.solax_battery_awaken
+      - delay:
+          seconds: 2
+        enabled: false
+      - action: number.set_value
+        target:
+          entity_id: number.solax_backup_nightcharge_upper_soc
+        data:
+          value: '{{ solax_charge }}'
+      - delay:
+          seconds: 1
+        enabled: false
+      - action: number.set_value
+        target:
+          entity_id: number.solax_backup_discharge_min_soc
+        data:
+          value: '{{ solax_floor }}'
+      - delay:
+          seconds: 1
+        enabled: false
+      - action: switch.turn_on
+        target:
+          entity_id:
+          - switch.garage_solax_inverter_charge_and_discharge_period2
+        data: {}
+      - delay:
+          seconds: 1
+        enabled: false
+      - action: time.set_value
+        target:
+          entity_id: time.garage_solax_inverter_charge_start_1
+        data:
+          time: 00:00:00
+      - action: time.set_value
+        target:
+          entity_id: time.garage_solax_inverter_charge_start_1
+        data:
+          time: '{{ p1_start }}'
+      - action: time.set_value
+        target:
+          entity_id: time.garage_solax_inverter_charge_end_1
+        data:
+          time: '{{ p1_end }}'
+      - delay:
+          seconds: 1
+        enabled: false
+      - action: time.set_value
+        target:
+          entity_id: time.garage_solax_inverter_charge_start_2
+        data:
+          time: 00:00:00
+      - action: time.set_value
+        target:
+          entity_id: time.garage_solax_inverter_charge_start_2
+        data:
+          time: '{{ p2_start }}'
+      - action: time.set_value
+        target:
+          entity_id: time.garage_solax_inverter_charge_end_2
+        data:
+          time: '{{ p2_end }}'
+      - delay:
+          seconds: 1
+        enabled: false
+      - delay:
+          seconds: 1
+        enabled: false
+      - action: select.select_option
+        target:
+          entity_id: select.solax_charger_use_mode
+        data:
+          option: Back Up Mode
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_battery_charge_level
+        data:
+          value: '{{ victron_charge }}'
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.victron_minimum_soc
+        data:
+          value: '{{ victron_floor }}'
+      - if:
+        - condition: template
+          value_template: '{{ is_ponta }}'
+        then:
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.force_battery_charge
+        else:
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.force_battery_charge
+      - action: notify.send_message
+        target:
+          entity_id: notify.energy_log
+        data:
+          message: '⚡ Emergency Mode Engaged: SolaX locked to Backup Mode. Charge
+            periods programmed (P1: {{ p1_start }}-{{ p1_end }}, P2: {{ p2_start }}-{{
+            p2_end }}). SolaX Target: {{ solax_charge }}% (Floor: {{ solax_floor }}%).
+            Victron Target: {{ victron_charge }}% (Floor: {{ victron_floor }}%).'
+  mode: queued

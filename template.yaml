@@ -739,6 +739,17 @@
         {% set a = states('sensor.garage_dacia_spring_battery_current') | float(0) %}
         {{ ((v * a) ) | round(2) }}
 
+    - name: "BMW C Evo Battery Power"
+      unique_id: bmw_c_evo_battery_live_power
+      unit_of_measurement: "W"
+      device_class: power
+      state_class: measurement
+      icon: mdi:flash
+      state: >
+        {% set v = states('sensor.garage_bmw_c_evolution_battery_voltage') | float(0) %}
+        {% set a = states('sensor.garage_bmw_c_evolution_battery_current') | float(0) %}
+        {{ ((v * a) ) | round(2) }}
+
 ###
 ### SHADING CALCULATIONS
 ###
@@ -976,3 +987,38 @@
         {{ (solax_pwr + victron_pwr) | round(2) }}
       availability: >-
         {{ has_value('sensor.solax_battery_power_charge') or has_value('sensor.gx_device_dc_battery_power') }}
+
+    - name: "Tariff Period"
+      unique_id: tariff_period
+      icon: >-
+        {% set p = states('sensor.tariff_period') %}
+        {% if p == 'ponta' %} mdi:lightning-bolt
+        {% elif p == 'cheia' %} mdi:transmission-tower
+        {% else %} mdi:moon-waning-crescent
+        {% endif %}
+      state: >-
+        {% set t = now() %}
+        {% set t_str = t.strftime('%H:%M') %}
+        {% set is_dst = (t.strftime('%z') == '+0100') %} {# Verão (+0100) vs Inverno (+0000) #}
+
+        {# Vazio: Starts 1 min after 22:00 (22:01) and ends 1 min before 08:00 (07:59) #}
+        {% if t_str >= '22:01' or t_str < '07:59' %}
+          vazio
+        {% else %}
+          {% if is_dst %}
+            {# Horário de Verão (Widened by 1 min on both ends) #}
+            {% if ('10:29' <= t_str < '13:01') or ('19:29' <= t_str < '21:01') %}
+              ponta
+            {% else %}
+              cheia
+            {% endif %}
+          {% else %}
+            {# Horário de Inverno (Widened by 1 min on both ends) #}
+            {% if ('08:59' <= t_str < '10:31') or ('17:59' <= t_str < '20:31') %}
+              ponta
+            {% else %}
+              cheia
+            {% endif %}
+          {% endif %}
+        {% endif %}
+
