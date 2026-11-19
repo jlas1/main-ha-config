@@ -4557,6 +4557,8 @@
         value_template: '{{ trigger.id in [''evening_calc'', ''pre_night_start_calc'']
           }}'
       sequence:
+      - action: solcast_solar.force_update_forecasts
+        data: {}
       - alias: Evaluate Solar Array and Compute Grid Constraints
         action: input_text.set_value
         target:
@@ -4652,6 +4654,8 @@
         value_template: '{{ trigger.id == ''pre_day_charge_calc'' }}'
         enabled: true
       sequence:
+      - action: solcast_solar.force_update_forecasts
+        data: {}
       - alias: Evaluate Today Remaining Array and Compute Target Metrics
         action: input_text.set_value
         target:
@@ -5996,7 +6000,7 @@
       - if:
         - condition: template
           value_template: '{{ states(''sensor.solax_battery_capacity'') | float(100)
-            <= states(''input_number.new_battery_target'') | float(0) }}'
+            <= states(''input_number.new_battery_target'') | float(0) + 1}}'
         then:
         - alias: Enable Charge from Grid
           action: switch.turn_on
@@ -6040,6 +6044,7 @@
             message: 'Phase 4 Night [SolaX]: Excess energy (SOC: {{ states(''sensor.solax_battery_capacity'')
               }}%). Window collapsed, draining to target {{ states(''input_number.new_battery_target'')
               }}%.'
+        alias: Solax Battery Below target
       - if:
         - condition: template
           value_template: '{{ states(''sensor.garage_gx_device_dc_battery_charge'')
@@ -6095,6 +6100,7 @@
             message: 'Phase 4 Night [Victron]: Excess energy (Current SOC: {{ states(''sensor.garage_gx_device_dc_battery_charge'')
               }}%). Force Charging disabled, minimum SOC set to {{ (states(''input_number.new_battery_target'')
               | float(0) + 10) | int }}%.'
+        alias: Victron Battery below Target
     - conditions:
       - condition: trigger
         id: start_day
@@ -6110,7 +6116,7 @@
       - if:
         - condition: template
           value_template: '{{ states(''sensor.solax_battery_capacity'') | float(100)
-            <= states(''input_number.new_day_battery_target'') | float(0) }}'
+            <= states(''input_number.new_day_battery_target'') | float(0) + 1}}'
         then:
         - alias: Set Upper SOC to Real Day Target
           action: number.set_value
@@ -6150,6 +6156,7 @@
             message: 'Phase 4 Day [SolaX]: Excess energy (SOC: {{ states(''sensor.solax_battery_capacity'')
               }}%). Period 2 disabled, draining to target {{ states(''input_number.new_day_battery_target'')
               }}%.'
+        alias: Solax Battery below target
       - if:
         - condition: template
           value_template: '{{ states(''sensor.garage_gx_device_dc_battery_charge'')
@@ -6206,6 +6213,7 @@
             message: 'Phase 4 Day [Victron]: Excess energy (Current SOC: {{ states(''sensor.garage_gx_device_dc_battery_charge'')
               }}%). Force Charging disabled, minimum SOC set to {{ (states(''input_number.new_day_battery_target'')
               | float(0) + 10) | int }}%.'
+        alias: Victron Battery below target
     - conditions:
       - condition: trigger
         id: drain_night_reached
@@ -6298,7 +6306,7 @@
           ''timestamp'') | float(0) %}
 
           {% set stop = state_attr(''input_datetime.solax_day_charge_stop'', ''timestamp'')
-          | float(0) %}
+          | float(0) - 30%}
 
           {{ start <= now().timestamp() < stop }}'
       - condition: state
@@ -6314,6 +6322,7 @@
           option: Unlocked - Advanced
       - delay:
           seconds: 1
+        enabled: false
       - alias: Restore Safety Floor
         action: number.set_value
         target:
@@ -6323,7 +6332,14 @@
         enabled: false
       - delay:
           seconds: 1
-        enabled: false
+        enabled: true
+      - alias: Re-Enable Day Period
+        action: switch.turn_on
+        target:
+          entity_id: switch.garage_solax_inverter_charge_and_discharge_period2
+        data: {}
+      - delay:
+          seconds: 1
       - alias: Set Day Target SOC to lock battery
         action: number.set_value
         target:
@@ -6339,13 +6355,6 @@
           entity_id: time.garage_solax_inverter_charge_start_2
         data:
           time: '{{ now().strftime(''%H:%M'') }}'
-      - delay:
-          seconds: 1
-      - alias: Re-Enable Day Period
-        action: switch.turn_on
-        target:
-          entity_id: switch.garage_solax_inverter_charge_and_discharge_period2
-        data: {}
       - action: notify.send_message
         target:
           entity_id: notify.energy_log
@@ -6359,7 +6368,7 @@
       - condition: template
         value_template: '{% set start = state_attr(''input_datetime.solax_day_charge_start'',
           ''timestamp'') | float(0) %} {% set stop = state_attr(''input_datetime.solax_day_charge_stop'',
-          ''timestamp'') | float(0) %} {{ start <= now().timestamp() < stop }}'
+          ''timestamp'') | float(0) - 30%} {{ start <= now().timestamp() < stop }}'
       sequence:
       - action: input_number.set_value
         alias: Copy battery value to victron control loop
@@ -6470,7 +6479,7 @@
           entity_id: input_datetime.solax_day_charge_stop
         data:
           timestamp: '{{ states(''input_text.automation_afternoon_low_cost_coopernico'').split(''|'')[0]
-            | int + 7200 }}              '
+            | int + 7140 }}              '
       - action: notify.send_message
         target:
           entity_id: notify.energy_log
@@ -6478,7 +6487,7 @@
           message: 'Phase 4 Day [SolaX & Victron]: Day window ended. [SolaX] Min discharge
             SOC restored to 11%. [Victron] Force charge disabled, min SOC & charge
             target restored to 20%.'
-  mode: parallel
+  mode: queued
   max: 10
 - id: '1793642245439'
   alias: 'Phase 1: EDP Fixed Tariff Schedule Manager'
