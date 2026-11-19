@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_datetime",
+  "data": {
+    "items": [
+      {
+        "id": "night_water_heating_start",
+        "has_time": true,
+        "has_date": true,
+        "name": "Night Water Heating start",
+        "icon": "mdi:water-boiler-off"
+      },
+      {
+        "id": "no_water_heating_stop",
+        "name": "Night Water Heating stop",
+        "has_date": true,
+        "icon": "mdi:water-boiler-off",
+        "has_time": true
+      },
+      {
+        "id": "late_afternoon_heating_start",
+        "has_time": true,
+        "has_date": true,
+        "name": "Late Afternoon water Heating start",
+        "icon": "mdi:water-boiler-off"
+      },
+      {
+        "id": "late_afternoon_heating_stop",
+        "has_time": true,
+        "has_date": true,
+        "name": "Late Afternoon Water Heating stop",
+        "icon": "mdi:water-boiler-off"
+      },
+      {
+        "id": "automation_ev_charge_start",
+        "name": "automation_EV_charge_start",
+        "has_date": true,
+        "has_time": true,
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "automation_ev_charge_stop",
+        "name": "automation_EV_charge_stop",
+        "has_date": true,
+        "icon": "mdi:ev-plug-type2",
+        "has_time": true
+      },
+      {
+        "id": "automation_cheap_ev_charge_start",
+        "has_time": true,
+        "has_date": true,
+        "name": "automation_cheap_ev_charge_start",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "automation_cheap_ev_charge_stop",
+        "has_time": true,
+        "has_date": true,
+        "name": "automation_cheap_ev_charge_stop",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "solax_night_charge_start",
+        "has_time": true,
+        "has_date": true,
+        "name": "SOLAX Night Charge start",
+        "icon": "mdi:battery-clock-outline"
+      },
+      {
+        "id": "solax_night_charge_stop",
+        "name": "SOLAX Night Charge stop",
+        "has_date": true,
+        "icon": "mdi:battery-clock-outline",
+        "has_time": true
+      },
+      {
+        "id": "solax_day_charge_start",
+        "has_time": true,
+        "has_date": true,
+        "name": "SOLAX day Charge start",
+        "icon": "mdi:battery-clock-outline"
+      },
+      {
+        "id": "solax_day_charge_stop",
+        "name": "SOLAX day Charge stop",
+        "has_date": true,
+        "icon": "mdi:battery-clock-outline",
+        "has_time": true
+      },
+      {
+        "id": "solax_cheap_night_start",
+        "name": "SOLAX cheap Night start",
+        "has_date": true,
+        "icon": "mdi:battery-clock-outline",
+        "has_time": true
+      },
+      {
+        "id": "solax_cheap_night_stop",
+        "name": "SOLAX cheap Night stop",
+        "has_date": true,
+        "icon": "mdi:battery-clock-outline",
+        "has_time": true
+      },
+      {
+        "id": "solax_night_charge_cheap_stop",
+        "has_time": true,
+        "has_date": true,
+        "name": "SOLAX Night Charge cheap Stop"
+      },
+      {
+        "id": "solax_night_charge_cheap_start",
+        "name": "SOLAX Night Charge cheap Start",
+        "has_date": true,
+        "has_time": true
+      },
+      {
+        "id": "last_high_water_temp",
+        "icon": "mdi:water-boiler-alert",
+        "has_date": true,
+        "name": "Last high water temp",
+        "has_time": false
+      },
+      {
+        "id": "automation_cheap_ev2_charge_start",
+        "has_time": true,
+        "has_date": true,
+        "name": "automation_cheap_ev2_charge_start"
+      },
+      {
+        "id": "automation_cheap_ev2_charge_stop",
+        "name": "automation_cheap_ev2_charge_stop",
+        "has_date": true,
+        "has_time": true
+      },
+      {
+        "id": "automation_ev2_charge_start",
+        "name": "automation_EV2_charge_start",
+        "has_date": true,
+        "has_time": true,
+        "icon": "mdi:car-arrow-right"
+      },
+      {
+        "id": "automation_ev2_charge_stop",
+        "name": "automation_EV2_charge_stop",
+        "has_date": true,
+        "icon": "mdi:car-arrow-right",
+        "has_time": true
+      },
+      {
+        "id": "omie_cheap_start",
+        "name": "omie cheap start",
+        "has_date": true,
+        "has_time": true,
+        "icon": "mdi:calendar-blank-outline"
+      },
+      {
+        "id": "omie_cheap_stop",
+        "name": "omie cheap stop",
+        "has_date": true,
+        "icon": "mdi:calendar",
+        "has_time": true
+      }
+    ]
+  }
+}

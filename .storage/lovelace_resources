@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace_resources",
+  "data": {
+    "items": [
+      {
+        "id": "3a62149235774147b3fa756cfb2a799f",
+        "url": "/local/power-flow-card.js",
+        "type": "module"
+      },
+      {
+        "id": "e985e1c011524a7696ffd36145aec395",
+        "url": "/hacsfiles/power-flow-card/power-flow-card.js?hacstag=484538222262",
+        "type": "module"
+      },
+      {
+        "id": "e2dc0a5a5473430eadf6b781aca23933",
+        "url": "/hacsfiles/power-flow-card-plus/power-flow-card-plus.js?hacstag=618081815024",
+        "type": "module"
+      },
+      {
+        "id": "9154e27749dc4a8bafbb7edcd9bf51b1",
+        "url": "/hacsfiles/lovelace-hue-like-light-card/hue-like-light-card.js?hacstag=4929961831121",
+        "type": "module"
+      },
+      {
+        "id": "17e3759810be4897abd9dee6c1aeeb57",
+        "url": "/hacsfiles/compass-card/compass-card.js?hacstag=286038496200",
+        "type": "module"
+      },
+      {
+        "id": "e0eed15ad7024ba8b1697f5719a3b7ed",
+        "url": "/hacsfiles/lovelace-wallpanel/wallpanel.js?hacstag=3095064164320",
+        "type": "module"
+      },
+      {
+        "id": "04b6046ecf9d446d99fb827e7165585d",
+        "url": "/hacsfiles/apexcharts-card/apexcharts-card.js?hacstag=331701152223",
+        "type": "module"
+      },
+      {
+        "id": "d2264701e9164abd9e855404a4d600fa",
+        "url": "/hacsfiles/lovelace-auto-entities/auto-entities.js?hacstag=1677445841121",
+        "type": "module"
+      },
+      {
+        "id": "68fca259b09b405b900f98909091abd2",
+        "url": "/hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524342",
+        "type": "module"
+      },
+      {
+        "id": "bcf6e7a16f4247d4ab6869452fcff75a",
+        "url": "/hacsfiles/mini-graph-card/mini-graph-card-bundle.js?hacstag=1512800620120",
+        "type": "module"
+      },
+      {
+        "id": "76c70cb8ef304ca780413ae806a17255",
+        "url": "/hacsfiles/simple-thermostat/simple-thermostat.js?hacstag=158654878250",
+        "type": "module"
+      },
+      {
+        "id": "c246a677a9b34500b1c9952cde4c7071",
+        "url": "/hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375523",
+        "type": "module"
+      },
+      {
+        "id": "bcef8ac19535457cbdaa1ff6dc379b0a",
+        "url": "/hacsfiles/advanced-camera-card/advanced-camera-card.js?hacstag=394082552810",
+        "type": "module"
+      },
+      {
+        "id": "c990dc05fdc747b3a201551de2353f17",
+        "url": "/hacsfiles/battery-state-card/battery-state-card.js?hacstag=256292682420",
+        "type": "module"
+      },
+      {
+        "id": "d86ff2838fe940019417e08347f1971e",
+        "url": "/hacsfiles/lovelace-plotly-graph-card/plotly-graph-card.js?hacstag=413812496402",
+        "type": "module"
+      },
+      {
+        "id": "3b0973d500514a979fdb8799695bbf36",
+        "url": "/hacsfiles/lovelace-fold-entity-row/fold-entity-row.js?hacstag=150781994232",
+        "type": "module"
+      },
+      {
+        "id": "5ee983fbd53c4cfdac8e0e49a5743f70",
+        "url": "/hacsfiles/lovelace-template-entity-row/template-entity-row.js?hacstag=231674882141",
+        "type": "module"
+      }
+    ]
+  }
+}

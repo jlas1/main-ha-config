@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_button",
+  "data": {
+    "items": [
+      {
+        "id": "front_garden_irrigation_recalibrate_baseline",
+        "name": "Front Garden Irrigation Recalibrate Baseline",
+        "icon": "mdi:restore"
+      },
+      {
+        "id": "side_garden_irrigation_recalibrate_baseline",
+        "name": "Side Garden Irrigation Recalibrate Baseline",
+        "icon": "mdi:water-alert"
+      }
+    ]
+  }
+}

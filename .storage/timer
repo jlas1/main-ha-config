@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "timer",
+  "data": {
+    "items": [
+      {
+        "name": "LivingLightsTimer",
+        "icon": "mdi:timer",
+        "duration": "0:05:00",
+        "id": "livinglightstimer"
+      },
+      {
+        "id": "luz_garagem",
+        "name": "Luz Escadas Garagem",
+        "icon": "mdi:clock",
+        "duration": "0:01:30",
+        "restore": true
+      },
+      {
+        "id": "luz_porta_garagem",
+        "name": "Luz Garagem",
+        "duration": "0:02:00",
+        "restore": true,
+        "icon": "mdi:clock"
+      },
+      {
+        "id": "cooldown_evcharger",
+        "duration": "0:01:00",
+        "icon": "mdi:ev-plug-type2",
+        "name": "Cooldown_EVCharger",
+        "restore": false
+      },
+      {
+        "id": "top_ac_timer",
+        "name": "top ac timer",
+        "duration": "0:15:00",
+        "restore": false
+      },
+      {
+        "id": "bottom_ac_timer",
+        "name": "bottom ac timer",
+        "duration": "0:15:00",
+        "restore": false
+      },
+      {
+        "id": "timer_aquece_cama_lucas",
+        "name": "timer aquece cama Lucas",
+        "icon": "mdi:bed-clock",
+        "duration": "0:20:00",
+        "restore": true
+      },
+      {
+        "id": "timer_luz_patio",
+        "name": "timer_luz_patio",
+        "duration": "0:15:00",
+        "restore": false
+      },
+      {
+        "id": "timer_luz_entrada",
+        "name": "timer_luz_entrada",
+        "duration": "0:15:00",
+        "restore": false
+      },
+      {
+        "id": "cooldown_evcharger2",
+        "name": "Cooldown_EVCharger2",
+        "duration": "0:01:00",
+        "restore": false
+      }
+    ]
+  }
+}

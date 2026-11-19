@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_boolean",
+  "data": {
+    "items": [
+      {
+        "id": "home_office_monday",
+        "name": "Home Office Monday",
+        "icon": "mdi:folder-home-outline"
+      },
+      {
+        "id": "home_office_tuesday",
+        "name": "Home Office Tuesday",
+        "icon": "mdi:folder-home-outline"
+      },
+      {
+        "id": "home_office_wednesday",
+        "name": "Home Office Wednesday",
+        "icon": "mdi:folder-home-outline"
+      },
+      {
+        "id": "home_office_thursday",
+        "name": "Home Office Thursday",
+        "icon": "mdi:folder-home-outline"
+      },
+      {
+        "id": "home_office_friday",
+        "name": "Home Office Friday",
+        "icon": "mdi:folder-home-outline"
+      },
+      {
+        "id": "manual_override_aqs_switch",
+        "name": "Manual Override AQS switch",
+        "icon": "mdi:thermometer-water"
+      },
+      {
+        "id": "automatic_aqs_switch",
+        "name": "Automatic AQS switch",
+        "icon": "mdi:thermometer-water"
+      },
+      {
+        "id": "automatic_ve_switch",
+        "name": "Automatic VE switch",
+        "icon": "mdi:motorbike-electric"
+      },
+      {
+        "id": "manual_override_ve_switch",
+        "name": "Manual Override VE Switch",
+        "icon": "mdi:motorbike-electric"
+      },
+      {
+        "id": "grid_injection_avoidance_aqs_switch",
+        "name": "Grid injection avoidance AQS switch",
+        "icon": "mdi:thermometer-water"
+      },
+      {
+        "id": "grid_injection_avoidance_ve_switch",
+        "name": "Grid injection avoidance VE switch",
+        "icon": "mdi:motorbike-electric"
+      },
+      {
+        "id": "automation_start_rooms_ac",
+        "name": "Automation start rooms AC"
+      },
+      {
+        "id": "automation_start_livingroom_ac",
+        "name": "Automation start LivingRoom AC"
+      },
+      {
+        "id": "no_water_heating",
+        "name": "no_water_heating",
+        "icon": "mdi:clock-digital"
+      },
+      {
+        "id": "ev2_home_office_monday",
+        "name": "EV2 Home Office Monday",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "ev2_home_office_friday",
+        "name": "EV2 Home Office Friday",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "ev2_home_office_tuesday",
+        "name": "EV2 Home Office Tuesday",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "ev2_home_office_wednesday",
+        "name": "EV2 Home Office Wednesday",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "ev2_home_office_thursday",
+        "name": "EV2 Home Office Thursday",
+        "icon": "mdi:ev-plug-type2"
+      },
+      {
+        "id": "automatic_ve2_switch",
+        "name": "Automatic VE2 switch",
+        "icon": "mdi:car-arrow-right"
+      },
+      {
+        "id": "grid_injection_avoidance_ve2_switch",
+        "name": "Grid Injection avoidance VE2 switch",
+        "icon": "mdi:car-arrow-right"
+      },
+      {
+        "id": "manual_override_ve2_switch",
+        "name": "Manual Override VE2 switch",
+        "icon": "mdi:car-arrow-right"
+      },
+      {
+        "id": "grid_injection_avoidance_ve_s",
+        "name": "Grid Injection avoidance VE's",
+        "icon": "mdi:power"
+      },
+      {
+        "id": "ve2_is_throttled",
+        "name": "ve2_is_throttled"
+      },
+      {
+        "id": "ev1_master_switch",
+        "name": "EV1 master switch"
+      },
+      {
+        "id": "ev2_master_switch",
+        "name": "EV2 master switch"
+      },
+      {
+        "id": "shades_master_switch",
+        "name": "Shades Master Switch",
+        "icon": "mdi:roller-shade"
+      },
+      {
+        "id": "lateral_shades_manual_override",
+        "name": "Lateral Shades Manual Override"
+      },
+      {
+        "id": "patio_shades_manual_override",
+        "name": "Patio Shades Manual Override"
+      },
+      {
+        "id": "master_suite_shades_manual_override",
+        "name": "Master Suite Shades Manual Override"
+      },
+      {
+        "id": "entrada_cover_manual_override",
+        "name": "Entrada Cover Manual Override"
+      },
+      {
+        "id": "master_bathroom_shades_manual_override",
+        "name": "Master Bathroom Shades Manual Override"
+      },
+      {
+        "id": "kitchen_shades_manual_override",
+        "name": "Kitchen shades Manual Override"
+      },
+      {
+        "id": "lara_shades_manual_override",
+        "name": "Lara shades Manual Override"
+      },
+      {
+        "id": "lucas_shades_manual_override",
+        "name": "Lucas shades Manual Override"
+      },
+      {
+        "id": "dinner_shades_manual_override",
+        "name": "Dinner shades Manual Override"
+      },
+      {
+        "id": "hot_day_heat_shield",
+        "name": "Hot Day Heat Shield",
+        "icon": "mdi:weather-sunny-alert"
+      },
+      {
+        "id": "holliday_mode",
+        "name": "Holliday Mode",
+        "icon": "mdi:airplane"
+      },
+      {
+        "id": "force_battery_charge",
+        "name": "force_battery_charge"
+      },
+      {
+        "id": "emergency_battery_reserve",
+        "name": "Emergency Battery Reserve",
+        "icon": "mdi:car-brake-alert"
+      }
+    ]
+  }
+}

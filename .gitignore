@@ -1,6 +1,5 @@
 # Home Assistant Core Secrets & Storage
 secrets.yaml
-.storage/
 .cloud/
 .cache/
 ip_bans.yaml
@@ -45,3 +44,23 @@ __pycache__/
 tts/
 media/
 known_devices.yaml
+
+# Ignore everything inside .storage/ by default
+.storage/*
+
+# Whitelist UI Dashboards
+!.storage/lovelace
+!.storage/lovelace.*
+!.storage/lovelace_dashboards
+!.storage/lovelace_resources
+
+# Whitelist UI Helpers
+!.storage/input_boolean
+!.storage/input_button
+!.storage/input_datetime
+!.storage/input_number
+!.storage/input_select
+!.storage/input_text
+!.storage/counter
+!.storage/timer
+!.storage/schedule

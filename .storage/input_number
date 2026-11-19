@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_number",
+  "data": {
+    "items": [
+      {
+        "id": "new_battery_target",
+        "min": 10.0,
+        "max": 100.0,
+        "name": "new_battery_target",
+        "icon": "mdi:battery",
+        "mode": "box",
+        "step": 1.0
+      },
+      {
+        "id": "water_heater_minimum_target",
+        "min": 20.0,
+        "max": 40.0,
+        "name": "Water Heater minimum target",
+        "icon": "mdi:water-minus",
+        "mode": "box",
+        "step": 1.0,
+        "unit_of_measurement": "ºC"
+      },
+      {
+        "id": "water_heater_maximum_target",
+        "min": 20.0,
+        "max": 70.0,
+        "name": "Water Heater maximum target",
+        "icon": "mdi:water-plus",
+        "mode": "box",
+        "step": 1.0,
+        "unit_of_measurement": "ºC"
+      },
+      {
+        "id": "water_heater_dinner_target",
+        "min": 20.0,
+        "max": 70.0,
+        "name": "Water Heater Dinner Target",
+        "mode": "box",
+        "step": 1.0,
+        "unit_of_measurement": "ºC",
+        "icon": "mdi:thermometer-water"
+      },
+      {
+        "id": "new_day_battery_target",
+        "min": 0.0,
+        "max": 100.0,
+        "name": "New day battery target",
+        "mode": "slider",
+        "step": 1.0
+      },
+      {
+        "id": "ve2_saved_current",
+        "min": 6.0,
+        "max": 16.0,
+        "name": "ve2_saved_current",
+        "mode": "slider",
+        "step": 1.0
+      },
+      {
+        "id": "ev1_suggested_current",
+        "min": 1.0,
+        "max": 16.0,
+        "name": "EV1 suggested current",
+        "mode": "box",
+        "step": 1.0
+      },
+      {
+        "id": "ev2_suggested_current",
+        "min": 1.0,
+        "max": 16.0,
+        "name": "EV2 suggested current",
+        "mode": "box",
+        "step": 1.0
+      },
+      {
+        "id": "front_garden_irrigation_frequency",
+        "min": 1.0,
+        "max": 12.0,
+        "name": "Front Garden Irrigation Frequency",
+        "icon": "mdi:water-sync",
+        "mode": "slider",
+        "step": 1.0
+      },
+      {
+        "id": "front_garden_irrigation_baseline_water",
+        "min": 0.0,
+        "max": 1000.0,
+        "name": "Front Garden Irrigation Baseline Water",
+        "icon": "mdi:water-check",
+        "mode": "box",
+        "step": 0.1
+      },
+      {
+        "id": "front_garden_irrigation_seconds",
+        "min": 0.0,
+        "max": 300.0,
+        "name": "Front Garden Irrigation Seconds",
+        "icon": "mdi:timer-outline",
+        "step": 15.0,
+        "mode": "slider"
+      },
+      {
+        "id": "side_garden_irrigation_seconds",
+        "min": 15.0,
+        "max": 600.0,
+        "name": "Side Garden Irrigation Seconds",
+        "icon": "mdi:timer-outline",
+        "step": 15.0,
+        "mode": "slider",
+        "unit_of_measurement": "s"
+      },
+      {
+        "id": "side_garden_irrigation_frequency",
+        "min": 1.0,
+        "max": 12.0,
+        "name": "Side Garden Irrigation Frequency",
+        "icon": "mdi:water-sync",
+        "unit_of_measurement": "cycles/day",
+        "mode": "slider",
+        "step": 1.0
+      },
+      {
+        "id": "side_garden_irrigation_baseline_water",
+        "min": 0.0,
+        "max": 9999.0,
+        "name": "Side Garden Irrigation Baseline Water",
+        "icon": "mdi:water-check",
+        "step": 0.1,
+        "unit_of_measurement": "L",
+        "mode": "slider"
+      },
+      {
+        "id": "victron_battery_charge_level",
+        "min": 0.0,
+        "max": 100.0,
+        "name": "Victron battery charge level",
+        "mode": "box",
+        "unit_of_measurement": "%",
+        "step": 1.0
+      },
+      {
+        "id": "victron_max_battery_power",
+        "min": 0.0,
+        "max": 3000.0,
+        "name": "Victron max battery power",
+        "icon": "mdi:battery-arrow-down",
+        "unit_of_measurement": "W",
+        "step": 1.0,
+        "mode": "slider"
+      },
+      {
+        "id": "victron_minimum_soc",
+        "min": 10.0,
+        "max": 100.0,
+        "name": "Victron minimum SOC",
+        "icon": "mdi:battery-charging-20",
+        "mode": "box",
+        "unit_of_measurement": "%",
+        "step": 1.0
+      },
+      {
+        "id": "emergency_battery_target",
+        "min": 80.0,
+        "max": 100.0,
+        "name": "Emergency Battery Target",
+        "step": 5.0,
+        "unit_of_measurement": "%",
+        "icon": "mdi:target-variant",
+        "mode": "box"
+      },
+      {
+        "id": "emergency_battery_minimum",
+        "min": 50.0,
+        "max": 80.0,
+        "name": "Emergency Battery Minimum",
+        "icon": "mdi:minus",
+        "step": 5.0,
+        "mode": "box"
+      }
+    ]
+  }
+}

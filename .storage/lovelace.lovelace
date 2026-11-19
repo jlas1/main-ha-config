@@ -1,0 +1,4977 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.lovelace",
+  "data": {
+    "config": {
+      "title": "Povoa",
+      "views": [
+        {
+          "path": "default_view",
+          "title": "Home",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.weatherstation_humidity"
+                },
+                {
+                  "entity": "sensor.weatherstation_feels_like_temperature"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lara_temperature",
+                  "name": "Qt Lara Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lara_humidity",
+                  "name": "Qt Lara Hum",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lucas_temperature",
+                  "name": "Qt Lucas Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lucas_humidity",
+                  "name": "Qt Lucas Hum",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_suite_temperature",
+                  "name": "Suite Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_suite_humidity",
+                  "name": "Suite Hum",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_banho_1_temperature",
+                  "name": "Banho Suite Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_banho_1_humidity",
+                  "name": "Banho Suite Hum",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_banho_2_temperature",
+                  "name": "Banho Quartos Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_banho_2_humidity",
+                  "name": "Banho Quartos Hum",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_sala_temperature",
+                  "secondary_info": "last-updated",
+                  "name": "Sala Temp"
+                },
+                {
+                  "entity": "sensor.ambiente_sala_humidity",
+                  "secondary_info": "last-updated",
+                  "name": "Sala Hum"
+                },
+                {
+                  "entity": "sensor.ambiente_cozinha_temperature",
+                  "name": "Cozinha Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_cozinha_humidity",
+                  "secondary_info": "last-updated",
+                  "name": "Cozinha Hum"
+                },
+                {
+                  "entity": "sensor.ambiente_escritorio_temperature",
+                  "name": "Escritorio Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_escritorio_humidity",
+                  "name": "Escritorio Hum",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_prt_temperature",
+                  "name": "Printers Temp",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_prt_humidity",
+                  "name": "Printers Hum",
+                  "secondary_info": "last-updated"
+                }
+              ],
+              "title": "Ambiente interno"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.total_house_load",
+                  "name": "House Power",
+                  "secondary_info": "last_updated",
+                  "icon": "mdi:home"
+                },
+                {
+                  "entity": "sensor.power_monitor_1_power_a",
+                  "name": "Grid Power",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.solax_pv_power_total",
+                  "name": "Solar Power",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.total_battery_power_charge",
+                  "name": "Battery Power",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.ac_power_monitor_power",
+                  "name": "AC"
+                },
+                {
+                  "entity": "sensor.box_ve1_power",
+                  "name": "BMW CE",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.tomada_aqs_power",
+                  "name": "AQS",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.aquece_camas_lucas_power",
+                  "name": "Aquece camas Lucas",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.aquece_camas_lara_power",
+                  "name": "Aquece camas Lara",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.aquece_camas_ze_power",
+                  "name": "Aquece camas Ze",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.desumificador_lara_power",
+                  "name": "Desumificador Lara",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.tomada_ds2_power",
+                  "name": "Dehumifier Lucas",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.tomada_prt_power",
+                  "name": "Printers",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.tomada_srv_power",
+                  "name": "Server",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.kitchenshelly_power"
+                },
+                {
+                  "entity": "sensor.tomada_arca_frigorifrica_power"
+                },
+                {
+                  "entity": "sensor.tomada_maquina_lavar_roupa_power"
+                },
+                {
+                  "entity": "sensor.tomada_maquina_lavar_loica_power"
+                },
+                {
+                  "entity": "sensor.tomada_dryer_power"
+                },
+                {
+                  "entity": "sensor.garage_gx_device_critical_loads_on_l1",
+                  "name": "IT Loads"
+                },
+                {
+                  "entity": "sensor.arvore_natal_power"
+                },
+                {
+                  "entity": "sensor.luz_natal_power"
+                }
+              ]
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.sonoff_1001dabf03_temperature",
+              "name": "Hot Water Temp",
+              "needle": true,
+              "segments": [
+                {
+                  "from": 0,
+                  "color": "var(--error-color)"
+                },
+                {
+                  "from": 35,
+                  "color": "var(--warning-color)"
+                },
+                {
+                  "from": 55,
+                  "color": "var(--success-color)"
+                }
+              ],
+              "max": 72,
+              "min": 15
+            },
+            {
+              "type": "custom:power-flow-card-plus",
+              "entities": {
+                "battery": {
+                  "invert_state": true,
+                  "state_of_charge_unit_white_space": false,
+                  "color_circle": true,
+                  "use_metadata": false,
+                  "entity": "sensor.total_battery_power_charge",
+                  "state_of_charge": "sensor.total_house_soc"
+                },
+                "grid": {
+                  "display_state": "two_way",
+                  "invert_state": false,
+                  "use_metadata": false,
+                  "entity": "sensor.grid_meter_power"
+                },
+                "solar": {
+                  "entity": "sensor.solax_pv_power_total",
+                  "display_zero_state": true
+                },
+                "home": {
+                  "subtract_individual": true,
+                  "entity": "sensor.total_house_load",
+                  "use_metadata": false,
+                  "override_state": false,
+                  "secondary_info": {}
+                },
+                "individual": [
+                  {
+                    "entity": "sensor.ac_power_monitor_power",
+                    "name": "AC",
+                    "icon": "mdi:air-conditioner"
+                  },
+                  {
+                    "entity": "sensor.tomada_aqs_power",
+                    "name": "AQS",
+                    "icon": "mdi:water-boiler"
+                  },
+                  {
+                    "entity": "sensor.box_ve2_power",
+                    "name": "Dacia",
+                    "icon": "mdi:car-electric",
+                    "secondary_info": {}
+                  },
+                  {
+                    "entity": "sensor.box_ve1_power",
+                    "name": "BMW",
+                    "color_value": false,
+                    "icon": "mdi:motorbike-electric"
+                  }
+                ],
+                "fossil_fuel_percentage": {}
+              },
+              "clickable_entities": true,
+              "display_zero_lines": {
+                "mode": "transparency",
+                "transparency": 50,
+                "grey_color": [
+                  189,
+                  189,
+                  189
+                ]
+              },
+              "use_new_flow_rate_model": true,
+              "w_decimals": 0,
+              "kw_decimals": 1,
+              "min_flow_rate": 0.75,
+              "max_flow_rate": 6,
+              "max_expected_power": 2000,
+              "min_expected_power": 0.01,
+              "watt_threshold": 1000,
+              "transparency_zero_lines": 0,
+              "view_layout": {
+                "position": "sidebar"
+              },
+              "disable_dots": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.switch_escadas_garagem",
+                  "name": "Escadas Garagem"
+                },
+                {
+                  "entity": "switch.switch_garagem_right",
+                  "name": "Luz Escritório"
+                },
+                {
+                  "entity": "switch.switch_garagem_left",
+                  "name": "Luz centro Garagem"
+                },
+                {
+                  "entity": "switch.switch_quarto_lara",
+                  "name": "Luz Quarto Lara"
+                },
+                {
+                  "entity": "switch.desumificador_lara"
+                },
+                {
+                  "entity": "switch.aquece_camas_lara",
+                  "name": "Aquece camas Lara",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "switch.switch_quarto_lucas",
+                  "name": "Luz Quarto Lucas"
+                },
+                {
+                  "entity": "switch.aquece_camas_lucas",
+                  "name": "Aquece camas Lucas",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "switch.tomada_ds2",
+                  "name": "Desumidificador Lucas"
+                },
+                {
+                  "entity": "switch.aquece_camas_ze",
+                  "name": "Aquece camas Ze"
+                },
+                {
+                  "entity": "switch.tomada_srv"
+                },
+                {
+                  "entity": "switch.tomada_aqs",
+                  "name": "Tomada AQS"
+                },
+                {
+                  "entity": "switch.tomada_prt",
+                  "name": "Impressoras 3D"
+                },
+                {
+                  "entity": "switch.switch_biblioteca"
+                },
+                {
+                  "entity": "light.switch_quadro1_l1",
+                  "name": "Luz Suite"
+                },
+                {
+                  "entity": "light.switch_quadro1_l2",
+                  "name": "Luz Sala"
+                },
+                {
+                  "entity": "light.switch_quadro2_l1",
+                  "name": "Luz Jantar"
+                },
+                {
+                  "entity": "light.switch_quadro2_l2",
+                  "name": "Luz Entrada"
+                },
+                {
+                  "entity": "light.switch_quadro3_l1",
+                  "name": "Luz Pátio"
+                },
+                {
+                  "entity": "light.switch_quadro3_l2",
+                  "name": "Luz Jardim"
+                }
+              ],
+              "title": "Interruptores",
+              "show_header_toggle": false,
+              "state_color": true
+            },
+            {
+              "square": false,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_dinner",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_kitchen",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_patio",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_stairs",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_master_bathroom",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_front_garden",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "icon": "mdi:awning",
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_lara",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_lucas",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                },
+                {
+                  "type": "custom:mushroom-cover-card",
+                  "entity": "cover.blinds_suite",
+                  "show_position_control": true,
+                  "show_buttons_control": true,
+                  "fill_container": false,
+                  "tap_action": {
+                    "action": "more-info"
+                  },
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "double_tap_action": {
+                    "action": "none"
+                  }
+                }
+              ],
+              "title": "Estores",
+              "columns": 2
+            },
+            {
+              "type": "distribution",
+              "title": "Live Power Breakdown",
+              "entities": [
+                {
+                  "entity": "sensor.box_ve1_power",
+                  "name": "BMW CE",
+                  "color": "#2E7D32"
+                },
+                {
+                  "entity": "sensor.box_ve2_power",
+                  "name": "Dacia",
+                  "color": "#43A047"
+                },
+                {
+                  "entity": "sensor.ac_power_monitor_power",
+                  "name": "Air Conditioning",
+                  "color": "#1565C0"
+                },
+                {
+                  "entity": "sensor.tomada_aqs_power",
+                  "name": "AQS Water Heater",
+                  "color": "#1976D2"
+                },
+                {
+                  "entity": "sensor.tomada_maquina_lavar_loica_power",
+                  "name": "Dishwasher",
+                  "color": "#F4511E"
+                },
+                {
+                  "entity": "sensor.tomada_maquina_lavar_roupa_power",
+                  "name": "Washing Machine",
+                  "color": "#E65100"
+                },
+                {
+                  "entity": "sensor.tomada_dryer_power",
+                  "name": "Clothes Dryer",
+                  "color": "#D84315"
+                },
+                {
+                  "entity": "sensor.kitchenshelly_power",
+                  "name": "Kitchen Fridge",
+                  "color": "#00838F"
+                },
+                {
+                  "entity": "sensor.tomada_arca_frigorifrica_power",
+                  "name": "Deep Freezer",
+                  "color": "#0097A7"
+                },
+                {
+                  "entity": "sensor.desumificador_lara_power",
+                  "name": "Dehumidifier Lara",
+                  "color": "#4527A0"
+                },
+                {
+                  "entity": "sensor.tomada_ds2_power",
+                  "name": "Dehumidifier Lucas",
+                  "color": "#512DA8"
+                },
+                {
+                  "entity": "sensor.tomada_srv_power",
+                  "name": "Dehumidifier Suite",
+                  "color": "#673AB7"
+                },
+                {
+                  "entity": "sensor.aquece_camas_lara_power",
+                  "name": "Heated Bed Lara",
+                  "color": "#FF8F00"
+                },
+                {
+                  "entity": "sensor.aquece_camas_lucas_power",
+                  "name": "Heated Bed Lucas",
+                  "color": "#FFA000"
+                },
+                {
+                  "entity": "sensor.aquece_camas_ze_power",
+                  "name": "Heated Bed Zé",
+                  "color": "#FFB300"
+                },
+                {
+                  "entity": "sensor.garage_gx_device_critical_loads_on_l1",
+                  "name": "IT Server Rack",
+                  "color": "#455A64"
+                },
+                {
+                  "entity": "sensor.tomada_prt_power",
+                  "name": "Printers",
+                  "color": "#607D8B"
+                }
+              ]
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            },
+            {
+              "user": "a9ff521fe6b74a959f0b830a32575b3c"
+            }
+          ]
+        },
+        {
+          "title": "DASHBOARD",
+          "path": "dashboard",
+          "icon": "mdi:home",
+          "badges": [],
+          "cards": [
+            {
+              "type": "custom:power-flow-card-plus",
+              "entities": {
+                "battery": {
+                  "invert_state": true,
+                  "state_of_charge_unit_white_space": false,
+                  "color_circle": true,
+                  "use_metadata": false,
+                  "entity": "sensor.total_battery_power_charge",
+                  "state_of_charge": "sensor.total_house_soc"
+                },
+                "grid": {
+                  "display_state": "two_way",
+                  "invert_state": false,
+                  "use_metadata": false,
+                  "entity": "sensor.grid_meter_power"
+                },
+                "solar": {
+                  "entity": "sensor.solax_pv_power_total",
+                  "display_zero_state": true
+                },
+                "home": {
+                  "subtract_individual": true,
+                  "entity": "sensor.total_house_load",
+                  "use_metadata": false,
+                  "override_state": false,
+                  "secondary_info": {}
+                },
+                "individual": [
+                  {
+                    "entity": "sensor.ac_power_monitor_power",
+                    "name": "AC",
+                    "icon": "mdi:air-conditioner"
+                  },
+                  {
+                    "entity": "sensor.tomada_aqs_power",
+                    "name": "AQS",
+                    "icon": "mdi:water-boiler"
+                  },
+                  {
+                    "entity": "sensor.box_ve2_power",
+                    "name": "Dacia",
+                    "icon": "mdi:car-electric",
+                    "secondary_info": {}
+                  },
+                  {
+                    "entity": "sensor.box_ve1_power",
+                    "name": "BMW",
+                    "color_value": false,
+                    "icon": "mdi:motorbike-electric"
+                  }
+                ],
+                "fossil_fuel_percentage": {}
+              },
+              "clickable_entities": true,
+              "display_zero_lines": {
+                "mode": "transparency",
+                "transparency": 50,
+                "grey_color": [
+                  189,
+                  189,
+                  189
+                ]
+              },
+              "use_new_flow_rate_model": true,
+              "w_decimals": 0,
+              "kw_decimals": 1,
+              "min_flow_rate": 0.75,
+              "max_flow_rate": 6,
+              "max_expected_power": 2000,
+              "min_expected_power": 0.01,
+              "watt_threshold": 1000,
+              "transparency_zero_lines": 0,
+              "view_layout": {
+                "position": "sidebar"
+              },
+              "disable_dots": false
+            },
+            {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "glance",
+                  "entities": [
+                    {
+                      "entity": "switch.desumificador_lara"
+                    },
+                    {
+                      "entity": "sensor.desumificador_lara_power"
+                    }
+                  ]
+                },
+                {
+                  "type": "glance",
+                  "entities": [
+                    {
+                      "entity": "switch.tomada_ds2"
+                    },
+                    {
+                      "entity": "sensor.tomada_ds2_power"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.sonoff_1001dabf03_temperature",
+              "name": "Hot Water Temp",
+              "needle": true,
+              "segments": [
+                {
+                  "from": 0,
+                  "color": "var(--error-color)"
+                },
+                {
+                  "from": 35,
+                  "color": "var(--warning-color)"
+                },
+                {
+                  "from": 55,
+                  "color": "var(--success-color)"
+                }
+              ]
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.solax_house_load",
+              "name": "Consumo Casa",
+              "needle": true,
+              "severity": {
+                "green": 0,
+                "yellow": 1200,
+                "red": 2400
+              },
+              "max": 4000,
+              "min": 0
+            },
+            {
+              "square": false,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "show_current": true,
+                      "show_forecast": true,
+                      "type": "weather-forecast",
+                      "entity": "weather.loures",
+                      "forecast_type": "daily",
+                      "secondary_info_attribute": "humidity",
+                      "forecast_slots": 8
+                    },
+                    {
+                      "show_current": false,
+                      "show_forecast": true,
+                      "type": "weather-forecast",
+                      "entity": "weather.loures",
+                      "forecast_type": "hourly",
+                      "forecast_slots": 8
+                    },
+                    {
+                      "type": "glance",
+                      "entities": [
+                        {
+                          "entity": "sensor.weatherstation_outdoor_temperature",
+                          "name": "Outside"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_feels_like_temperature",
+                          "name": "Feeling"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_humidity",
+                          "name": "Humidity"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_uv_index",
+                          "icon": "mdi:sun-wireless-outline",
+                          "name": "UV"
+                        }
+                      ]
+                    },
+                    {
+                      "show_name": true,
+                      "show_icon": false,
+                      "show_state": true,
+                      "type": "glance",
+                      "entities": [
+                        {
+                          "entity": "sensor.weatherstation_rain_rate",
+                          "name": "Rain Rate"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_daily_rain_rate",
+                          "name": "Rain Today"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_solar_radiation",
+                          "name": "Radiation"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_wind_speed",
+                          "name": "Wind"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_max_daily_gust",
+                          "name": "Max Gush"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:compass-card",
+                      "indicator_sensors": [
+                        {
+                          "sensor": "sensor.weatherstation_wind_direction",
+                          "indicator": {
+                            "type": "arrow_inward"
+                          }
+                        }
+                      ],
+                      "value_sensors": [
+                        {
+                          "sensor": "sensor.weatherstation_wind_speed"
+                        }
+                      ],
+                      "compass": {
+                        "north": {
+                          "show": true
+                        }
+                      },
+                      "language": "en"
+                    }
+                  ]
+                }
+              ],
+              "columns": 1
+            },
+            {
+              "features": [
+                {
+                  "type": "cover-open-close"
+                },
+                {
+                  "type": "cover-position"
+                }
+              ],
+              "type": "tile",
+              "entity": "cover.blinds_front_garden",
+              "show_entity_picture": false,
+              "hide_state": false,
+              "vertical": false,
+              "state_content": "last_changed",
+              "tap_action": {
+                "action": "more-info"
+              }
+            },
+            {
+              "type": "custom:advanced-camera-card",
+              "cameras": [
+                {
+                  "camera_entity": "camera.entrada",
+                  "live_provider": "go2rtc",
+                  "triggers": {
+                    "occupancy": true
+                  }
+                },
+                {
+                  "camera_entity": "camera.traseiras",
+                  "live_provider": "go2rtc",
+                  "triggers": {
+                    "occupancy": true
+                  }
+                },
+                {
+                  "camera_entity": "camera.jardim",
+                  "live_provider": "go2rtc",
+                  "triggers": {
+                    "occupancy": true
+                  }
+                },
+                {
+                  "triggers": {
+                    "occupancy": true
+                  },
+                  "live_provider": "go2rtc",
+                  "camera_entity": "camera.telheiro"
+                },
+                {
+                  "camera_entity": "camera.garagem",
+                  "live_provider": "go2rtc",
+                  "triggers": {
+                    "occupancy": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Water Heater",
+          "path": "water-heater",
+          "icon": "mdi:water-boiler",
+          "subview": false,
+          "badges": [],
+          "cards": [
+            {
+              "type": "entity",
+              "entity": "sensor.sonoff_1001dabf03_temperature",
+              "name": "Actual Water Temperature",
+              "icon": "mdi:thermometer-water",
+              "state_color": false
+            },
+            {
+              "show_name": true,
+              "show_icon": true,
+              "type": "button",
+              "tap_action": {
+                "action": "call-service",
+                "service": "input_boolean.toggle",
+                "target": {
+                  "entity_id": "input_boolean.manual_override_aqs_switch"
+                }
+              },
+              "entity": "switch.sonoff_1001dabf03",
+              "name": "Water Heater ",
+              "show_state": false,
+              "icon": "mdi:water-boiler",
+              "hold_action": {
+                "action": "more-info"
+              }
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_number.water_heater_maximum_target",
+                  "name": "Night Temp"
+                },
+                {
+                  "entity": "input_number.water_heater_dinner_target",
+                  "name": "Dinner Temp",
+                  "secondary_info": "none"
+                },
+                {
+                  "entity": "input_number.water_heater_minimum_target",
+                  "name": "Minimum Temp"
+                },
+                {
+                  "entity": "sensor.tomada_aqs_power",
+                  "name": "Power"
+                },
+                {
+                  "entity": "input_boolean.no_water_heating"
+                },
+                {
+                  "entity": "input_datetime.night_water_heating_start"
+                },
+                {
+                  "entity": "input_datetime.night_water_heating_stop"
+                },
+                {
+                  "entity": "input_datetime.late_afternoon_water_heating_start"
+                },
+                {
+                  "entity": "input_datetime.late_afternoon_water_heating_stop"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.aqs_energy_energy_daily",
+                  "name": "Daily Energy Usage"
+                },
+                {
+                  "entity": "sensor.aqs_energy_energy_monthly",
+                  "name": "Monthly Energy Usage"
+                },
+                {
+                  "entity": "sensor.aqs_energy_energy_yearly",
+                  "name": "Yearly Energy Usage"
+                },
+                {
+                  "entity": "sensor.aqs_energy_energy",
+                  "name": "All time Energy Usage"
+                },
+                {
+                  "entity": "sensor.aqs_energy_cost_monthly",
+                  "name": "Energy Cost Monthly"
+                },
+                {
+                  "entity": "sensor.aqs_energy_cost_daily",
+                  "name": "Energy Cost Daily"
+                },
+                {
+                  "entity": "sensor.current_aqs_energy_cost"
+                }
+              ],
+              "title": "AQS Ststistics"
+            },
+            {
+              "type": "history-graph",
+              "entities": [
+                {
+                  "entity": "sensor.tomada_aqs_power"
+                }
+              ],
+              "title": "Historic Power",
+              "hours_to_show": 8
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.manual_override_aqs_switch"
+                },
+                {
+                  "entity": "input_boolean.automatic_aqs_switch"
+                },
+                {
+                  "entity": "input_boolean.grid_injection_avoidance_aqs_switch"
+                }
+              ]
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ]
+        },
+        {
+          "title": "Power2",
+          "path": "power2",
+          "icon": "mdi:power-plug-battery-outline",
+          "type": "sidebar",
+          "badges": [],
+          "cards": [
+            {
+              "type": "statistics-graph",
+              "entities": [
+                {
+                  "entity": "sensor.solax_pv_power_total",
+                  "name": "Solar Power"
+                },
+                {
+                  "entity": "sensor.solax_inverter_power",
+                  "name": "Solax Inverter Power"
+                },
+                {
+                  "entity": "sensor.solax_battery_power_charge",
+                  "name": "Solax Battery Power"
+                },
+                {
+                  "entity": "sensor.total_house_load",
+                  "name": "House Load"
+                },
+                {
+                  "entity": "sensor.energy_grid_solax_grid_import_solax_grid_export_net_power",
+                  "name": "Grid Import"
+                },
+                {
+                  "entity": "sensor.gx_device_dc_battery_power",
+                  "name": "Victron Battery Power"
+                }
+              ],
+              "days_to_show": 1,
+              "period": "5minute",
+              "chart_type": "line",
+              "stat_types": [
+                "mean"
+              ],
+              "unit": "W",
+              "expand_legend": false,
+              "energy_date_selection": false
+            },
+            {
+              "type": "custom:apexcharts-card",
+              "graph_span": "24h",
+              "span": {
+                "start": "day"
+              },
+              "header": {
+                "show": true,
+                "title": "Solar Production vs Forecast",
+                "show_states": true,
+                "colorize_states": true
+              },
+              "all_series_config": {
+                "stroke_width": 2,
+                "curve": "smooth",
+                "extend_to": "now",
+                "group_by": {
+                  "func": "avg",
+                  "duration": "30m"
+                }
+              },
+              "apex_config": {
+                "legend": {
+                  "show": true
+                }
+              },
+              "yaxis": [
+                {
+                  "id": "power",
+                  "min": 0,
+                  "decimals": 0,
+                  "apex_config": {
+                    "title": {
+                      "text": "Power (W)"
+                    }
+                  }
+                },
+                {
+                  "id": "elevation",
+                  "opposite": true,
+                  "min": 0,
+                  "max": 90,
+                  "decimals": 0,
+                  "show": false
+                }
+              ],
+              "series": [
+                {
+                  "entity": "sensor.solcast_pv_forecast_power_now",
+                  "yaxis_id": "power",
+                  "name": "Forecast",
+                  "type": "line",
+                  "color": "#FF4560",
+                  "stroke_width": 3,
+                  "show": {
+                    "in_header": true,
+                    "legend_value": false
+                  }
+                },
+                {
+                  "entity": "sensor.solax_pv_power_total",
+                  "yaxis_id": "power",
+                  "name": "Total Output",
+                  "type": "area",
+                  "opacity": 0.3,
+                  "color": "#03A9F4",
+                  "show": {
+                    "in_header": true,
+                    "legend_value": false
+                  }
+                },
+                {
+                  "entity": "sensor.solax_pv_power_1",
+                  "yaxis_id": "power",
+                  "name": "String 1",
+                  "type": "line",
+                  "color": "#00E396",
+                  "show": {
+                    "in_header": true,
+                    "legend_value": false
+                  }
+                },
+                {
+                  "entity": "sensor.solax_pv_power_2",
+                  "yaxis_id": "power",
+                  "name": "String 2",
+                  "type": "line",
+                  "color": "#FEB019",
+                  "show": {
+                    "in_header": true,
+                    "legend_value": false
+                  }
+                },
+                {
+                  "entity": "sensor.sun_solar_elevation",
+                  "yaxis_id": "elevation",
+                  "name": "Sun Angle",
+                  "type": "area",
+                  "color": "#F9CE1D",
+                  "opacity": 0.15,
+                  "fill_raw": "last",
+                  "transform": "return x < 0 ? 0 : x;",
+                  "show": {
+                    "in_header": false,
+                    "legend_value": true
+                  }
+                }
+              ]
+            },
+            {
+              "type": "custom:power-flow-card-plus",
+              "entities": {
+                "battery": {
+                  "invert_state": true,
+                  "state_of_charge_unit_white_space": false,
+                  "color_circle": true,
+                  "use_metadata": false,
+                  "entity": "sensor.total_battery_power_charge",
+                  "state_of_charge": "sensor.total_house_soc"
+                },
+                "grid": {
+                  "display_state": "two_way",
+                  "invert_state": false,
+                  "use_metadata": false,
+                  "entity": "sensor.grid_meter_power"
+                },
+                "solar": {
+                  "entity": "sensor.solax_pv_power_total",
+                  "display_zero_state": true
+                },
+                "home": {
+                  "subtract_individual": true,
+                  "entity": "sensor.total_house_load",
+                  "use_metadata": false,
+                  "override_state": false,
+                  "secondary_info": {}
+                },
+                "individual": [
+                  {
+                    "entity": "sensor.ac_power_monitor_power",
+                    "name": "AC",
+                    "icon": "mdi:air-conditioner"
+                  },
+                  {
+                    "entity": "sensor.tomada_aqs_power",
+                    "name": "AQS",
+                    "icon": "mdi:water-boiler"
+                  },
+                  {
+                    "entity": "sensor.box_ve2_power",
+                    "name": "Dacia",
+                    "icon": "mdi:car-electric",
+                    "secondary_info": {}
+                  },
+                  {
+                    "entity": "sensor.box_ve1_power",
+                    "name": "BMW",
+                    "color_value": false,
+                    "icon": "mdi:motorbike-electric"
+                  }
+                ],
+                "fossil_fuel_percentage": {}
+              },
+              "clickable_entities": true,
+              "display_zero_lines": {
+                "mode": "transparency",
+                "transparency": 50,
+                "grey_color": [
+                  189,
+                  189,
+                  189
+                ]
+              },
+              "use_new_flow_rate_model": true,
+              "w_decimals": 0,
+              "kw_decimals": 1,
+              "min_flow_rate": 0.75,
+              "max_flow_rate": 6,
+              "max_expected_power": 2000,
+              "min_expected_power": 0.01,
+              "watt_threshold": 1000,
+              "transparency_zero_lines": 0,
+              "view_layout": {
+                "position": "sidebar"
+              },
+              "disable_dots": false
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.solar_dump_base_target",
+                  "name": "Current Battery Target"
+                },
+                {
+                  "entity": "sensor.solcast_pv_forecast_forecast_today",
+                  "name": "Today",
+                  "secondary_info": "last_updated"
+                },
+                {
+                  "entity": "sensor.solcast_pv_forecast_forecast_remaining_today",
+                  "name": "remaining Today"
+                },
+                {
+                  "entity": "sensor.solax_energy_dashboard_solax_solar_production_energy",
+                  "name": "Generated Today"
+                },
+                {
+                  "entity": "sensor.solcast_pv_forecast_forecast_tomorrow",
+                  "name": "Tomorrow"
+                },
+                {
+                  "entity": "sensor.solcast_pv_forecast_forecast_day_3",
+                  "name": "After tomorrow"
+                },
+                {
+                  "entity": "sensor.solcast_pv_forecast_forecast_day_4",
+                  "name": "In 3 days"
+                },
+                {
+                  "entity": "sensor.solcast_pv_forecast_forecast_day_5",
+                  "name": "In 4 days"
+                }
+              ],
+              "title": "Solar Forecast",
+              "show_header_toggle": true,
+              "view_layout": {
+                "position": "sidebar"
+              }
+            },
+            {
+              "type": "markdown",
+              "content": "  {% set soc = states('sensor.total_house_soc')|float(0) %}\n  {% set base = states('sensor.solar_dump_base_target')|float(0) %}\n  {% set mult = ([1.0, 10.5 - (0.1 * soc), 3.0]|sort)[1] %}\n\n  **Current Status**\n  * **Battery SoC:** {{ soc }}%\n  * **Base Target:** {{ base }}%\n  * *(Current Multiplier: {{ mult | round(2) }}x)*\n  \n  **Thresholds (Disable to Enable)**\n  * **Level 1 (EV or AQS):** {{ (base - mult) | round(1) }}% to {{ base | round(1) }}%\n  * **Level 2 (EV + AQS):** {{ base | round(1) }}% to {{ (base + mult) | round(1) }}%\n  * **Level 3 (Rooms AC):** {% if soc > 90 %}{{ (base + mult) | round(1) }}% to {{ (base + (2 * mult)) | round(1) }}%{% else %}n/a until Battery > 90%{% endif %}\n  * **Level 4 (Living Room AC):** {% if soc > 90 %}{{ (base + (2 * mult)) | round(1) }}% to {{ (base + (3 * mult)) | round(1) }}%{% else %}n/a until Battery > 90%{% endif %}",
+              "title": "⚡ Solar Dump Status",
+              "view_layout": {
+                "position": "sidebar"
+              }
+            },
+            {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "number.solax_selfuse_discharge_min_soc",
+                      "name": "Solax Battery Minimum"
+                    },
+                    {
+                      "entity": "input_number.victron_minimum_soc",
+                      "name": "Victron Battery Minimum"
+                    },
+                    {
+                      "entity": "number.solax_selfuse_nightcharge_upper_soc",
+                      "name": "Solax Charge limit"
+                    },
+                    {
+                      "entity": "input_number.victron_battery_charge_level",
+                      "name": "Victron Charge limit"
+                    },
+                    {
+                      "entity": "number.solax_battery_discharge_max_current",
+                      "name": "Solax Max Bat Power"
+                    },
+                    {
+                      "entity": "input_number.victron_max_battery_power",
+                      "name": "Victron Max Bat Power"
+                    },
+                    {
+                      "entity": "input_boolean.force_battery_charge",
+                      "name": "Victron Charge"
+                    },
+                    {
+                      "entity": "switch.garage_solax_inverter_selfuse_night_charge",
+                      "name": "Night Charge"
+                    },
+                    {
+                      "entity": "switch.garage_solax_inverter_charge_and_discharge_period2",
+                      "name": "Afternoon Charge"
+                    },
+                    {
+                      "entity": "time.garage_solax_inverter_charge_start_1",
+                      "name": "Night Start Charging"
+                    },
+                    {
+                      "entity": "time.garage_solax_inverter_charge_end_1",
+                      "name": "Night Stop Charging"
+                    },
+                    {
+                      "entity": "time.garage_solax_inverter_charge_start_2",
+                      "name": "Afternoon Start Charging"
+                    },
+                    {
+                      "entity": "time.garage_solax_inverter_charge_end_2",
+                      "name": "Afternoon Stop Charging"
+                    },
+                    {
+                      "entity": "select.solax_charger_use_mode",
+                      "name": "Charge mode"
+                    },
+                    {
+                      "entity": "input_number.new_battery_target",
+                      "name": "Battery Target",
+                      "icon": "mdi:battery-charging-20",
+                      "secondary_info": "last_updated"
+                    },
+                    {
+                      "entity": "input_number.new_day_battery_target",
+                      "name": "Battery Target",
+                      "icon": "mdi:battery-charging-20",
+                      "secondary_info": "last_updated"
+                    },
+                    {
+                      "entity": "input_text.solar_calculations"
+                    },
+                    {
+                      "entity": "input_text.automation_low_cost_coopernico"
+                    },
+                    {
+                      "entity": "input_text.automation_afternoon_low_cost_coopernico"
+                    }
+                  ],
+                  "title": "Settings",
+                  "view_layout": {
+                    "position": "sidebar"
+                  },
+                  "show_header_toggle": false
+                },
+                {
+                  "type": "button",
+                  "name": "SolaX Inverter Settings",
+                  "icon": "mdi:solar-panel",
+                  "tap_action": {
+                    "action": "navigate",
+                    "navigation_path": "/config/devices/device/2735196a9ad81091047a0c231edd13a5"
+                  },
+                  "show_icon": false,
+                  "show_name": true
+                }
+              ],
+              "view_layout": {
+                "position": "sidebar"
+              }
+            },
+            {
+              "square": true,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.solax_pv_power_total",
+                      "name": "Solar Power"
+                    },
+                    {
+                      "entity": "sensor.solax_pv_power_1",
+                      "name": "Solar Power PV1"
+                    },
+                    {
+                      "entity": "sensor.solax_pv_power_2",
+                      "name": "Solar Power PV2"
+                    },
+                    {
+                      "entity": "sensor.solax_pv_voltage_1",
+                      "name": "Voltage PV1"
+                    },
+                    {
+                      "entity": "sensor.solax_pv_voltage_2",
+                      "name": "Voltage PV2"
+                    }
+                  ],
+                  "title": "Solar Panel Statistics",
+                  "state_color": false,
+                  "show_header_toggle": false
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.solax_battery_voltage_charge",
+                      "name": "Voltage"
+                    },
+                    {
+                      "entity": "sensor.solax_battery_current_charge",
+                      "name": "Current"
+                    },
+                    {
+                      "entity": "sensor.solax_battery_temperature",
+                      "name": "Temp"
+                    },
+                    {
+                      "entity": "sensor.solax_battery_power_charge",
+                      "name": "Power"
+                    },
+                    {
+                      "entity": "sensor.solax_battery_capacity",
+                      "name": "SOC"
+                    }
+                  ],
+                  "title": "Battery Statistics",
+                  "style": {
+                    "top": "40%",
+                    "left": "30%",
+                    "width": "20%"
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.solax_energy_dashboard_solax_grid_power",
+                      "name": "Grid Power",
+                      "secondary_info": "last_updated"
+                    },
+                    {
+                      "entity": "sensor.solax_battery_voltage_charge",
+                      "name": "Injection Voltage"
+                    },
+                    {
+                      "entity": "sensor.solax_inverter_frequency",
+                      "name": "Injection Frequency"
+                    },
+                    {
+                      "entity": "sensor.solax_house_load",
+                      "name": "Output Power"
+                    }
+                  ],
+                  "title": "Inverter Statistics",
+                  "view_layout": {
+                    "position": "sidebar"
+                  },
+                  "show_header_toggle": false
+                }
+              ],
+              "columns": 3
+            },
+            {
+              "square": true,
+              "type": "grid",
+              "cards": [
+                {
+                  "color": "none",
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.solax_pv_power_total",
+                      "name": "Solar Power"
+                    },
+                    {
+                      "entity": "sensor.total_house_load",
+                      "name": "House Load"
+                    },
+                    {
+                      "entity": "sensor.total_house_soc",
+                      "name": "House SOC"
+                    }
+                  ],
+                  "title": "House Statistics",
+                  "show_header_toggle": false
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.garage_gx_device_dc_battery_voltage",
+                      "name": "Voltage"
+                    },
+                    {
+                      "entity": "sensor.garage_gx_device_dc_battery_current",
+                      "name": "Current"
+                    },
+                    {
+                      "entity": "sensor.gx_device_dc_battery_state",
+                      "name": "State"
+                    },
+                    {
+                      "entity": "sensor.gx_device_dc_battery_power",
+                      "name": "Power"
+                    },
+                    {
+                      "entity": "sensor.garage_gx_device_dc_battery_charge",
+                      "name": "SOC"
+                    }
+                  ],
+                  "title": "Victron Battery"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.garage_gx_device_grid_power_l1",
+                      "name": "AC Power",
+                      "secondary_info": "last_updated"
+                    },
+                    {
+                      "type": "custom:template-entity-row",
+                      "entity": "number.garage_multiplus_ii_48_3000_35_32_id_261_ac_power_setpoint_l1",
+                      "name": "Output Power"
+                    },
+                    {
+                      "entity": "sensor.garage_multiplus_ii_48_3000_35_32_id_261_output_voltage_l1",
+                      "name": "Injection Voltage"
+                    },
+                    {
+                      "entity": "sensor.garage_multiplus_ii_48_3000_35_32_id_261_output_frequency_l1",
+                      "name": "Injection Frequency"
+                    },
+                    {
+                      "entity": "sensor.garage_multiplus_ii_48_3000_35_32_id_261_output_power_l1",
+                      "name": "UPS Load"
+                    }
+                  ],
+                  "title": "Victron Inverter",
+                  "view_layout": {
+                    "position": "sidebar"
+                  },
+                  "show_header_toggle": false
+                }
+              ],
+              "columns": 3
+            },
+            {
+              "type": "custom:apexcharts-card",
+              "update_interval": "30m",
+              "now": {
+                "show": true
+              },
+              "span": {
+                "start": "day"
+              },
+              "graph_span": "1d",
+              "all_series_config": {
+                "stroke_width": 1,
+                "type": "line",
+                "curve": "stepline",
+                "group_by": {
+                  "func": "avg",
+                  "duration": "15m"
+                },
+                "show": {
+                  "extremas": true,
+                  "legend_value": false
+                }
+              },
+              "series": [
+                {
+                  "entity": "sensor.edp_trihorario_price",
+                  "name": "Price",
+                  "data_generator": "return Object.entries(entity.attributes.today_hours)\n  .filter(([dateString, price]) => price !== null)\n  .map(([dateString, price]) => [ new Date(dateString).getTime(), price ])\n"
+                },
+                {
+                  "entity": "sensor.edp_trihorario_price",
+                  "name": "Price",
+                  "data_generator": "if (!entity.attributes.tomorrow_hours) return []; return Object.entries(entity.attributes.tomorrow_hours)\n  .filter(([dateString, price]) => price !== null)\n  .map(([dateString, price]) => [ new Date(dateString).getTime(), price ])\n",
+                  "offset": "+1d"
+                }
+              ],
+              "yaxis": [
+                {
+                  "id": "price",
+                  "align_to": 10
+                }
+              ],
+              "view_layout": {
+                "position": "main"
+              }
+            },
+            {
+              "color": "none",
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_datetime.solax_night_charge_start",
+                  "name": "Night Charge start"
+                },
+                {
+                  "entity": "input_datetime.solax_night_charge_stop",
+                  "name": "Night Charge stop"
+                },
+                {
+                  "entity": "input_datetime.solax_day_charge_start",
+                  "name": "Day Charge start"
+                },
+                {
+                  "entity": "input_datetime.solax_day_charge_stop",
+                  "name": "Day Charge stop"
+                },
+                {
+                  "entity": "input_datetime.solax_night_charge_cheap_start",
+                  "name": "Cheap Night charge start"
+                },
+                {
+                  "entity": "input_datetime.solax_night_charge_cheap_stop",
+                  "name": "Cheap Night charge stop"
+                },
+                {
+                  "entity": "input_datetime.omie_cheap_start",
+                  "name": "Cheap Start"
+                },
+                {
+                  "entity": "input_datetime.omie_cheap_stop",
+                  "name": "Cheap Stop"
+                }
+              ],
+              "title": "Charging dates",
+              "show_header_toggle": false,
+              "footer": {
+                "type": "buttons",
+                "entities": []
+              },
+              "view_layout": {
+                "position": "sidebar"
+              }
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ]
+        },
+        {
+          "icon": "mdi:ev-station",
+          "title": "C Evolution",
+          "badges": [],
+          "cards": [
+            {
+              "type": "vertical-stack",
+              "cards": [
+                {
+                  "type": "gauge",
+                  "entity": "sensor.box_ve1_power",
+                  "needle": true,
+                  "unit": "W",
+                  "name": {
+                    "type": "entity"
+                  },
+                  "max": 3300
+                },
+                {
+                  "type": "entity",
+                  "entity": "sensor.box_ve1_temperature",
+                  "name": "Switch Temperature"
+                },
+                {
+                  "type": "entity",
+                  "entity": "sensor.box_ve1_voltage",
+                  "name": {
+                    "type": "entity"
+                  },
+                  "unit": "V"
+                },
+                {
+                  "type": "entity",
+                  "entity": "sensor.box_ve1_current",
+                  "name": {
+                    "type": "entity"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.box_ve1_bmw_energy_yearly"
+                },
+                {
+                  "entity": "sensor.bmw_ce_monthly_energy_peak"
+                },
+                {
+                  "entity": "sensor.bmw_ce_monthly_energy_offpeak"
+                },
+                {
+                  "entity": "sensor.bmw_energy_cost_monthly"
+                },
+                {
+                  "entity": "sensor.bmw_energy_cost_daily"
+                }
+              ],
+              "title": "BMW Evolution Consumption"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_datetime.automation_ev_charge_start",
+                  "name": "Long Charge start"
+                },
+                {
+                  "entity": "input_datetime.automation_ev_charge_stop",
+                  "name": "Long Charge stop"
+                },
+                {
+                  "entity": "input_datetime.automation_cheap_ev_charge_start",
+                  "name": "Short Charge start"
+                },
+                {
+                  "entity": "input_datetime.automation_cheap_ev_charge_stop",
+                  "name": "Short Charge stop"
+                }
+              ],
+              "title": "BMW Charging dates",
+              "show_header_toggle": false,
+              "state_color": false,
+              "footer": {
+                "type": "buttons",
+                "entities": []
+              }
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.home_office_monday"
+                },
+                {
+                  "entity": "input_boolean.home_office_tuesday"
+                },
+                {
+                  "entity": "input_boolean.home_office_wednesday"
+                },
+                {
+                  "entity": "input_boolean.home_office_thursday"
+                },
+                {
+                  "entity": "input_boolean.home_office_friday"
+                }
+              ],
+              "title": "Home Office days",
+              "show_header_toggle": false,
+              "state_color": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_boolean.automatic_ve_switch"
+                },
+                {
+                  "entity": "input_boolean.manual_override_ve_switch"
+                },
+                {
+                  "entity": "input_boolean.grid_injection_avoidance_ve_switch"
+                }
+              ]
+            },
+            {
+              "type": "history-graph",
+              "entities": [
+                {
+                  "entity": "sensor.box_ve1_power"
+                }
+              ],
+              "title": "Historic Power",
+              "hours_to_show": 8
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.ev_charger"
+                },
+                {
+                  "entity": "number.ev_charger_charging_current"
+                },
+                {
+                  "entity": "select.ev_charger_charging_mode"
+                },
+                {
+                  "entity": "sensor.ev_charger_status"
+                },
+                {
+                  "entity": "sensor.ev_charger_temperature"
+                },
+                {
+                  "entity": "sensor.ev_charger_current_a"
+                }
+              ]
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ],
+          "type": "sections",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_boolean.home_office_monday"
+                    },
+                    {
+                      "entity": "input_boolean.home_office_tuesday"
+                    },
+                    {
+                      "entity": "input_boolean.home_office_wednesday"
+                    },
+                    {
+                      "entity": "input_boolean.home_office_thursday"
+                    },
+                    {
+                      "entity": "input_boolean.home_office_friday"
+                    }
+                  ],
+                  "title": "Home Office days",
+                  "show_header_toggle": false,
+                  "state_color": true
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "gauge",
+                      "entity": "sensor.box_ve1_power",
+                      "needle": true,
+                      "unit": "W",
+                      "name": "BMW",
+                      "max": 3300
+                    },
+                    {
+                      "type": "glance",
+                      "entities": [
+                        {
+                          "entity": "sensor.ev_charger_temperature",
+                          "name": {
+                            "type": "entity"
+                          }
+                        },
+                        {
+                          "entity": "sensor.ev_charger_voltage_a",
+                          "name": {
+                            "type": "entity"
+                          },
+                          "show_last_changed": false
+                        },
+                        {
+                          "entity": "sensor.ev_charger_current_a",
+                          "name": {
+                            "type": "entity"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": 12,
+                    "rows": "auto"
+                  }
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "tap_action": {
+                    "action": "call-service",
+                    "service": "input_boolean.toggle",
+                    "target": {
+                      "entity_id": "input_boolean.manual_override_ve_switch"
+                    }
+                  },
+                  "entity": "switch.ev_charger",
+                  "show_state": true,
+                  "name": "BMW C Evolution Charger",
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "grid_options": {
+                    "columns": 12,
+                    "rows": 4
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_boolean.automatic_ve_switch"
+                    },
+                    {
+                      "entity": "input_boolean.manual_override_ve_switch"
+                    },
+                    {
+                      "entity": "input_boolean.grid_injection_avoidance_ve_switch"
+                    },
+                    {
+                      "entity": "input_boolean.ev1_master_switch"
+                    },
+                    {
+                      "entity": "input_number.ev1_suggested_current"
+                    }
+                  ],
+                  "grid_options": {
+                    "rows": 4,
+                    "columns": 12
+                  },
+                  "show_header_toggle": false,
+                  "state_color": false
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_datetime.automation_ev_charge_start",
+                      "name": "Long Charge start"
+                    },
+                    {
+                      "entity": "input_datetime.automation_ev_charge_stop",
+                      "name": "Long Charge stop"
+                    },
+                    {
+                      "entity": "input_datetime.automation_cheap_ev_charge_start",
+                      "name": "Short Charge start"
+                    },
+                    {
+                      "entity": "input_datetime.automation_cheap_ev_charge_stop",
+                      "name": "Short Charge stop"
+                    }
+                  ],
+                  "title": "BMW Charging dates",
+                  "show_header_toggle": false,
+                  "state_color": false,
+                  "footer": {
+                    "type": "buttons",
+                    "entities": []
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.bmw_daily_energy",
+                      "name": "Daily Energy"
+                    },
+                    {
+                      "entity": "sensor.total_bmw_ce_energy_cost",
+                      "name": "Total BMW Energy Cost"
+                    },
+                    {
+                      "entity": "sensor.bmw_energy_cost_monthly"
+                    },
+                    {
+                      "entity": "sensor.bmw_energy_cost_daily"
+                    },
+                    {
+                      "entity": "sensor.current_ve_energy_cost",
+                      "name": "BMW Current Cost"
+                    }
+                  ],
+                  "title": "BMW Evolution Consumption"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "switch.ev_charger"
+                    },
+                    {
+                      "entity": "number.ev_charger_charging_current"
+                    },
+                    {
+                      "entity": "sensor.ev_charger_status"
+                    },
+                    {
+                      "entity": "sensor.ev_charger_temperature"
+                    },
+                    {
+                      "entity": "sensor.ev_charger_current_a"
+                    }
+                  ]
+                },
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "number.bmw_power"
+                    }
+                  ],
+                  "title": "Historic Power",
+                  "hours_to_show": 24
+                }
+              ],
+              "column_span": 2
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "New section"
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "tap_action": {
+                    "action": "perform-action",
+                    "target": {
+                      "entity_id": "input_boolean.manual_override_ve2_switch"
+                    },
+                    "perform_action": "input_boolean.toggle",
+                    "data": {}
+                  },
+                  "entity": "switch.ev_charger_2",
+                  "show_state": true,
+                  "name": "DACIA Charger",
+                  "hold_action": {
+                    "action": "none"
+                  },
+                  "grid_options": {
+                    "columns": 12,
+                    "rows": 4
+                  },
+                  "icon": "mdi:car-arrow-right"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_boolean.automatic_ve2_switch"
+                    },
+                    {
+                      "entity": "input_boolean.manual_override_ve2_switch"
+                    },
+                    {
+                      "entity": "input_boolean.grid_injection_avoidance_ve2_switch"
+                    },
+                    {
+                      "entity": "input_boolean.ev2_master_switch"
+                    },
+                    {
+                      "entity": "input_number.ev2_suggested_current"
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": 12,
+                    "rows": 4
+                  }
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "glance",
+                      "entities": [
+                        {
+                          "entity": "sensor.ev_charger_2_voltage_a",
+                          "name": {
+                            "type": "entity"
+                          },
+                          "show_last_changed": false
+                        },
+                        {
+                          "entity": "sensor.ev_charger_2_current_a",
+                          "name": {
+                            "type": "entity"
+                          }
+                        },
+                        {
+                          "entity": "sensor.ev_charger_2_temperature"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "gauge",
+                      "needle": true,
+                      "unit": "W",
+                      "max": 4100,
+                      "entity": "sensor.box_ve2_power",
+                      "name": "Power"
+                    }
+                  ],
+                  "grid_options": {
+                    "columns": 12,
+                    "rows": "auto"
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "switch.ev_charger_2",
+                      "name": "Dacia Charger"
+                    },
+                    {
+                      "entity": "number.ev_charger_2_charging_current",
+                      "name": "Set Current"
+                    },
+                    {
+                      "entity": "sensor.ev_charger_2_status",
+                      "name": "Status"
+                    },
+                    {
+                      "entity": "sensor.ev_charger_2_temperature",
+                      "name": "Temperature"
+                    },
+                    {
+                      "entity": "sensor.ev_charger_2_current_a",
+                      "name": "Current"
+                    }
+                  ],
+                  "state_color": false
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_select.ev2_power_monday"
+                    },
+                    {
+                      "entity": "input_select.ev2_power_tuesday"
+                    },
+                    {
+                      "entity": "input_select.ev2_power_wednesday"
+                    },
+                    {
+                      "entity": "input_select.ev2_power_thursday"
+                    },
+                    {
+                      "entity": "input_select.ev2_power_friday"
+                    },
+                    {
+                      "entity": "input_select.ev2_power_saturday"
+                    },
+                    {
+                      "entity": "input_select.ev2_power_sunday"
+                    }
+                  ],
+                  "title": "Dacia Daily Power Levels",
+                  "show_header_toggle": false,
+                  "state_color": true
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.ev2_switch_dacia_energy_yearly",
+                      "name": "DACIA "
+                    },
+                    {
+                      "entity": "sensor.dacia_yearly_cost"
+                    },
+                    {
+                      "entity": "sensor.ev2_switch_dacia_energy_monthly",
+                      "name": "DACIA Energy Monthly"
+                    },
+                    {
+                      "entity": "sensor.dacia_monthly_cost"
+                    },
+                    {
+                      "entity": "sensor.ev2_switch_dacia_energy_daily",
+                      "name": "DACIA Energy Daily"
+                    },
+                    {
+                      "entity": "sensor.current_ve2_energy_cost",
+                      "name": "DACIA Current Cost"
+                    }
+                  ],
+                  "title": "DACIA Consumption"
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_datetime.automation_ev2_charge_start",
+                      "name": "Long Charge start"
+                    },
+                    {
+                      "entity": "input_datetime.automation_ev2_charge_stop",
+                      "name": "Long Charge stop"
+                    },
+                    {
+                      "entity": "input_datetime.automation_cheap_ev2_charge_start",
+                      "name": "Short Charge start"
+                    },
+                    {
+                      "entity": "input_datetime.automation_cheap_ev2_charge_stop",
+                      "name": "Short Charge stop"
+                    }
+                  ],
+                  "title": "Dacia Charging dates",
+                  "show_header_toggle": false,
+                  "state_color": false,
+                  "footer": {
+                    "type": "buttons",
+                    "entities": []
+                  }
+                },
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.ev_charger_2_power_a"
+                    }
+                  ],
+                  "title": "Historic Power",
+                  "hours_to_show": 24
+                }
+              ],
+              "column_span": 2
+            }
+          ]
+        },
+        {
+          "title": "teste",
+          "path": "teste",
+          "badges": [],
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.0x00158d000447584c_occupancy",
+                  "name": "Escadas Garagem",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "binary_sensor.0x00158d000414486f_occupancy",
+                  "name": "Escadas Quartos",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "binary_sensor.0x00158d0004103956_occupancy",
+                  "name": "Sala Jantar",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "binary_sensor.0x00158d00036c1e1f_occupancy",
+                  "name": "Sala Estar",
+                  "secondary_info": "last-changed"
+                }
+              ],
+              "title": "Movimento"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.janela_frente_1_contact"
+                },
+                {
+                  "entity": "binary_sensor.janela_frente_2_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Frente 2"
+                },
+                {
+                  "entity": "binary_sensor.janela_lara_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Qt Lara"
+                },
+                {
+                  "entity": "binary_sensor.janela_lucas_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Qt Lucas"
+                },
+                {
+                  "entity": "binary_sensor.janela_banho_suite_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Banho Suite"
+                },
+                {
+                  "entity": "binary_sensor.janela_suite_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Suite"
+                },
+                {
+                  "entity": "binary_sensor.janela_grande_escritorio_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Escritorio"
+                },
+                {
+                  "entity": "binary_sensor.janela_printers_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Janela Printers"
+                },
+                {
+                  "entity": "binary_sensor.porta_garagem_garage_door_contact",
+                  "secondary_info": "last-changed",
+                  "name": "Portão Garagem"
+                },
+                {
+                  "entity": "binary_sensor.porta_frente_contact"
+                }
+              ],
+              "title": "Portas",
+              "show_header_toggle": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.movimento_escadas_garagem_illuminance",
+                  "name": "Escadas Garagem",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "sensor.0x00158d000414486f_illuminance",
+                  "name": "Escadas Quartos",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "sensor.movimento_sala_estar_illuminance",
+                  "name": "Sala Jantar",
+                  "secondary_info": "last-changed"
+                },
+                {
+                  "entity": "sensor.movimento_sala_estar_illuminance",
+                  "name": "Sala Estar",
+                  "secondary_info": "last-changed"
+                }
+              ],
+              "title": "Luminosidade"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "switch.switch_escadas_garagem"
+                },
+                {
+                  "entity": "switch.tomada_aqs"
+                },
+                {
+                  "entity": "switch.desumificador_lara"
+                },
+                {
+                  "entity": "switch.tomada_ds2"
+                },
+                {
+                  "entity": "switch.tomada_prt"
+                },
+                {
+                  "entity": "switch.tomada_srv"
+                },
+                {
+                  "entity": "switch.switch_quarto_lucas"
+                },
+                {
+                  "entity": "switch.switch_quarto_lara"
+                },
+                {
+                  "entity": "switch.box_ve1"
+                }
+              ],
+              "title": "Interruptores",
+              "show_header_toggle": false,
+              "state_color": true
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.weatherstation_outdoor_temperature",
+                  "name": "Exterior",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.weatherstation_feels_like_temperature",
+                  "name": "Sensação ao Vento Exterior",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lara_temperature",
+                  "name": "Quarto Lara",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lucas_temperature",
+                  "name": "Quarto Lucas",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_banho_1_temperature",
+                  "name": "Banho Suite",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_banho_2_temperature",
+                  "name": "Banho Banho",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_suite_temperature",
+                  "name": "Suite",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_sala_temperature",
+                  "name": "Sala",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_cozinha_temperature",
+                  "name": "Cozinha",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.humidade_prt_temperature",
+                  "name": "Impressoras",
+                  "secondary_info": "last-updated"
+                },
+                {
+                  "entity": "sensor.ambiente_escritorio_temperature",
+                  "name": "Escritorio",
+                  "secondary_info": "last-updated"
+                }
+              ],
+              "title": "Temperatura"
+            },
+            {
+              "type": "custom:hue-like-light-card",
+              "entities": [
+                "light.0x00124b001efe4bfd"
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.humidade_banho_2_humidity"
+                },
+                {
+                  "entity": "sensor.humidade_prt_humidity"
+                },
+                {
+                  "entity": "sensor.weatherstation_humidity"
+                },
+                {
+                  "entity": "sensor.humidade_banho_1_humidity"
+                },
+                {
+                  "entity": "sensor.ambiente_sala_humidity"
+                },
+                {
+                  "entity": "sensor.weatherstation_humidity"
+                },
+                {
+                  "entity": "sensor.ambiente_cozinha_humidity"
+                },
+                {
+                  "entity": "sensor.ambiente_escritorio_humidity"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lara_humidity"
+                },
+                {
+                  "entity": "sensor.ambiente_quarto_lucas_humidity"
+                }
+              ]
+            },
+            {
+              "type": "vertical-stack",
+              "title": "Solar Shading Debug",
+              "cards": [
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "entities",
+                      "title": "☀️ Environment Data",
+                      "entities": [
+                        {
+                          "entity": "sensor.weatherstation_solar_radiation",
+                          "name": "Current Solar Radiation (W/m²)"
+                        },
+                        {
+                          "entity": "sensor.weatherstation_wind_gust",
+                          "name": "Live Wind Gust Speed"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "sun.sun",
+                          "attribute": "elevation",
+                          "name": "Sun Elevation"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "sun.sun",
+                          "attribute": "azimuth",
+                          "name": "Sun Azimuth"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "markdown",
+                      "title": "🌡️ Dynamic Shading Engine Status",
+                      "content": "{% set el_sun = state_attr('sun.sun', 'elevation') | float(0) %} {% set master = states('input_boolean.shades_master_switch') %} {% set heat_shield = states('input_boolean.hot_day_heat_shield') %} <div style=\"font-size: 12px; line-height: 1.4;\"> Zone Control Gateways:<br> • NE Unobstructed (Lara, Lucas) ➔ Active above 5° Sun Elevation<br> • NE Obstructed (Patio, Dinner, Kitchen) ➔ Active above 18° Sun Elevation<br> • SW/NW Standard & Awning (Suite, Bath, Stairs) ➔ Active above 9° Sun Elevation\n<hr style=\"border: 0; border-top: 1px solid var(--divider-color); margin: 8px 0;\">\nCurrent Tracking Metrics:<br> • Sun Elevation: {{ el_sun | round(1) }}°<br> • Heat Shield Status: {{ 'ENGAGED (One-Way Locking)' if heat_shield == 'on' else 'IDLE (Standard Light Tracking)' }}\n<hr style=\"border: 0; border-top: 1px solid var(--divider-color); margin: 8px 0;\">\nSystem Verdict:<br> {% if master == 'off' %}\n  🛑 *System Disabled: Master Switch is OFF.*\n{% elif heat_shield == 'on' %}\n  🔥 *Heat Shield Mode Active: Blinds will only lower further to block solar gains.*\n{% else %}\n  🍃 *Standard Mode Active: Blinds dynamically track shadow line positions bidirectionally.*\n{% endif %} </div>"
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "entities",
+                      "title": "📍 Patio & Morning Zone (NE - 55°)",
+                      "entities": [
+                        {
+                          "entity": "sensor.optimal_shade_position_patio",
+                          "name": "MATH: NE Façade Target"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Physical Covers"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_patio",
+                          "attribute": "current_position",
+                          "name": "Patio Position (Cutoff: 18°)"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_dinner",
+                          "attribute": "current_position",
+                          "name": "Dinner Position (Cutoff: 18°)"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_kitchen",
+                          "attribute": "current_position",
+                          "name": "Kitchen Position (Cutoff: 18°)"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_lara",
+                          "attribute": "current_position",
+                          "name": "Lara Position (Cutoff: 5°)"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_lucas",
+                          "attribute": "current_position",
+                          "name": "Lucas Position (Cutoff: 5°)"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Human Override Locks"
+                        },
+                        {
+                          "entity": "input_boolean.patio_shades_manual_override"
+                        },
+                        {
+                          "entity": "input_boolean.dinner_shades_manual_override"
+                        },
+                        {
+                          "entity": "input_boolean.kitchen_shades_manual_override"
+                        },
+                        {
+                          "entity": "input_boolean.lara_shades_manual_override"
+                        },
+                        {
+                          "entity": "input_boolean.lucas_shades_manual_override"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "entities",
+                      "title": "📍 Master Suite Zone (SW - 235°)",
+                      "entities": [
+                        {
+                          "entity": "sensor.optimal_shade_position_master_suite",
+                          "name": "MATH: Master Suite Target"
+                        },
+                        {
+                          "entity": "sensor.optimal_shade_position_master_bathroom",
+                          "name": "MATH: Bathroom Target"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Physical Covers"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_suite",
+                          "attribute": "current_position",
+                          "name": "Suite Position (Cutoff: 9°)"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_master_bathroom",
+                          "attribute": "current_position",
+                          "name": "Bathroom Position (Cutoff: 9°)"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Human Override Locks"
+                        },
+                        {
+                          "entity": "input_boolean.master_suite_shades_manual_override"
+                        },
+                        {
+                          "entity": "input_boolean.master_bathroom_shades_manual_override"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "entities",
+                      "title": "📍 Lateral Zone (NW - 325°)",
+                      "entities": [
+                        {
+                          "entity": "sensor.optimal_shade_position_lateral",
+                          "name": "MATH: Lateral Target"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Physical Covers"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_stairs",
+                          "attribute": "current_position",
+                          "name": "Stairs Position (Cutoff: 9°)"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Human Override Locks"
+                        },
+                        {
+                          "entity": "input_boolean.lateral_shades_manual_override"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "entities",
+                      "title": "📍 Entrada Awning (SW - 235°)",
+                      "entities": [
+                        {
+                          "entity": "sensor.optimal_shade_position_entrada_cover",
+                          "name": "MATH: Awning Target"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Physical Covers"
+                        },
+                        {
+                          "type": "attribute",
+                          "entity": "cover.blinds_front_garden",
+                          "attribute": "current_position",
+                          "name": "Awning Position (Cutoff: 9° + Wind)"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Human Override Locks"
+                        },
+                        {
+                          "entity": "input_boolean.entrada_cover_manual_override"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "entities",
+                      "title": "⚙️ System Controls",
+                      "entities": [
+                        {
+                          "entity": "input_boolean.shades_master_switch",
+                          "name": "MASTER SWITCH"
+                        },
+                        {
+                          "entity": "input_boolean.hot_day_heat_shield",
+                          "name": "HEAT SHIELD RATCHET MODE"
+                        },
+                        {
+                          "entity": "automation.shades_auto_toggle_hot_day_mode",
+                          "name": "Heat Shield Automatic Manager"
+                        },
+                        {
+                          "entity": "automation.shades_manual_enable_system",
+                          "name": "Manual Start System (Morning)"
+                        },
+                        {
+                          "entity": "automation.shades_disable_system_at_sunset",
+                          "name": "Disable & Reset (Night)"
+                        },
+                        {
+                          "entity": "automation.climate_dynamic_solar_shading",
+                          "name": "Main 10-Min Tracker Controller"
+                        },
+                        {
+                          "entity": "automation.shades_detect_manual_override",
+                          "name": "Manual Override Detector"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ]
+        },
+        {
+          "type": "sections",
+          "title": "Cost/Savings",
+          "path": "cost-savings",
+          "icon": "mdi:currency-eur",
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:apexcharts-card",
+                  "graph_span": "30d",
+                  "stacked": true,
+                  "header": {
+                    "show": true,
+                    "title": "Energy Savings/Costs (Last 30 Days)",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.total_energy_cost_daily",
+                      "name": "Cost",
+                      "yaxis_id": "first",
+                      "type": "column",
+                      "float_precision": 2,
+                      "statistics": {
+                        "type": "state",
+                        "period": "day",
+                        "align": "end"
+                      },
+                      "show": {
+                        "in_header": false,
+                        "legend_value": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.solar_system_savings_daily",
+                      "name": "Savings",
+                      "yaxis_id": "first",
+                      "type": "column",
+                      "float_precision": 2,
+                      "statistics": {
+                        "type": "state",
+                        "period": "day",
+                        "align": "end"
+                      },
+                      "show": {
+                        "in_header": false,
+                        "legend_value": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.total_energy_cost_monthly",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "Cost (Current)",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.solar_system_savings_monthly",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "Savings (Current)",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.total_energy_cost_monthly",
+                      "attribute": "last_period",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "Cost (Last Month)",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.solar_system_savings_monthly",
+                      "attribute": "last_period",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "Savings (Last Month)",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    }
+                  ],
+                  "yaxis": [
+                    {
+                      "id": "first",
+                      "decimals": 2,
+                      "min": 0,
+                      "apex_config": {
+                        "tickAmount": 2,
+                        "logarithmic": false
+                      }
+                    }
+                  ],
+                  "apex_config": {
+                    "annotations": {
+                      "xaxis": [
+                        {
+                          "x": "EVAL:(function(){ let d = new Date(); if(d.getDate() < 20) { d.setMonth(d.getMonth()-1); } d.setDate(20); d.setHours(0,0,0,0); return d.getTime(); })()",
+                          "borderColor": "#FF5722",
+                          "strokeDashArray": 4,
+                          "borderWidth": 2,
+                          "label": {
+                            "style": {
+                              "background": "#FF5722",
+                              "color": "#ffffff"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "graph_span": "30d",
+                  "stacked": false,
+                  "header": {
+                    "show": true,
+                    "title": "Energy Costs (Last 30 Days)",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.other_energy_costs_daily",
+                      "name": "Other",
+                      "yaxis_id": "first",
+                      "type": "column",
+                      "float_precision": 2,
+                      "statistics": {
+                        "type": "state",
+                        "period": "day",
+                        "align": "end"
+                      },
+                      "group_by": {
+                        "func": "max",
+                        "duration": "1d"
+                      },
+                      "show": {
+                        "in_header": false,
+                        "legend_value": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.bmw_energy_cost_daily",
+                      "name": "BMW CE",
+                      "yaxis_id": "first",
+                      "type": "column",
+                      "float_precision": 2,
+                      "statistics": {
+                        "type": "state",
+                        "period": "day",
+                        "align": "end"
+                      },
+                      "group_by": {
+                        "func": "max",
+                        "duration": "1d"
+                      },
+                      "show": {
+                        "in_header": false,
+                        "legend_value": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.aqs_energy_cost_daily",
+                      "name": "AQS",
+                      "yaxis_id": "first",
+                      "type": "column",
+                      "float_precision": 2,
+                      "statistics": {
+                        "type": "state",
+                        "period": "day",
+                        "align": "end"
+                      },
+                      "group_by": {
+                        "func": "max",
+                        "duration": "1d"
+                      },
+                      "show": {
+                        "in_header": false,
+                        "legend_value": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.dacia_daily_cost",
+                      "name": "Dacia",
+                      "yaxis_id": "first",
+                      "type": "column",
+                      "float_precision": 2,
+                      "statistics": {
+                        "type": "state",
+                        "period": "day",
+                        "align": "end"
+                      },
+                      "group_by": {
+                        "func": "max",
+                        "duration": "1d"
+                      },
+                      "show": {
+                        "in_header": false,
+                        "legend_value": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.other_energy_costs_monthly",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "Other",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.aqs_energy_cost_monthly",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "AQS",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.bmw_energy_cost_monthly",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "BMW CE",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    },
+                    {
+                      "entity": "sensor.dacia_monthly_cost",
+                      "unit": "€",
+                      "yaxis_id": "second",
+                      "name": "Dacia",
+                      "float_precision": 2,
+                      "show": {
+                        "legend_value": false,
+                        "in_chart": false
+                      }
+                    }
+                  ],
+                  "yaxis": [
+                    {
+                      "id": "first",
+                      "decimals": 2,
+                      "min": 0,
+                      "apex_config": {
+                        "tickAmount": 10,
+                        "logarithmic": false
+                      }
+                    },
+                    {
+                      "id": "second",
+                      "show": false
+                    }
+                  ],
+                  "apex_config": {
+                    "annotations": {
+                      "xaxis": [
+                        {
+                          "x": "EVAL:(function(){ let d = new Date(); if(d.getDate() < 20) { d.setMonth(d.getMonth()-1); } d.setDate(20); d.setHours(0,0,0,0); return d.getTime(); })()",
+                          "borderColor": "#FF5722",
+                          "strokeDashArray": 4,
+                          "borderWidth": 2,
+                          "label": {
+                            "style": {
+                              "background": "#FF5722",
+                              "color": "#ffffff"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Energy Price"
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "update_interval": "30m",
+                  "now": {
+                    "show": false
+                  },
+                  "span": {
+                    "start": "day"
+                  },
+                  "graph_span": "1d",
+                  "all_series_config": {
+                    "stroke_width": 1,
+                    "type": "line",
+                    "curve": "stepline",
+                    "group_by": {
+                      "func": "avg",
+                      "duration": "15m"
+                    },
+                    "show": {
+                      "extremas": true,
+                      "legend_value": false
+                    }
+                  },
+                  "series": [
+                    {
+                      "entity": "sensor.edp_trihorario_price",
+                      "name": "Price",
+                      "data_generator": "return Object.entries(entity.attributes.today_hours)\n  .filter(([dateString, price]) => price !== null)\n  .map(([dateString, price]) => [ new Date(dateString).getTime(), price ])\n"
+                    },
+                    {
+                      "entity": "sensor.edp_trihorario_price",
+                      "name": "Price",
+                      "data_generator": "if (!entity.attributes.tomorrow_hours) return []; return Object.entries(entity.attributes.tomorrow_hours)\n  .filter(([dateString, price]) => price !== null)\n  .map(([dateString, price]) => [ new Date(dateString).getTime(), price ])\n",
+                      "offset": "+1d"
+                    }
+                  ],
+                  "yaxis": [
+                    {
+                      "id": "price",
+                      "align_to": 10
+                    }
+                  ],
+                  "view_layout": {
+                    "position": "main"
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.price_of_energy_saved",
+                  "name": "Energy Cost Savings",
+                  "layout_options": {
+                    "grid_columns": 4,
+                    "grid_rows": 1
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.coopernico_current_price",
+                  "name": "Energy Cost from Grid",
+                  "layout_options": {
+                    "grid_columns": 4,
+                    "grid_rows": 1
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.current_total_energy_savings",
+                  "name": "Grid Energy Cost Saved",
+                  "layout_options": {
+                    "grid_columns": 4,
+                    "grid_rows": 1
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.current_total_energy_cost",
+                  "name": "Grid Energy Cost Spent",
+                  "layout_options": {
+                    "grid_columns": 4,
+                    "grid_rows": 1
+                  }
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.monthly_energy_offpeak",
+                      "name": "Consumo mensal \"Fora de Pico\""
+                    },
+                    {
+                      "entity": "sensor.monthly_energy_peak",
+                      "name": "Consumo mensal \"Pico\""
+                    },
+                    {
+                      "entity": "sensor.daily_energy_offpeak",
+                      "name": "Consumo diário \"Fora de Pico\""
+                    },
+                    {
+                      "entity": "sensor.daily_energy_peak",
+                      "name": "Consumo diário \"Pico\""
+                    },
+                    {
+                      "entity": "sensor.solar_system_savings_monthly",
+                      "name": "Poupança Total mensal"
+                    },
+                    {
+                      "entity": "sensor.total_energy_cost_monthly",
+                      "name": "Custo Total mensal"
+                    },
+                    {
+                      "entity": "sensor.total_energy_cost_daily"
+                    },
+                    {
+                      "entity": "sensor.solar_system_savings_daily",
+                      "name": "Poupança Total diária"
+                    },
+                    {
+                      "entity": "sensor.bmw_energy_cost_monthly",
+                      "name": "Custo \"BMW evolution\" mensal"
+                    },
+                    {
+                      "entity": "sensor.aqs_energy_cost_monthly",
+                      "name": "Custo AQS mensal"
+                    },
+                    {
+                      "entity": "sensor.dacia_monthly_cost"
+                    }
+                  ],
+                  "view_layout": {
+                    "position": "sidebar"
+                  },
+                  "title": "Contadores"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.price_of_energy_saved"
+                    },
+                    {
+                      "entity": "sensor.solax_house_load"
+                    },
+                    {
+                      "entity": "sensor.coopernico_current_price"
+                    }
+                  ]
+                },
+                {
+                  "type": "history-graph",
+                  "entities": [
+                    {
+                      "entity": "sensor.total_energy_savings"
+                    },
+                    {
+                      "entity": "sensor.total_energy_cost"
+                    },
+                    {
+                      "entity": "sensor.solar_system_savings_daily"
+                    }
+                  ],
+                  "hours_to_show": 1440
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "panel",
+          "title": "Energy Cost",
+          "path": "energy-cost",
+          "cards": [
+            {
+              "type": "custom:plotly-graph",
+              "title": "OMIE Spot Price & Charge Windows (48h)",
+              "layout": {
+                "legend": {
+                  "orientation": "h",
+                  "yanchor": "top",
+                  "y": -0.05,
+                  "xanchor": "center",
+                  "x": 0.5
+                },
+                "xaxis": {
+                  "tickformat": "%H:%M",
+                  "range": [
+                    "$fn () => new Date(new Date().setHours(0,0,0,0))",
+                    "$fn () => new Date(new Date().setHours(23,59,59,999) + 86400000)"
+                  ]
+                },
+                "yaxis2": {
+                  "visible": false,
+                  "fixedrange": true,
+                  "range": [
+                    0,
+                    1
+                  ],
+                  "overlaying": "y"
+                },
+                "shapes": [
+                  {
+                    "type": "line",
+                    "xref": "x",
+                    "yref": "paper",
+                    "x0": "$fn () => new Date()",
+                    "x1": "$fn () => new Date()",
+                    "y0": 0,
+                    "y1": 1,
+                    "line": {
+                      "color": "white",
+                      "width": 2,
+                      "dash": "dash"
+                    }
+                  }
+                ]
+              },
+              "entities": [
+                {
+                  "entity": "sensor.template_coopernico_spot_price_bihorario",
+                  "name": "Today",
+                  "line": {
+                    "shape": "hv",
+                    "color": "#FEB019"
+                  },
+                  "x": "$fn ({ hass }) => Object.keys(hass.states['sensor.template_coopernico_spot_price_bihorario']?.attributes.today_hours || {}).map(d => new Date(d))",
+                  "y": "$fn ({ hass }) => Object.values(hass.states['sensor.template_coopernico_spot_price_bihorario']?.attributes.today_hours || {})"
+                },
+                {
+                  "entity": "sensor.template_coopernico_spot_price_bihorario",
+                  "name": "Tomorrow",
+                  "line": {
+                    "shape": "hv",
+                    "color": "#008FFB"
+                  },
+                  "x": "$fn ({ hass }) => Object.keys(hass.states['sensor.template_coopernico_spot_price_bihorario']?.attributes.tomorrow_hours || {}).map(d => new Date(d))",
+                  "y": "$fn ({ hass }) => Object.values(hass.states['sensor.template_coopernico_spot_price_bihorario']?.attributes.tomorrow_hours || {})"
+                },
+                {
+                  "entity": "input_datetime.automation_ev2_charge_start",
+                  "name": "EV Charge",
+                  "yaxis": "y2",
+                  "fill": "toself",
+                  "mode": "lines",
+                  "fillcolor": "rgba(0, 143, 251, 0.3)",
+                  "line": {
+                    "width": 0
+                  },
+                  "x": "$fn ({ hass }) => {\n  let s = hass.states['input_datetime.automation_ev2_charge_start']?.attributes.timestamp * 1000;\n  let e = hass.states['input_datetime.automation_ev2_charge_stop']?.attributes.timestamp * 1000;\n  return s && e ? [new Date(s), new Date(s), new Date(e), new Date(e)] : [];\n}",
+                  "y": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "entity": "input_datetime.automation_cheap_ev2_charge_start",
+                  "name": "EV Cheap",
+                  "yaxis": "y2",
+                  "fill": "toself",
+                  "mode": "lines",
+                  "fillcolor": "rgba(0, 227, 150, 0.3)",
+                  "line": {
+                    "width": 0
+                  },
+                  "x": "$fn ({ hass }) => {\n  let s = hass.states['input_datetime.automation_cheap_ev2_charge_start']?.attributes.timestamp * 1000;\n  let e = hass.states['input_datetime.automation_cheap_ev2_charge_stop']?.attributes.timestamp * 1000;\n  return s && e ? [new Date(s), new Date(s), new Date(e), new Date(e)] : [];\n}",
+                  "y": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "entity": "input_datetime.solax_night_charge_start",
+                  "name": "SolaX Night",
+                  "yaxis": "y2",
+                  "fill": "toself",
+                  "mode": "lines",
+                  "fillcolor": "rgba(119, 93, 208, 0.3)",
+                  "line": {
+                    "width": 0
+                  },
+                  "x": "$fn ({ hass }) => {\n  let s = hass.states['input_datetime.solax_night_charge_start']?.attributes.timestamp * 1000;\n  let e = hass.states['input_datetime.solax_night_charge_stop']?.attributes.timestamp * 1000;\n  return s && e ? [new Date(s), new Date(s), new Date(e), new Date(e)] : [];\n}",
+                  "y": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "entity": "input_datetime.solax_night_charge_cheap_start",
+                  "name": "Solax Cheap",
+                  "yaxis": "y2",
+                  "fill": "toself",
+                  "mode": "lines",
+                  "fillcolor": "rgba(255, 69, 96, 0.25)",
+                  "line": {
+                    "width": 0
+                  },
+                  "x": "$fn ({ hass }) => {\n  let s = hass.states['input_datetime.solax_night_charge_cheap_start']?.attributes.timestamp * 1000;\n  let e = hass.states['input_datetime.solax_night_charge_cheap_stop']?.attributes.timestamp * 1000;\n  return s && e ? [new Date(s), new Date(s), new Date(e), new Date(e)] : [];\n}",
+                  "y": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ]
+                },
+                {
+                  "entity": "input_datetime.solax_day_charge_start",
+                  "name": "SolaX Day",
+                  "yaxis": "y2",
+                  "fill": "toself",
+                  "mode": "lines",
+                  "fillcolor": "rgba(254, 176, 25, 0.3)",
+                  "line": {
+                    "width": 0
+                  },
+                  "x": "$fn ({ hass }) => {\n  let s = hass.states['input_datetime.solax_day_charge_start']?.attributes.timestamp * 1000;\n  let e = hass.states['input_datetime.solax_day_charge_stop']?.attributes.timestamp * 1000;\n  return s && e ? [new Date(s), new Date(s), new Date(e), new Date(e)] : [];\n}",
+                  "y": [
+                    0,
+                    1,
+                    1,
+                    0
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Irrigation",
+          "path": "irrigation",
+          "icon": "mdi:sprinkler-variant",
+          "type": "sections",
+          "max_columns": 2,
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "vertical-stack",
+                  "title": "Front Garden Irrigation",
+                  "cards": [
+                    {
+                      "type": "picture-elements",
+                      "image": "/local/front_garden.jpg",
+                      "elements": [
+                        {
+                          "type": "custom:mushroom-template-card",
+                          "entity": "switch.watervalve_frontgarden_state",
+                          "primary": "Front Garden Valve",
+                          "secondary": "{{ states(entity) }}",
+                          "icon": "{% if is_state(entity, 'on') %}\n  mdi:water-pump\n{% else %}\n  mdi:water-pump-off\n{% endif %}\n",
+                          "icon_color": "{% if is_state(entity, 'on') %}\n  green\n{% else %}\n  grey\n{% endif %}\n",
+                          "style": {
+                            "top": "20%",
+                            "right": "-15%",
+                            "transform": "translate(-50%, -50%)",
+                            "--ha-card-background": "rgba(0, 0, 0, 0.5)",
+                            "--ha-card-border-radius": "15px",
+                            "--ha-card-border-width": 0,
+                            "--mushroom-template-card-text-primary-color": "white",
+                            "--mushroom-template-card-text-secondary-color": "white"
+                          }
+                        },
+                        {
+                          "type": "custom:mushroom-template-card",
+                          "entity": "switch.sonoff_10020744e0_1",
+                          "primary": "Fountain",
+                          "secondary": "{{ states(entity) }}",
+                          "icon": "{% if is_state(entity, 'on') %}\n  mdi:fountain\n{% else %}\n  mdi:fountain\n{% endif %}\n",
+                          "icon_color": "{% if is_state(entity, 'on') %}\n  green\n{% else %}\n  grey\n{% endif %}\n",
+                          "style": {
+                            "top": "80%",
+                            "left": "16%",
+                            "transform": "translate(-50%, -50%)",
+                            "--ha-card-background": "rgba(0, 0, 0, 0.5)",
+                            "--ha-card-border-radius": "15px",
+                            "--ha-card-border-width": 0,
+                            "--mushroom-template-card-text-primary-color": "white",
+                            "--mushroom-template-card-text-secondary-color": "white"
+                          }
+                        },
+                        {
+                          "type": "custom:mushroom-template-card",
+                          "entity": "input_button.front_garden_irrigation_recalibrate_baseline",
+                          "primary": "Recalibrate Baseline",
+                          "icon": "mdi:restore",
+                          "icon_color": "orange",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_button.press",
+                            "target": {
+                              "entity_id": "input_button.front_garden_irrigation_recalibrate_baseline"
+                            }
+                          },
+                          "style": {
+                            "bottom": "5%",
+                            "right": "-15%",
+                            "--ha-card-background": "rgba(0, 0, 0, 0.5)",
+                            "--ha-card-border-radius": "15px",
+                            "--ha-card-border-width": 0,
+                            "--mushroom-template-card-text-primary-color": "white"
+                          }
+                        },
+                        {
+                          "type": "state-label",
+                          "entity": "sensor.watervalve_frontgarden_battery",
+                          "prefix": "Battery: ",
+                          "style": {
+                            "top": "10%",
+                            "left": "15%",
+                            "color": "white",
+                            "font-weight": "bold",
+                            "background-color": "rgba(0, 0, 0, 0.5)",
+                            "padding": "4px 8px",
+                            "border-radius": "15px"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "entities",
+                      "show_header_toggle": false,
+                      "entities": [
+                        {
+                          "entity": "input_number.front_garden_irrigation_seconds",
+                          "name": "Duration (Seconds)"
+                        },
+                        {
+                          "entity": "input_number.front_garden_irrigation_frequency",
+                          "name": "Frequency (Times/Day)"
+                        },
+                        {
+                          "entity": "sensor.watervalve_frontgarden_water_consumed",
+                          "name": "Last Water Used (L)",
+                          "icon": "mdi:water-check"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "heading": "Jardim Frente"
+                },
+                {
+                  "type": "tile",
+                  "entity": "switch.watervalve_frontgarden_state",
+                  "name": "Ligado",
+                  "icon": "mdi:power"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_frontgarden_battery",
+                  "name": "Battery",
+                  "show_entity_picture": false,
+                  "hide_state": false
+                },
+                {
+                  "type": "tile",
+                  "entity": "number.watervalve_frontgarden_cycle_irrigation_num_times",
+                  "name": "Irrigation Cycles"
+                },
+                {
+                  "type": "tile",
+                  "entity": "number.watervalve_frontgarden_irrigation_target",
+                  "name": "Duração Irrigação",
+                  "hide_state": false
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_frontgarden_last_irrigation_duration",
+                  "name": "Duração Irrigação Real",
+                  "icon": "mdi:sprinkler"
+                },
+                {
+                  "type": "tile",
+                  "entity": "number.watervalve_frontgarden_cycle_irrigation_interval",
+                  "name": "Intervalo Irrigação"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_frontgarden_irrigation_start_time",
+                  "name": "Inicio Irrigação"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_frontgarden_water_consumed",
+                  "name": "Consumo água"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_frontgarden_irrigation_end_time",
+                  "name": "Fim Irrigação"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "vertical-stack",
+                  "title": "Side Garden Irrigation",
+                  "cards": [
+                    {
+                      "type": "picture-elements",
+                      "image": "/local/side_garden.jpg",
+                      "elements": [
+                        {
+                          "type": "custom:mushroom-template-card",
+                          "entity": "switch.watervalve_sidegarden_state",
+                          "primary": "Side Garden Valve",
+                          "secondary": "{{ states(entity) }}",
+                          "icon": "{% if is_state(entity, 'on') %}\n  mdi:water-pump\n{% else %}\n  mdi:water-pump-off\n{% endif %}\n",
+                          "icon_color": "{% if is_state(entity, 'on') %}\n  green\n{% else %}\n  grey\n{% endif %}\n",
+                          "style": {
+                            "top": "30%",
+                            "right": "-15%",
+                            "transform": "translate(-50%, -50%)",
+                            "--ha-card-background": "rgba(0, 0, 0, 0.5)",
+                            "--ha-card-border-radius": "15px",
+                            "--ha-card-border-width": 0,
+                            "--mushroom-template-card-text-primary-color": "white",
+                            "--mushroom-template-card-text-secondary-color": "white"
+                          }
+                        },
+                        {
+                          "type": "custom:mushroom-template-card",
+                          "entity": "input_button.side_garden_irrigation_recalibrate_baseline",
+                          "primary": "Recalibrate Baseline",
+                          "icon": "mdi:restore",
+                          "icon_color": "orange",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_button.press",
+                            "target": {
+                              "entity_id": "input_button.side_garden_irrigation_recalibrate_baseline"
+                            }
+                          },
+                          "style": {
+                            "bottom": "5%",
+                            "right": "-15%",
+                            "--ha-card-background": "rgba(0, 0, 0, 0.5)",
+                            "--ha-card-border-radius": "15px",
+                            "--ha-card-border-width": 0,
+                            "--mushroom-template-card-text-primary-color": "white"
+                          }
+                        },
+                        {
+                          "type": "state-label",
+                          "entity": "sensor.watervalve_sidegarden_battery",
+                          "prefix": "Battery: ",
+                          "style": {
+                            "top": "10%",
+                            "left": "15%",
+                            "color": "white",
+                            "font-weight": "bold",
+                            "background-color": "rgba(0, 0, 0, 0.5)",
+                            "padding": "4px 8px",
+                            "border-radius": "15px"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "entities",
+                      "show_header_toggle": false,
+                      "entities": [
+                        {
+                          "entity": "input_number.side_garden_irrigation_seconds",
+                          "name": "Duration (Seconds)"
+                        },
+                        {
+                          "entity": "input_number.side_garden_irrigation_frequency",
+                          "name": "Frequency (Times/Day)"
+                        },
+                        {
+                          "entity": "sensor.watervalve_sidegarden_water_consumed",
+                          "name": "Last Water Used (L)",
+                          "icon": "mdi:water-check"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading",
+                  "heading": "Jardim Lado"
+                },
+                {
+                  "type": "tile",
+                  "entity": "switch.watervalve_sidegarden_state",
+                  "name": "Ligado",
+                  "icon": "mdi:power"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_sidegarden_battery",
+                  "name": "Battery",
+                  "show_entity_picture": false,
+                  "hide_state": false
+                },
+                {
+                  "type": "tile",
+                  "entity": "number.watervalve_sidegarden_cycle_irrigation_num_times",
+                  "name": "Irrigation Cycles"
+                },
+                {
+                  "type": "tile",
+                  "entity": "number.watervalve_sidegarden_irrigation_target",
+                  "name": "Duração Irrigação",
+                  "hide_state": false
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_sidegarden_last_irrigation_duration",
+                  "name": "Duração Irrigação Real",
+                  "icon": "mdi:sprinkler"
+                },
+                {
+                  "type": "tile",
+                  "entity": "number.watervalve_sidegarden_cycle_irrigation_interval",
+                  "name": "Intervalo Irrigação"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_sidegarden_irrigation_start_time",
+                  "name": "Inicio Irrigação"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_sidegarden_water_consumed",
+                  "name": "Consumo água"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.watervalve_sidegarden_irrigation_end_time",
+                  "name": "Fim Irrigação"
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Fountain"
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "tap_action": {
+                    "action": "toggle"
+                  },
+                  "entity": "switch.sonoff_10020744e0_1",
+                  "icon": "mdi:fountain",
+                  "icon_height": "60px",
+                  "hold_action": {
+                    "action": "more-info"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "New section"
+                }
+              ]
+            }
+          ],
+          "cards": [],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ]
+        },
+        {
+          "title": "AC",
+          "path": "ac",
+          "icon": "mdi:air-conditioner",
+          "type": "sections",
+          "max_columns": 3,
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:mushroom-climate-card",
+                  "entity": "climate.tv_ac",
+                  "fill_container": false,
+                  "show_temperature_control": true,
+                  "collapsible_controls": false,
+                  "hvac_modes": [
+                    "off",
+                    "heat",
+                    "cool"
+                  ]
+                },
+                {
+                  "type": "custom:mushroom-climate-card",
+                  "entity": "climate.dinner_ac",
+                  "fill_container": false,
+                  "show_temperature_control": true,
+                  "collapsible_controls": false,
+                  "hvac_modes": [
+                    "off",
+                    "heat",
+                    "cool"
+                  ]
+                },
+                {
+                  "type": "custom:mushroom-climate-card",
+                  "entity": "climate.lara_ac_control",
+                  "fill_container": false,
+                  "show_temperature_control": true,
+                  "collapsible_controls": false,
+                  "hvac_modes": [
+                    "off",
+                    "heat",
+                    "cool"
+                  ]
+                },
+                {
+                  "type": "custom:mushroom-climate-card",
+                  "entity": "climate.quarto_lucas_ac",
+                  "fill_container": false,
+                  "show_temperature_control": true,
+                  "collapsible_controls": false,
+                  "hvac_modes": [
+                    "off",
+                    "heat",
+                    "cool"
+                  ]
+                },
+                {
+                  "type": "custom:mushroom-climate-card",
+                  "entity": "climate.suite_ac",
+                  "fill_container": false,
+                  "show_temperature_control": true,
+                  "collapsible_controls": false,
+                  "hvac_modes": [
+                    "off",
+                    "heat",
+                    "cool"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "tile",
+                  "entity": "sensor.ac_power_monitor_power",
+                  "layout_options": {
+                    "grid_columns": 4,
+                    "grid_rows": 1
+                  }
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "input_boolean.automation_start_rooms_ac"
+                    },
+                    {
+                      "entity": "input_boolean.automation_start_livingroom_ac"
+                    }
+                  ],
+                  "layout_options": {
+                    "grid_columns": 4,
+                    "grid_rows": 2
+                  }
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.ambiente_suite_temperature",
+                  "name": "Suite "
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.ambiente_sala_temperature",
+                  "name": "Sala"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.ambiente_quarto_lara_temperature",
+                  "name": "Quarto Lara ",
+                  "vertical": false
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.weatherstation_outdoor_temperature",
+                  "name": "Exterior"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.ambiente_quarto_lucas_temperature",
+                  "name": "Quarto Lucas "
+                }
+              ]
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ],
+          "cards": []
+        },
+        {
+          "title": "Natal",
+          "path": "natal",
+          "icon": "mdi:pine-tree",
+          "dense_section_placement": true,
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "tile",
+                  "entity": "switch.luz_natal",
+                  "icon": "mdi:string-lights",
+                  "show_entity_picture": true,
+                  "vertical": false,
+                  "hide_state": false
+                },
+                {
+                  "type": "tile",
+                  "entity": "switch.arvore_natal",
+                  "icon": "mdi:pine-tree"
+                }
+              ]
+            }
+          ],
+          "type": "sections",
+          "cards": []
+        },
+        {
+          "type": "sections",
+          "max_columns": 4,
+          "title": "Zigbee",
+          "path": "zigbee",
+          "icon": "mdi:zigbee",
+          "subview": false,
+          "dense_section_placement": true,
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Zigbee Status",
+                  "heading_style": "title",
+                  "icon": "mdi:zigbee"
+                },
+                {
+                  "type": "tile",
+                  "entity": "binary_sensor.zigbee2mqtt_bridge_connection_state",
+                  "features_position": "bottom",
+                  "vertical": false,
+                  "name": "Status"
+                },
+                {
+                  "type": "tile",
+                  "entity": "switch.zigbee2mqtt_bridge_permit_join",
+                  "features_position": "bottom",
+                  "vertical": false,
+                  "name": "Permit Join"
+                },
+                {
+                  "type": "tile",
+                  "entity": "button.zigbee2mqtt_bridge_restart",
+                  "features_position": "bottom",
+                  "vertical": false,
+                  "name": "Restart"
+                },
+                {
+                  "type": "tile",
+                  "entity": "sensor.zigbee2mqtt_bridge_version",
+                  "features_position": "bottom",
+                  "vertical": false,
+                  "name": "Version"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "3D printer",
+          "path": "unknown",
+          "icon": "mdi:printer-3d",
+          "cards": [
+            {
+              "type": "grid",
+              "square": false,
+              "columns": 1,
+              "cards": [
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "entity": "sensor.3d_printer_printername",
+                      "name": "Voron V2.832"
+                    }
+                  ]
+                },
+                {
+                  "show_state": false,
+                  "show_name": true,
+                  "camera_view": "auto",
+                  "type": "picture-entity",
+                  "entity": "sensor.3d_printer_current_print",
+                  "name": "Current Print",
+                  "camera_image": "camera.3d_printer_thumbnail"
+                },
+                {
+                  "type": "horizontal-stack",
+                  "cards": [
+                    {
+                      "type": "button",
+                      "tap_action": {
+                        "action": "call-service",
+                        "service": "rest_command.3d_printer_emergency_stop",
+                        "service_data": {},
+                        "target": {}
+                      },
+                      "name": "STOP",
+                      "icon": "mdi:alert-octagon-outline",
+                      "show_state": false,
+                      "show_name": true,
+                      "show_icon": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "card_mod": {
+                        "style": ":host {\n  --paper-item-icon-color: red;\n}\n"
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "tap_action": {
+                        "action": "call-service",
+                        "service": "rest_command.3d_printer_firmware_restart",
+                        "service_data": {},
+                        "target": {}
+                      },
+                      "name": "FW Reset",
+                      "icon": "mdi:restart-alert",
+                      "show_icon": true,
+                      "show_name": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "card_mod": {
+                        "style": ":host {\n  --paper-item-icon-color: green;\n}\n"
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "tap_action": {
+                        "action": "call-service",
+                        "service": "rest_command.3d_printer_pause",
+                        "service_data": {},
+                        "target": {}
+                      },
+                      "icon": "mdi:motion-pause-outline",
+                      "name": "Pause",
+                      "show_icon": true,
+                      "show_name": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "card_mod": {
+                        "style": ":host {\n  --paper-item-icon-color: yellow;\n}\n"
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "tap_action": {
+                        "action": "call-service",
+                        "service": "rest_command.3d_printer_resume",
+                        "service_data": {},
+                        "target": {}
+                      },
+                      "icon": "mdi:motion-play-outline",
+                      "name": "Resume",
+                      "show_icon": true,
+                      "show_name": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "card_mod": {
+                        "style": ":host {\n  --paper-item-icon-color: green;\n}\n"
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "tap_action": {
+                        "action": "call-service",
+                        "service": "rest_command.3d_printer_cancel",
+                        "service_data": {},
+                        "target": {}
+                      },
+                      "icon": "mdi:cancel",
+                      "name": "Cancel",
+                      "show_name": true,
+                      "show_icon": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "card_mod": {
+                        "style": ":host {\n  --paper-item-icon-color: red;\n}\n"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.3d_printer_current_progress",
+              "min": 0,
+              "max": 100,
+              "severity": {
+                "green": 90,
+                "yellow": 50,
+                "red": 0
+              }
+            },
+            {
+              "type": "custom:mini-graph-card",
+              "name": "Temperature",
+              "align_state": "center",
+              "icon": "mdi:thermometer-lines",
+              "hour24": true,
+              "hours_to_show": 2,
+              "points_per_hour": 60,
+              "show": {
+                "labels": true,
+                "fill": true
+              },
+              "entities": [
+                {
+                  "entity": "sensor.3d_printer_hotend_actual",
+                  "name": "Hotend",
+                  "color": "green"
+                },
+                {
+                  "entity": "sensor.3d_printer_bed_actual",
+                  "name": "Bed",
+                  "color": "red"
+                },
+                {
+                  "entity": "sensor.3d_printer_chamber_temp",
+                  "name": "Chamber",
+                  "color": "purple"
+                }
+              ]
+            }
+          ],
+          "visible": [
+            {
+              "user": "3884a306f3354f8ca39a1ff5e50ebd92"
+            },
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ]
+        },
+        {
+          "icon": "mdi:ev-station",
+          "title": "C Evolution",
+          "badges": [],
+          "cards": [],
+          "type": "sections",
+          "sections": [
+            {
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "primary": "BMW C Evolution",
+                  "secondary": "{{ states('sensor.ev_charger_status') | title }} • {{ states('sensor.box_ve1_power') }} W",
+                  "icon": "mdi:motorbike-electric",
+                  "tap_action": {
+                    "action": "call-service",
+                    "service": "input_boolean.toggle",
+                    "target": {
+                      "entity_id": "input_boolean.manual_override_ve_switch"
+                    }
+                  },
+                  "multiline_secondary": false,
+                  "color": "{% if is_state('sensor.ev_charger_status', 'charging') %} green {% elif is_state('switch.ev_charger', 'on') %} blue {% else %} grey {% endif %}",
+                  "features_position": "bottom",
+                  "grid_options": {
+                    "columns": "full"
+                  }
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "custom:mushroom-title-card",
+                      "alignment": "center",
+                      "title_tap_action": {
+                        "action": "none"
+                      },
+                      "subtitle_tap_action": {
+                        "action": "none"
+                      },
+                      "title": "Current"
+                    },
+                    {
+                      "type": "custom:mushroom-chips-card",
+                      "alignment": "center",
+                      "chips": [
+                        {
+                          "type": "template",
+                          "content": "6A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev1_suggested_current') | int(0) == 6 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev1_suggested_current"
+                            },
+                            "data": {
+                              "value": 6
+                            }
+                          }
+                        },
+                        {
+                          "type": "template",
+                          "content": "10A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev1_suggested_current') | int(0) == 10 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev1_suggested_current"
+                            },
+                            "data": {
+                              "value": 10
+                            }
+                          }
+                        },
+                        {
+                          "type": "template",
+                          "content": "13A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev1_suggested_current') | int(0) == 13 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev1_suggested_current"
+                            },
+                            "data": {
+                              "value": 13
+                            }
+                          }
+                        },
+                        {
+                          "type": "template",
+                          "content": "16A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev1_suggested_current') | int(0) == 16 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev1_suggested_current"
+                            },
+                            "data": {
+                              "value": 16
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:mushroom-title-card",
+                      "alignment": "center",
+                      "subtitle": "Control Switches"
+                    },
+                    {
+                      "type": "custom:mushroom-chips-card",
+                      "alignment": "center",
+                      "chips": [
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.ev1_master_switch",
+                          "icon_color": "red",
+                          "name": "Master",
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Master Switch\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        },
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.automatic_ve_switch",
+                          "icon_color": "blue",
+                          "icon": "mdi:refresh-auto",
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Automatic Mode\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        },
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.manual_override_ve_switch",
+                          "icon_color": "orange",
+                          "icon": "mdi:account-circle-outline",
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Manual Override\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        },
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.grid_injection_avoidance_ve_switch",
+                          "icon_color": "green",
+                          "icon": "mdi:transmission-tower",
+                          "use_entity_picture": false,
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Grid Injection\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "type": "custom:fold-entity-row",
+                      "head": {
+                        "type": "section",
+                        "label": "C Evo Telemetry",
+                        "open": false
+                      },
+                      "entities": [
+                        {
+                          "entity": "sensor.box_ve1_power",
+                          "name": "Charger Power",
+                          "icon": "mdi:ev-station"
+                        },
+                        {
+                          "entity": "sensor.bmw_c_evo_battery_power",
+                          "name": "Car Battery Power",
+                          "icon": "mdi:battery-plus-outline"
+                        },
+                        {
+                          "entity": "sensor.garage_bmw_c_evolution_soc",
+                          "name": "State of Charge",
+                          "icon": "mdi:battery-charging-50"
+                        },
+                        {
+                          "entity": "sensor.garage_bmw_c_evolution_soh",
+                          "name": "Battery Health",
+                          "icon": "mdi:battery-heart-variant"
+                        },
+                        {
+                          "entity": "sensor.garage_bmw_c_evolution_odometer",
+                          "name": "Odometer",
+                          "icon": "mdi:counter"
+                        },
+                        {
+                          "entity": "sensor.garage_bmw_c_evolution_battery_temp",
+                          "name": "Battery Temperature",
+                          "icon": "mdi:thermometer-lines"
+                        },
+                        {
+                          "entity": "sensor.garage_bmw_c_evolution_battery_temp_max",
+                          "name": "Charger Temperature",
+                          "icon": "mdi:car-electric-outline"
+                        },
+                        {
+                          "type": "weblink",
+                          "name": "BMW C Evo WiCAN Device",
+                          "icon": "mdi:car-info",
+                          "url": "/config/devices/device/c6ee7620fd7808f5ca90c76e3dd59b1c"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:fold-entity-row",
+                      "head": {
+                        "type": "section",
+                        "label": "BMW Charging Windows"
+                      },
+                      "entities": [
+                        {
+                          "entity": "input_datetime.automation_ev_charge_start",
+                          "name": "Long Charge Start",
+                          "icon": "mdi:clock-start"
+                        },
+                        {
+                          "entity": "input_datetime.automation_ev_charge_stop",
+                          "name": "Long Charge Stop",
+                          "icon": "mdi:clock-end"
+                        },
+                        {
+                          "entity": "input_datetime.automation_cheap_ev_charge_start",
+                          "name": "Short Charge Start",
+                          "icon": "mdi:clock-fast"
+                        },
+                        {
+                          "entity": "input_datetime.automation_cheap_ev_charge_stop",
+                          "name": "Short Charge Stop",
+                          "icon": "mdi:clock-out"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:fold-entity-row",
+                      "head": {
+                        "type": "section",
+                        "label": "Consumption & Cost"
+                      },
+                      "entities": [
+                        {
+                          "entity": "sensor.current_ve_energy_cost",
+                          "name": "Current Session Cost",
+                          "icon": "mdi:currency-eur"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Daily"
+                        },
+                        {
+                          "entity": "sensor.bmw_daily_energy",
+                          "name": "Energy"
+                        },
+                        {
+                          "entity": "sensor.bmw_energy_cost_daily",
+                          "name": "Cost"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Monthly"
+                        },
+                        {
+                          "entity": "sensor.total_bmw_ce_energy_cost",
+                          "name": "Energy (Total)"
+                        },
+                        {
+                          "entity": "sensor.bmw_energy_cost_monthly",
+                          "name": "Cost"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Yearly"
+                        },
+                        {
+                          "entity": "sensor.box_ve1_bmw_energy_yearly",
+                          "name": "Energy"
+                        },
+                        {
+                          "entity": "sensor.bmw_energy_cost_yearly",
+                          "name": "Cost"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Historic Power (24h)",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "update_interval": "5m",
+                  "series": [
+                    {
+                      "entity": "sensor.box_ve1_power",
+                      "name": "Power Draw",
+                      "type": "area",
+                      "color": "green",
+                      "curve": "smooth",
+                      "stroke_width": 2,
+                      "opacity": 0.3,
+                      "group_by": {
+                        "duration": "5m",
+                        "func": "avg"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "custom:mushroom-template-card",
+                  "primary": "DACIA Spring",
+                  "secondary": "{{ states('sensor.ev_charger_2_status') | title }} • {{ states('sensor.box_ve2_power') }} W",
+                  "icon": "mdi:car-electric",
+                  "tap_action": {
+                    "action": "call-service",
+                    "service": "input_boolean.toggle",
+                    "target": {
+                      "entity_id": "input_boolean.manual_override_ve2_switch"
+                    }
+                  },
+                  "multiline_secondary": false,
+                  "grid_options": {
+                    "columns": "full",
+                    "rows": "auto"
+                  },
+                  "color": "{% if is_state('sensor.ev_charger_2_status', 'charging') %} green {% elif is_state('switch.ev_charger_2', 'on') %} blue {% else %} grey {% endif %}",
+                  "features_position": "bottom"
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "custom:mushroom-title-card",
+                      "alignment": "center",
+                      "title_tap_action": {
+                        "action": "none"
+                      },
+                      "subtitle_tap_action": {
+                        "action": "none"
+                      },
+                      "title": "Current"
+                    },
+                    {
+                      "type": "custom:mushroom-chips-card",
+                      "alignment": "center",
+                      "chips": [
+                        {
+                          "type": "template",
+                          "content": "6A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev2_suggested_current') | int(0) == 6 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev2_suggested_current"
+                            },
+                            "data": {
+                              "value": 6
+                            }
+                          }
+                        },
+                        {
+                          "type": "template",
+                          "content": "10A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev2_suggested_current') | int(0) == 10 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev2_suggested_current"
+                            },
+                            "data": {
+                              "value": 10
+                            }
+                          }
+                        },
+                        {
+                          "type": "template",
+                          "content": "13A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev2_suggested_current') | int(0) == 13 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev2_suggested_current"
+                            },
+                            "data": {
+                              "value": 13
+                            }
+                          }
+                        },
+                        {
+                          "type": "template",
+                          "content": "16A",
+                          "icon": "mdi:flash",
+                          "icon_color": "{{ 'blue' if states('input_number.ev2_suggested_current') | int(0) == 16 else 'disabled' }}",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "input_number.set_value",
+                            "target": {
+                              "entity_id": "input_number.ev2_suggested_current"
+                            },
+                            "data": {
+                              "value": 16
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:mushroom-title-card",
+                      "alignment": "center",
+                      "subtitle": "Control Switches"
+                    },
+                    {
+                      "type": "custom:mushroom-chips-card",
+                      "alignment": "center",
+                      "chips": [
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.ev2_master_switch",
+                          "icon_color": "red",
+                          "name": "Master",
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Master Switch\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        },
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.automatic_ve2_switch",
+                          "icon_color": "blue",
+                          "icon": "mdi:refresh-auto",
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Automatic Mode\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        },
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.manual_override_ve2_switch",
+                          "icon_color": "orange",
+                          "icon": "mdi:account-circle-outline",
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: Manual Override\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        },
+                        {
+                          "type": "entity",
+                          "entity": "input_boolean.grid_injection_avoidance_ve2_switch",
+                          "icon_color": "green",
+                          "icon": "mdi:transmission-tower",
+                          "use_entity_picture": false,
+                          "card_mod": {
+                            "style": "ha-card {\n  /* Ensure the tooltip can render outside the chip boundaries */\n  overflow: visible !important; \n}\nha-card::before {\n  /* 1. Define your tooltip text here */\n  content: \"Grid Injection\";\n  \n  /* 2. Style to mimic a native OS browser tooltip */\n  position: absolute;\n  top: -32px;\n  left: 50%;\n  transform: translateX(-50%);\n  background-color: rgba(30, 30, 30, 0.95);\n  color: white;\n  padding: 4px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n  font-family: Arial, sans-serif;\n  white-space: nowrap;\n  pointer-events: none;\n  z-index: 999;\n  \n  /* 3. Hide by default, mimic the native hover delay */\n  opacity: 0;\n  transition: opacity 0.1s;\n  transition-delay: 0.6s; \n}\nha-card:hover::before {\n  /* 4. Display on hover after the delay */\n  opacity: 1;\n}\n"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "entities",
+                  "entities": [
+                    {
+                      "type": "custom:fold-entity-row",
+                      "head": {
+                        "type": "section",
+                        "label": "Dacia Telemetry",
+                        "open": false
+                      },
+                      "entities": [
+                        {
+                          "entity": "sensor.box_ve2_power",
+                          "name": "Charger Power",
+                          "icon": "mdi:ev-station"
+                        },
+                        {
+                          "entity": "sensor.dacia_spring_battery_power",
+                          "name": "Car Battery Power",
+                          "icon": "mdi:battery-plus-outline"
+                        },
+                        {
+                          "entity": "sensor.garage_dacia_spring_soc",
+                          "name": "State of Charge",
+                          "icon": "mdi:battery-charging-50"
+                        },
+                        {
+                          "entity": "sensor.garage_dacia_spring_soh",
+                          "name": "Battery Health",
+                          "icon": "mdi:battery-heart-variant"
+                        },
+                        {
+                          "entity": "sensor.garage_dacia_spring_odometer",
+                          "name": "Odometer",
+                          "icon": "mdi:counter"
+                        },
+                        {
+                          "entity": "sensor.garage_dacia_spring_battery_temp",
+                          "name": "Battery Temperature",
+                          "icon": "mdi:thermometer-lines"
+                        },
+                        {
+                          "entity": "sensor.garage_dacia_spring_charger_temp",
+                          "name": "Charger Temperature",
+                          "icon": "mdi:car-electric-outline"
+                        },
+                        {
+                          "type": "weblink",
+                          "name": "Dacia Spring WiCAN Device",
+                          "icon": "mdi:car-info",
+                          "url": "/config/devices/device/fcb1ada6070e58db8d0be6346cc81bd7"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:fold-entity-row",
+                      "head": {
+                        "type": "section",
+                        "label": "DACIA Charging Windows"
+                      },
+                      "open": false,
+                      "entities": [
+                        {
+                          "entity": "input_datetime.automation_ev2_charge_start",
+                          "name": "Long Charge Start",
+                          "icon": "mdi:clock-start"
+                        },
+                        {
+                          "entity": "input_datetime.automation_ev2_charge_stop",
+                          "name": "Long Charge Stop",
+                          "icon": "mdi:clock-end"
+                        },
+                        {
+                          "entity": "input_datetime.automation_cheap_ev2_charge_start",
+                          "name": "Short Charge Start",
+                          "icon": "mdi:clock-fast"
+                        },
+                        {
+                          "entity": "input_datetime.automation_cheap_ev2_charge_stop",
+                          "name": "Short Charge Stop",
+                          "icon": "mdi:clock-out"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "custom:fold-entity-row",
+                      "head": {
+                        "type": "section",
+                        "label": "Consumption & Cost"
+                      },
+                      "entities": [
+                        {
+                          "entity": "sensor.current_ve2_energy_cost",
+                          "name": "Current Session Cost",
+                          "icon": "mdi:currency-eur"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Daily"
+                        },
+                        {
+                          "entity": "sensor.ev2_switch_dacia_energy_daily",
+                          "name": "Energy"
+                        },
+                        {
+                          "entity": "sensor.dacia_daily_cost",
+                          "name": "Cost"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Monthly"
+                        },
+                        {
+                          "entity": "sensor.ev2_switch_dacia_energy_monthly",
+                          "name": "Energy (Total)"
+                        },
+                        {
+                          "entity": "sensor.dacia_monthly_cost",
+                          "name": "Cost"
+                        },
+                        {
+                          "type": "section",
+                          "label": "Yearly"
+                        },
+                        {
+                          "entity": "sensor.ev2_switch_dacia_energy_yearly",
+                          "name": "Energy"
+                        },
+                        {
+                          "entity": "sensor.dacia_yearly_cost",
+                          "name": "Cost"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "custom:apexcharts-card",
+                  "header": {
+                    "show": true,
+                    "title": "Historic Power (24h)",
+                    "show_states": true,
+                    "colorize_states": true
+                  },
+                  "graph_span": "24h",
+                  "update_interval": "5m",
+                  "series": [
+                    {
+                      "entity": "sensor.box_ve2_power",
+                      "type": "area",
+                      "color": "white",
+                      "curve": "smooth",
+                      "stroke_width": 2,
+                      "opacity": 0.3,
+                      "group_by": {
+                        "duration": "5m",
+                        "func": "avg"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "header": {
+            "card": {
+              "type": "markdown",
+              "content": "EV Chargers",
+              "text_only": true
+            }
+          }
+        },
+        {
+          "type": "sections",
+          "max_columns": 2,
+          "title": "Garage Control",
+          "path": "garage-control",
+          "icon": "mdi:garage",
+          "dense_section_placement": true,
+          "visible": [
+            {
+              "user": "8d29c8986cfa479b9f36607c14153260"
+            },
+            {
+              "user": "fdaa761986c94ab1b8ef97ee325cd28c"
+            }
+          ],
+          "sections": [
+            {
+              "type": "grid",
+              "cards": [
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "entity": "script.actuate_external_garage_door_click",
+                  "name": "Outside Door",
+                  "show_state": false
+                },
+                {
+                  "show_name": true,
+                  "show_icon": true,
+                  "type": "button",
+                  "icon": "mdi:garage",
+                  "entity": "script.actuate_internal_garage_door_click",
+                  "name": "Internal Door",
+                  "color": "red",
+                  "show_state": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

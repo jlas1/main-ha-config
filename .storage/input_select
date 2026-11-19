@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "minor_version": 2,
+  "key": "input_select",
+  "data": {
+    "items": [
+      {
+        "id": "presence",
+        "options": [
+          "Away",
+          "Hollidays",
+          "At home"
+        ],
+        "name": "Presence"
+      },
+      {
+        "id": "water_heater_state",
+        "name": "Water Heater State",
+        "icon": "mdi:water-boiler",
+        "options": [
+          "Idle",
+          "Heating (night)",
+          "Heating (pre afternoon bath)",
+          "Heating disabled",
+          "Heating (Free)",
+          "Heating"
+        ]
+      }
+    ]
+  }
+}
