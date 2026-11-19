@@ -1,0 +1,1307 @@
+[
+    {
+        "id": "ea9f973fddd65ef1",
+        "type": "tab",
+        "label": "Victron ESS Mode 3 Bridge",
+        "disabled": false,
+        "info": "Cross-inverter control bridge between SolaX primary and Victron secondary."
+    },
+    {
+        "id": "51c426d5ca894c47",
+        "type": "inject",
+        "z": "ea9f973fddd65ef1",
+        "name": "trigger_monitor_5s_watchdog_clock",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 100,
+        "wires": [
+            [
+                "282ec0d83d44b922"
+            ]
+        ]
+    },
+    {
+        "id": "3d5769d7409302ae",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "trigger_ha_solax_battery_power",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "sensor.solax_battery_power_charge"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "ifStateOperator": "is",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 220,
+        "y": 260,
+        "wires": [
+            [
+                "d7b33b3e82fb19c8"
+            ]
+        ]
+    },
+    {
+        "id": "d7b33b3e82fb19c8",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_solax_battery_power_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "solax_battery_power",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a04bb60b023dc4c8",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "trigger_ha_solax_grid_import",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "sensor.solax_grid_import"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 210,
+        "y": 320,
+        "wires": [
+            [
+                "5773d4174e7a24ef"
+            ]
+        ]
+    },
+    {
+        "id": "5773d4174e7a24ef",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_solax_grid_import_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "solax_grid_import",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e5b588186e5c7949",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "trigger_ha_solax_grid_export",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "sensor.solax_grid_export"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 210,
+        "y": 380,
+        "wires": [
+            [
+                "e25668a5a1ee1f22"
+            ]
+        ]
+    },
+    {
+        "id": "e25668a5a1ee1f22",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_solax_grid_export_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "solax_grid_export",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e060b8ceae3b1bb6",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "trigger_ha_solax_soc",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "sensor.solax_battery_capacity"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 190,
+        "y": 560,
+        "wires": [
+            [
+                "33676c4e32647bad"
+            ]
+        ]
+    },
+    {
+        "id": "33676c4e32647bad",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_solax_soc",
+        "rules": [
+            {
+                "t": "set",
+                "p": "solax_soc",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 530,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cf594024d06687d5",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "Force_battery_charge",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "input_boolean.force_battery_charge"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "string",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 190,
+        "y": 620,
+        "wires": [
+            [
+                "693d4caaf2b78027"
+            ]
+        ]
+    },
+    {
+        "id": "693d4caaf2b78027",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_force_battery_charge",
+        "rules": [
+            {
+                "t": "set",
+                "p": "force_battery_charge",
+                "pt": "flow",
+                "to": "msg.payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "df5b6cf076689c11",
+        "type": "victron-input-system",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.system/0",
+        "path": "/Ac/Consumption/L1/Power",
+        "serviceObj": {
+            "service": "com.victronenergy.system/0",
+            "name": "Venus system",
+            "communityTag": "system"
+        },
+        "pathObj": {
+            "path": "/Ac/Consumption/L1/Power",
+            "type": "float",
+            "name": "AC Consumption L1 (W)"
+        },
+        "name": "trigger_victron_it_ups_load",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 950,
+        "y": 200,
+        "wires": [
+            [
+                "317211580418d339"
+            ]
+        ]
+    },
+    {
+        "id": "317211580418d339",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_it_ups_load_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "it_ups_load",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1300,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "70b83cbe39c742ab",
+        "type": "victron-input-system",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.system/0",
+        "path": "/Dc/Battery/Voltage",
+        "serviceObj": {
+            "service": "com.victronenergy.system/0",
+            "name": "Venus system",
+            "communityTag": "system"
+        },
+        "pathObj": {
+            "path": "/Dc/Battery/Voltage",
+            "type": "float",
+            "name": "Battery voltage (V)"
+        },
+        "name": "trigger_victron_dc_voltage",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 940,
+        "y": 260,
+        "wires": [
+            [
+                "24eb25c235de7258"
+            ]
+        ]
+    },
+    {
+        "id": "24eb25c235de7258",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_victron_dc_voltage_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_dc_voltage",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1320,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c586d924da6c901d",
+        "type": "victron-input-vebus",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.vebus/261",
+        "path": "/Hub4/L1/AcPowerSetpoint",
+        "serviceObj": {
+            "service": "com.victronenergy.vebus/261",
+            "name": "MultiPlus-II 48/3000/35-32",
+            "communityTag": "vebus"
+        },
+        "pathObj": {
+            "path": "/Hub4/L1/AcPowerSetpoint",
+            "type": "float",
+            "name": "ESS power setpoint phase L1 (W)",
+            "mode": "both"
+        },
+        "name": "trigger_victron_current_setpoint",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 960,
+        "y": 320,
+        "wires": [
+            [
+                "7b7ea91b9d6065ca"
+            ]
+        ]
+    },
+    {
+        "id": "7b7ea91b9d6065ca",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_current_victron_setpoint_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "current_victron_setpoint",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1340,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9494d2abf982862d",
+        "type": "victron-input-vebus",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.vebus/261",
+        "path": "/State",
+        "serviceObj": {
+            "service": "com.victronenergy.vebus/261",
+            "name": "MultiPlus-II 48/3000/35-32",
+            "communityTag": "vebus"
+        },
+        "pathObj": {
+            "path": "/State",
+            "type": "enum",
+            "name": "VE.Bus state",
+            "enum": {
+                "0": "Off",
+                "1": "Low Power",
+                "2": "Fault",
+                "3": "Bulk",
+                "4": "Absorption",
+                "5": "Float",
+                "6": "Storage",
+                "7": "Equalize",
+                "8": "Passthru",
+                "9": "Inverting",
+                "10": "Power assist",
+                "11": "Power supply",
+                "252": "External control"
+            }
+        },
+        "name": "trigger_victron_vebus_state",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 940,
+        "y": 380,
+        "wires": [
+            [
+                "185d71bfa150ae4c"
+            ]
+        ]
+    },
+    {
+        "id": "185d71bfa150ae4c",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_vebus_state_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "vebus_state",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1300,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "282ec0d83d44b922",
+        "type": "function",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_execute_mode3_math_engine",
+        "func": "const getNum = (key, fallback = 0) => {\n    const val = flow.get(key);\n    if (val === undefined || val === null || val === \"\") return fallback;\n    const parsed = parseFloat(val);\n    return isNaN(parsed) ? fallback : parsed;\n};\n\nconst solaxPowerRaw = flow.get(\"solax_battery_power\");\nconst gridImportRaw = flow.get(\"solax_grid_import\");\nconst gridExportRaw = flow.get(\"solax_grid_export\");\nconst solaxSocRaw = flow.get(\"solax_soc\");\nconst victronDcVoltageRaw = flow.get(\"victron_dc_voltage\");\nconst victronGridConsumptionRaw = flow.get(\"victron_grid_consumption_l1\");\n\nlet debug = \"\";\n\nif (solaxPowerRaw === undefined || gridImportRaw === undefined || gridExportRaw === undefined || \n    solaxSocRaw === undefined || victronDcVoltageRaw === undefined || victronGridConsumptionRaw === undefined)  {\n    node.status({ fill: \"yellow\", shape: \"ring\", text: \"Hydrating flow context...\" });\n    return null;\n}\n\nconst solaxBatteryPower = getNum(\"solax_battery_power\");\nconst victronBatteryPower = Math.round(getNum(\"victron_battery_power\"));\nconst gridImport = getNum(\"solax_grid_import\");\nconst gridExport = getNum(\"solax_grid_export\");\nconst victron_soc = getNum(\"victron_battery_soc\");\nconst solax_min_soc = getNum(\"solax_minimum_soc\",10);\nconst victron_min_soc = getNum(\"victron_minimum_soc\",20);\nconst victron_max = getNum(\"victron_max_battery_power\", 1000);\nconst netGridConsumption = gridImport - gridExport;\nconst victronGridConsumption = getNum(\"victron_grid_consumption_l1\");\n\nconst solaxSoc = getNum(\"solax_soc\");\nconst solarDumpTarget = getNum(\"solar_dump_base_target\", 75);\n\nconst itUpsLoad = getNum(\"it_ups_load\");\nconst victronDcVoltage = getNum(\"victron_dc_voltage\");\nconst currentVictronSetpoint = getNum(\"current_victron_setpoint\", 0);\nconst vebusState = getNum(\"vebus_state\", 0);\n\n// Solar Dump Hysteresis\nlet solarDumpActive = flow.get(\"solar_dump_active\") || false;\nif (solaxSoc >= solarDumpTarget) {\n    solarDumpActive = true;\n} else if (solaxSoc <= (solarDumpTarget - 0.5)) {\n    solarDumpActive = false;\n}\nflow.set(\"solar_dump_active\", solarDumpActive);\n\nlet surplus = victronBatteryPower + solaxBatteryPower - netGridConsumption;\n\n// Total physical capacities (in kWh)\nconst victronCapacity = 6.0;\nconst solaxCapacity = 11.6;\n\n// -----------------------------------------------------------------------------\n// 1. DISCHARGE CALCULATION (Energy Remaining)\n// -----------------------------------------------------------------------------\n// SolaX discharge power is negative. If >= -30W, SolaX is idle/sleeping/holding.\nconst solaxIsDischarging = solaxBatteryPower < -30;\n\n// Use Math.max(..., 0) so available capacity can actually hit 0\nconst victronDischargeAvailable = victronCapacity * Math.max(victron_soc - victron_min_soc, 0);\n\n// SolaX has available energy ONLY if it is above min_soc AND actively discharging\nconst solaxDischargeAvailable = (solaxSoc > solax_min_soc && solaxIsDischarging)\n    ? (solaxCapacity * Math.max(solaxSoc - solax_min_soc, 0))\n    : 0;\n\nconst totalDischargeAvailable = victronDischargeAvailable + solaxDischargeAvailable;\n\n// If SolaX cannot/will not discharge, Victron takes 100% (1.0). If both are empty, ratio is 0.\nconst dischargeRatio = totalDischargeAvailable > 0 \n    ? (victronDischargeAvailable / totalDischargeAvailable) \n    : (victron_soc > victron_min_soc ? 1.0 : 0.0);\n\n// -----------------------------------------------------------------------------\n// 2. CHARGE CALCULATION (Empty Space to Fill)\n// -----------------------------------------------------------------------------\nconst victronChargeSpace = victronCapacity * Math.max(100 - victron_soc, 0);\nconst solaxChargeSpace = solaxCapacity * Math.max(90 - solaxSoc, 0);\nconst totalChargeSpace = victronChargeSpace + solaxChargeSpace;\nconst chargeRatio = totalChargeSpace > 0 \n    ? (victronChargeSpace / totalChargeSpace) \n    : 0.5;\n\n// -----------------------------------------------------------------------------\n// 3. APPLY RATIO ACCORDING TO SURPLUS DIRECTION\n// -----------------------------------------------------------------------------\nlet ratio;\nlet status = \"target pelo consumo \";\n\nif (surplus >= 0) {\n    ratio = Math.round(chargeRatio * 100) / 100;\n} else {\n    ratio = Math.round(dischargeRatio * 100) / 100;\n    if (!solaxIsDischarging && solaxSoc > solax_min_soc) {\n        status = \"Solax 0W (compensacao Victron 100%) \";\n    }\n}\n\nlet rawTarget = Math.round(surplus * ratio);\n\n// Apply overrides to the RAW target before rate limiting\nif (rawTarget > itUpsLoad && solarDumpActive) {\n    rawTarget = surplus - 200;\n    status = \"Limitado pelo output AC\";\n}\n\nif (rawTarget < -victron_max) {\n    rawTarget = -victron_max;\n    status = `descarga máxima ${victron_max}`;\n}\n\n// RATE LIMITER (The Delta): Clamp change to max 300W in BOTH directions\nlet rawDelta = rawTarget - victronBatteryPower;\nlet delta = Math.max(Math.min(rawDelta, 300), -300);\nlet targetSetpoint = Math.round(victronBatteryPower + delta);\nlet isBlocked = false;\nlet blockReason = \"\";\n\nstatus = status + \" \" + targetSetpoint;\nlet finalSetpoint = targetSetpoint + itUpsLoad;\n\n// Force Charge Override (Bypasses normal limits intentionally)\nif (flow.get(\"force_battery_charge\") === \"on\") {\n    if (victron_soc <= flow.get(\"victron_battery_charge_level\")) {\n        finalSetpoint = 3000;\n        status = \"force charge\";\n    } else {\n        finalSetpoint = Math.max(itUpsLoad,finalSetpoint);\n        status = \"force charge paused\";\n    }\n} else { \n    \n    // Deadband Check\n    const deadbandDelta = Math.abs(finalSetpoint - currentVictronSetpoint);\n    if (deadbandDelta < 50) {\n        finalSetpoint = currentVictronSetpoint;\n        status = status + \" e diferenca menor que 50W\";\n    }\n    \n    // Safety / Cutoff Logic\n    let passthroughActive = flow.get(\"passthrough_active\") || false;\n    if (vebusState === 8) {\n        passthroughActive = true;\n    }\n    \n    if ((victronDcVoltage < 48.8) || (victron_soc <= 20) || (victron_soc <= victron_min_soc)) {\n        passthroughActive = true;\n        if (finalSetpoint < itUpsLoad) {\n            isBlocked = true;\n            blockReason = `Victron DC Voltage (${victronDcVoltage}V) < 48.8V cutoff. Discharge clamped.`;\n            finalSetpoint = itUpsLoad + 50;\n        }\n    } else if ((victronDcVoltage < 50.5) && (victron_soc < 25) && passthroughActive) {\n        if (finalSetpoint < itUpsLoad) {\n            isBlocked = true;\n            blockReason = `Victron DC Voltage (${victronDcVoltage}V) < 50.5V recovery. Discharge clamped.`;\n            finalSetpoint = itUpsLoad;\n        }\n    } else {\n        passthroughActive = false;\n    }\n    \n    //if (victron_soc <= victron_min_soc) {\n    //    finalSetpoint = itUpsLoad;\n    //    status = \"minimum SOC reached\"\n    //}\n\n    flow.set(\"passthrough_active\", passthroughActive);\n    \n}\n\n\nnode.status({\n    fill: isBlocked ? \"red\" : (finalSetpoint !== currentVictronSetpoint ? \"green\" : \"blue\"),\n    shape: \"dot\",\n    text: isBlocked ? `CLAMPED: ${blockReason}` : `SBP:${solaxBatteryPower} VBP:${victronBatteryPower} G:${netGridConsumption} U:${itUpsLoad} O:${finalSetpoint} R:${ratio} Reason: ${status} ${debug}`\n});\n\nlet hardwareMsg = null;\nlet safetyMsg = null;\nlet setpointMsg = null;\n\nif (isBlocked) {\n    // Safety Alert (Output 2) - Hardware output remains null\n    safetyMsg = {\n        payload: {\n            message: `[VICTRON_SAFETY_AUDIT] Dispatch blocked. ${blockReason} Active Setpoint: ${currentVictronSetpoint}W.`\n        }\n    };\n} else {\n    // Hardware Setpoint Command (Output 1)\n    hardwareMsg = { payload: finalSetpoint };\n\n    // Setpoint Audit Log (Output 3)\n    setpointMsg = {\n        payload: {\n            message: `[VICTRON_SETPOINT_AUDIT] Setpoint updated: ${currentVictronSetpoint}W -> ${finalSetpoint}W (Target: ${targetSetpoint}W).`\n        }\n    };\n}\n\nreturn [hardwareMsg, safetyMsg, setpointMsg];",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is started.\nflow.set(\"passthrough_active\", false);",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 100,
+        "wires": [
+            [
+                "3ddc32acf2dc3618",
+                "b967d64e75cc2767"
+            ],
+            [
+                "e035e5efcb1d98e8"
+            ],
+            [
+                "6614cd2491eab302"
+            ]
+        ]
+    },
+    {
+        "id": "b967d64e75cc2767",
+        "type": "victron-output-vebus",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.vebus/261",
+        "path": "/Hub4/L1/AcPowerSetpoint",
+        "serviceObj": {
+            "service": "com.victronenergy.vebus/261",
+            "name": "MultiPlus-II 48/3000/35-32",
+            "communityTag": "vebus"
+        },
+        "pathObj": {
+            "path": "/Hub4/L1/AcPowerSetpoint",
+            "type": "float",
+            "name": "ESS power setpoint phase L1 (W)",
+            "mode": "both"
+        },
+        "name": "action_dispatch_victron_setpoint_hardware",
+        "onlyChanges": false,
+        "roundValues": "no",
+        "rateLimit": 0,
+        "outputs": 0,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 1050,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "e035e5efcb1d98e8",
+        "type": "api-call-service",
+        "z": "ea9f973fddd65ef1",
+        "d": true,
+        "name": "action_call_service_log_safety_event",
+        "server": "6f2da134e1048608",
+        "version": 7,
+        "action": "notify.victron_safety_audit",
+        "data": "{\"message\":\"{{payload.message}}\"}",
+        "dataType": "json",
+        "domain": "notify",
+        "service": "victron_safety_audit",
+        "x": 1450,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6614cd2491eab302",
+        "type": "api-call-service",
+        "z": "ea9f973fddd65ef1",
+        "d": true,
+        "name": "action_call_service_log_setpoint_audit",
+        "server": "6f2da134e1048608",
+        "version": 7,
+        "action": "notify.victron_setpoint_audit",
+        "data": "{\"message\":\"{{payload.message}}\"}",
+        "dataType": "json",
+        "domain": "notify",
+        "service": "victron_setpoint_audit",
+        "x": 1450,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3ddc32acf2dc3618",
+        "type": "debug",
+        "z": "ea9f973fddd65ef1",
+        "name": "debug payload",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 980,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "dffe116f856b7b31",
+        "type": "victron-input-system",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.system/0",
+        "path": "/Ac/Grid/L1/Power",
+        "serviceObj": {
+            "service": "com.victronenergy.system/0",
+            "name": "Venus system",
+            "communityTag": "system"
+        },
+        "pathObj": {
+            "path": "/Ac/Grid/L1/Power",
+            "type": "float",
+            "name": "Grid L1 (W)"
+        },
+        "name": "trigger_victron_grid_consumption_l1",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 960,
+        "y": 440,
+        "wires": [
+            [
+                "11cfdb5e1a25765d"
+            ]
+        ]
+    },
+    {
+        "id": "11cfdb5e1a25765d",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_change_save_to_flow_context",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_grid_consumption_l1",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1310,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d9701744f97c3a5a",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "Victron_battery_charge_level",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "input_number.victron_battery_charge_level"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 210,
+        "y": 740,
+        "wires": [
+            [
+                "aa5f19051d91b5c9"
+            ]
+        ]
+    },
+    {
+        "id": "aa5f19051d91b5c9",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_victron_battery_charge_level",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_battery_charge_level",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1af1e7355e488b21",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_solax_battery_power",
+        "rules": [
+            {
+                "t": "set",
+                "p": "solax_battery_power",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c5466d4b34cc9979",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "solax_battery_power",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "sensor.solax_battery_power_charge"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 180,
+        "y": 440,
+        "wires": [
+            [
+                "1af1e7355e488b21"
+            ]
+        ]
+    },
+    {
+        "id": "3479adf2c04da67d",
+        "type": "inject",
+        "z": "ea9f973fddd65ef1",
+        "name": "Manual output",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "",
+        "payload": "-300",
+        "payloadType": "num",
+        "x": 520,
+        "y": 20,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9ab6d50b09775db0",
+        "type": "victron-input-system",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.system/0",
+        "path": "/Dc/Battery/Soc",
+        "serviceObj": {
+            "service": "com.victronenergy.system/0",
+            "name": "Venus system",
+            "communityTag": "system"
+        },
+        "pathObj": {
+            "path": "/Dc/Battery/Soc",
+            "type": "float",
+            "name": "Battery State of Charge (%)"
+        },
+        "name": "victron_battery_soc",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 920,
+        "y": 500,
+        "wires": [
+            [
+                "61604c53fc8ffc7b"
+            ]
+        ]
+    },
+    {
+        "id": "61604c53fc8ffc7b",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_victron_battery_soc",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_battery_soc",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1310,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8968cb8b142261d0",
+        "type": "victron-input-system",
+        "z": "ea9f973fddd65ef1",
+        "service": "com.victronenergy.system/0",
+        "path": "/Dc/Battery/Power",
+        "serviceObj": {
+            "service": "com.victronenergy.system/0",
+            "name": "Venus system",
+            "communityTag": "system"
+        },
+        "pathObj": {
+            "path": "/Dc/Battery/Power",
+            "type": "float",
+            "name": "Battery Power (W)"
+        },
+        "name": "victron_battery_power",
+        "onlyChanges": false,
+        "outputs": 1,
+        "conditionalMode": false,
+        "outputTrue": "",
+        "outputFalse": "",
+        "debounce": "",
+        "x": 930,
+        "y": 560,
+        "wires": [
+            [
+                "7a02e7a0739edd55"
+            ]
+        ]
+    },
+    {
+        "id": "7a02e7a0739edd55",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_victron_battery_power",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_battery_power",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1310,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d8d4d6ad945330d4",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "Victron Max Battery Power",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "input_number.victron_max_battery_power"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 200,
+        "y": 680,
+        "wires": [
+            [
+                "2e8a0c93e5a87910"
+            ]
+        ]
+    },
+    {
+        "id": "2e8a0c93e5a87910",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_victron_max_battery_power",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_max_battery_power",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d2b7bee3766a24d9",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "victron_minimum_soc",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "input_number.victron_minimum_soc"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 190,
+        "y": 500,
+        "wires": [
+            [
+                "b99205ccad7b1f16"
+            ]
+        ]
+    },
+    {
+        "id": "b99205ccad7b1f16",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_victron_minimum_soc",
+        "rules": [
+            {
+                "t": "set",
+                "p": "victron_minimum_soc",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8fa87c31a2d1ca3b",
+        "type": "server-state-changed",
+        "z": "ea9f973fddd65ef1",
+        "name": "solax_minimum_soc",
+        "server": "6f2da134e1048608",
+        "version": 6,
+        "outputs": 1,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "number.solax_selfuse_discharge_min_soc"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "outputInitially": true,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "outputOnlyOnStateChange": false,
+        "for": "",
+        "forType": "num",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "number",
+                "valueType": "entityState"
+            }
+        ],
+        "x": 180,
+        "y": 200,
+        "wires": [
+            [
+                "70d177e05e0bfe6e"
+            ]
+        ]
+    },
+    {
+        "id": "70d177e05e0bfe6e",
+        "type": "change",
+        "z": "ea9f973fddd65ef1",
+        "name": "action_save_solax_minimum_soc",
+        "rules": [
+            {
+                "t": "set",
+                "p": "solax_minimum_soc",
+                "pt": "flow",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6f2da134e1048608",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 6,
+        "addon": false,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": [
+            "y",
+            "yes",
+            "true",
+            "on",
+            "home",
+            "open"
+        ],
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "10",
+        "areaSelector": "friendlyName",
+        "deviceSelector": "friendlyName",
+        "entitySelector": "friendlyName",
+        "statusSeparator": ": ",
+        "statusYear": "hidden",
+        "statusMonth": "short",
+        "statusDay": "numeric",
+        "statusHourCycle": "default",
+        "statusTimeFormat": "h:m",
+        "enableGlobalContextStore": false
+    },
+    {
+        "id": "0547a8333c236b47",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-home-assistant-websocket": "0.80.3",
+            "@victronenergy/node-red-contrib-victron": "1.6.64"
+        }
+    }
+]

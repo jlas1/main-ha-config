@@ -707,7 +707,11 @@
       device_class: monetary
       unit_of_measurement: "EUR"
       state: >
-        {{ states('sensor.box_ve2_power')|float(0) * states('sensor.energy_adjusted_price')|float(0) / 1000}}
+        {% if is_state('binary_sensor.dacia_wican_active', 'on') %}
+          {{ states('sensor.box_ve2_power')|float(0) * states('sensor.energy_adjusted_price')|float(0) / 1000 }}
+        {% else %}
+          0
+        {% endif %}
 
 
 ### Not specified costs
@@ -1022,3 +1026,44 @@
           {% endif %}
         {% endif %}
 
+- binary_sensor:
+    - name: "Dacia WiCAN Active"
+      unique_id: dacia_wican_active
+      device_class: battery_charging
+      state: >
+        {% set s = states.sensor.garage_dacia_spring_battery_current %}
+        {{ has_value('sensor.garage_dacia_spring_battery_current')
+           and (s.state | float(0)) > 0.9
+           and (now() - s.last_reported).total_seconds() < 120 }}
+
+- trigger:
+    - trigger: state
+      entity_id: sensor.ev_charger_2_energy
+    - trigger: state
+      entity_id: binary_sensor.dacia_wican_active
+    - trigger: homeassistant
+      event: start
+  sensor:
+    - name: "EV Charger 2 Dacia Only Energy"
+      unique_id: ev_charger_2_dacia_only_energy
+      unit_of_measurement: "kWh"
+      device_class: energy
+      state_class: total_increasing
+      state: >
+        {% set prev_total = this.state | float(0) %}
+        {% set prev_raw = this.attributes.get('last_raw') %}
+        {% set curr_raw = states('sensor.ev_charger_2_energy') | float(-1) %}
+        {% if curr_raw < 0 or prev_raw is none %}
+          {{ prev_total }}
+        {% else %}
+          {% set delta = curr_raw - (prev_raw | float(curr_raw)) %}
+          {% if delta > 0 and is_state('binary_sensor.dacia_wican_active', 'on') %}
+            {{ (prev_total + delta) | round(4) }}
+          {% else %}
+            {{ prev_total }}
+          {% endif %}
+        {% endif %}
+      attributes:
+        last_raw: >
+          {% set curr_raw = states('sensor.ev_charger_2_energy') | float(-1) %}
+          {{ curr_raw if curr_raw >= 0 else this.attributes.get('last_raw') }}
