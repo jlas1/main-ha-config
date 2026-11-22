@@ -7199,3 +7199,147 @@
             p2_end }}). SolaX Target: {{ solax_charge }}% (Floor: {{ solax_floor }}%).
             Victron Target: {{ victron_charge }}% (Floor: {{ victron_floor }}%).'
   mode: queued
+- id: '1795383361204'
+  alias: EV2 Charging - Automatic Base Schedule
+  description: Starts/stops the EV2 charger based purely on time windows and physical
+    connection.  Decoupled from vehicle-specific SOC limits to support multiple vehicles.
+  triggers:
+  - trigger: time
+    at: input_datetime.automation_ev2_charge_start
+    id: EV2_charge_start
+  - trigger: state
+    entity_id: switch.ev_charger_2
+    to: 'on'
+    id: EV2_car_connected
+  - trigger: state
+    entity_id: sensor.ev_charger_2_status
+    to:
+    - plugged_in
+    - waiting
+    - charging
+    id: EV2_car_connected
+  - trigger: time
+    at: input_datetime.automation_ev2_charge_stop
+    id: EV2_charge_stop
+  - trigger: state
+    entity_id: sensor.ev_charger_2_status
+    to:
+    - disconnected
+    - standby
+    id: EV2_car_unplugged
+  actions:
+  - variables:
+      car_is_connected: "{{ is_state('switch.ev_charger_2', 'on') or \n   states('sensor.ev_charger_2_status')
+        in ['plugged_in', 'waiting', 'charging', 'charged'] }}"
+      in_window: "{% set s_raw = states('input_datetime.automation_ev2_charge_start')
+        %} {% set e_raw = states('input_datetime.automation_ev2_charge_stop') %} {%
+        if '-' in s_raw %}\n   {% set s_ts = as_timestamp(s_raw, 0) %}\n   {% set
+        e_ts = as_timestamp(e_raw, 0) %}\n   {% set n_ts = as_timestamp(now()) %}\n
+        \  {{ s_ts <= n_ts < e_ts }}\n {% else %}\n   {% set t_now = now().strftime('%H:%M:%S')
+        %}\n   {% if s_raw <= e_raw %}\n     {{ s_raw <= t_now < e_raw }}\n   {% else
+        %}\n     {{ t_now >= s_raw or t_now < e_raw }}\n   {% endif %}\n {% endif
+        %}"
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: EV2_charge_start
+        - condition: trigger
+          id: EV2_car_connected
+      - alias: Must be inside the OMIE window
+        condition: template
+        value_template: '{{ in_window }}'
+      - alias: Car must be physically connected
+        condition: template
+        value_template: '{{ car_is_connected }}'
+      - alias: Prevent redundant triggers if already charging
+        condition: state
+        entity_id: input_boolean.automatic_ve2_switch
+        state: 'off'
+      sequence:
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.ev2_suggested_current
+        data:
+          value: 16
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.automatic_ve2_switch
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: 'EV2 Base Schedule: Charging initiated at 16A (Trigger: {{ trigger.id
+            }}).'
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: EV2_charge_stop
+        - condition: trigger
+          id: EV2_car_unplugged
+      - condition: state
+        entity_id: input_boolean.automatic_ve2_switch
+        state: 'on'
+      sequence:
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.automatic_ve2_switch
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.ev2_suggested_current
+        data:
+          value: 6
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ve2_is_throttled
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: 'EV2 Base Schedule: Charging stopped (Trigger: {{ trigger.id }}).'
+  mode: queued
+  max: 10
+- id: '1795383737203'
+  alias: EV2 Charging - Dacia SOC Enforcer (WiCAN)
+  description: Monitors EV2 when the Dacia is actively charging. Enforces the 80%
+    weekday  or 100%+taper weekend limit and shuts off the charger when reached.
+  triggers:
+  - trigger: template
+    value_template: "{% set soc_entity = 'sensor.garage_dacia_spring_soc' %}  {% set
+      current_entity = 'sensor.garage_dacia_spring_battery_current' %}  {% set soc
+      = states(soc_entity) | float(-1) %}  {% set batt_current = states(current_entity)
+      | float(99) | abs %}  {% set wd = now().weekday() %} {% set hr = now().hour
+      %}  {% set is_weekend = (wd == 4 and hr >= 12) or (wd == 5) or (wd == 6 and
+      hr < 12) %}\n{% if is_weekend %}\n  {% set stop_condition = (soc >= 100 and
+      batt_current < 1.0 and batt_current > 0.0) %}\n{% else %}\n  {% set stop_condition
+      = (soc >= 80 and batt_current > 1.0) %}\n{% endif %}\n{{ stop_condition \n   and
+      is_state('input_boolean.automatic_ve2_switch', 'on')\n   and is_state('binary_sensor.dacia_wican_active',
+      'on') }}"
+    for:
+      seconds: 30
+  actions:
+  - variables:
+      soc_sensor: sensor.garage_dacia_spring_soc
+      current_sensor: sensor.garage_dacia_spring_battery_current
+      current_soc: '{{ states(soc_sensor) | float(0) }}'
+      wd: '{{ now().weekday() }}'
+      hr: '{{ now().hour }}'
+      is_weekend: '{{ (wd == 4 and hr >= 12) or (wd == 5) or (wd == 6 and hr < 12)
+        }}'
+      target_soc: '{{ 100 if is_weekend else 80 }}'
+  - action: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.automatic_ve2_switch
+  - action: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.ve2_is_throttled
+  - action: notify.send_message
+    target:
+      entity_id: notify.ev_fleet_log
+    data:
+      message: 'DACIA Smart Limiter: Target reached! Stopping charge.  (Target: {{
+        target_soc }}% - Final SOC: {{ current_soc }}% - Final Current: {{ states(current_sensor)
+        }}A)'
+  mode: single
