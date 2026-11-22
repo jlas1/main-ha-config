@@ -3036,70 +3036,131 @@
   mode: single
 - id: '1777496169203'
   alias: EV Master Load Controller
-  description: Dynamically adjusts EV chargers based on total capacity and suggested
-    inputs, featuring an execution gatekeeper to prevent feedback loops. EV2 is restricted
-    to >= 13A only.
+  description: Dynamically adjusts EV chargers based on total capacity (26A). EV1
+    has priority.  EV2 utilizes remaining capacity but is restricted to >= 13A (otherwise
+    0A) for efficiency. Capacity is only reserved for cars that are actively plugged
+    in and needing power.
   triggers:
-  - alias: Trigger on EV suggested or charging current changes
+  - alias: Trigger on EV settings or physical status changes
     trigger: state
     entity_id:
     - input_number.ev1_suggested_current
     - input_number.ev2_suggested_current
     - number.ev_charger_charging_current
     - number.ev_charger_2_charging_current
-  conditions:
-  - alias: 'Gatekeeper: Halt execution if hardware already matches calculated targets'
-    condition: template
-    value_template: '{{ states(''number.ev_charger_charging_current'') != states(''input_number.ev1_suggested_current'')
-      or states(''number.ev_charger_2_charging_current'') != states(''input_number.ev2_suggested_current'')
-      }}'
+    - sensor.ev_charger_status
+    - sensor.ev_charger_2_status
   actions:
   - variables:
       max_total: 26
-      ev2_master: '{{ is_state(''input_boolean.ev2_master_switch'', ''on'') }}'
       ev1_master: '{{ is_state(''input_boolean.ev1_master_switch'', ''on'') }}'
-      ev2_sug: '{{ states(''input_number.ev2_suggested_current'') | float(0) }}'
-      ev1_sug: '{{ states(''input_number.ev1_suggested_current'') | float(0) }}'
-      ev2_cur: '{{ states(''number.ev_charger_2_charging_current'') | float(0) }}'
+      ev2_master: '{{ is_state(''input_boolean.ev2_master_switch'', ''on'') }}'
+      ev1_status: '{{ states(''sensor.ev_charger_status'') }}'
+      ev2_status: '{{ states(''sensor.ev_charger_2_status'') }}'
+      ev1_needs_power: '{{ ev1_status in [''plugged_in'', ''waiting'', ''charging'']
+        }}'
+      ev2_needs_power: '{{ ev2_status in [''plugged_in'', ''waiting'', ''charging'']
+        }}'
+      ev1_sug_raw: '{{ states(''input_number.ev1_suggested_current'') | float(0) }}'
+      ev2_sug_raw: '{{ states(''input_number.ev2_suggested_current'') | float(0) }}'
+      ev1_sug: '{{ ev1_sug_raw if ev1_needs_power else 0 }}'
+      ev2_sug: '{{ ev2_sug_raw if ev2_needs_power else 0 }}'
       ev1_cur: '{{ states(''number.ev_charger_charging_current'') | float(0) }}'
-      ev2_target: '{% if ev2_sug >= 16 %} 16 {% elif ev2_sug >= 13 %} 13 {% else %}
-        0 {% endif %}'
-      rem_capacity: '{{ max_total - ev2_target }}'
-      ev1_raw: '{{ [ev1_sug, rem_capacity] | min }}'
-      ev1_target: '{% if ev1_raw >= 16 %} 16 {% elif ev1_raw >= 13 %} 13 {% elif ev1_raw
-        >= 10 %} 10 {% elif ev1_raw >= 8 %} 8 {% elif ev1_raw >= 6 %} 6 {% else %}
-        0 {% endif %}'
-  - alias: Execute EV2 Changes
+      ev2_cur: '{{ states(''number.ev_charger_2_charging_current'') | float(0) }}'
+      ev1_target: '{% if ev1_sug >= 16 %} 16  {% elif ev1_sug >= 13 %} 13  {% elif
+        ev1_sug >= 10 %} 10  {% elif ev1_sug >= 8 %} 8  {% elif ev1_sug >= 6 %} 6  {%
+        else %} 0 {% endif %}'
+      rem_capacity: '{{ max_total - ev1_target }}'
+      ev2_raw: '{{ [ev2_sug, rem_capacity] | min }}'
+      ev2_target: '{% if ev2_raw >= 16 %} 16  {% elif ev2_raw >= 13 %} 13  {% else
+        %} 0 {% endif %}'
+  - alias: 'Gatekeeper: Halt if hardware perfectly matches computed targets'
+    condition: template
+    value_template: "{{ (ev1_target > 0 and ev1_cur != ev1_target) or\n   (ev1_target
+      > 0 and not ev1_master) or\n   (ev1_target == 0 and ev1_master) or\n   (ev2_target
+      > 0 and ev2_cur != ev2_target) or\n   (ev2_target > 0 and not ev2_master) or\n
+      \  (ev2_target == 0 and ev2_master) }}"
+  - alias: Execute EV1 Changes (Priority)
+    choose:
+    - conditions:
+      - alias: Target is > 0 but current does not match
+        condition: template
+        value_template: '{{ ev1_target > 0 and ev1_cur != ev1_target }}'
+      sequence:
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: Adjusting EV1 to {{ ev1_target }}A (Priority). Leaving {{ rem_capacity
+            }}A for EV2.
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ev1_master_switch
+      - delay:
+          seconds: 5
+      - action: number.set_value
+        target:
+          entity_id: number.ev_charger_charging_current
+        data:
+          value: '{{ ev1_target }}'
+      - delay:
+          seconds: 2
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ev1_master_switch
+    - conditions:
+      - alias: Target is > 0, current matches, but master switch is OFF
+        condition: template
+        value_template: '{{ ev1_target > 0 and ev1_cur == ev1_target and not ev1_master
+          }}'
+      sequence:
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: Resuming EV1 charging at {{ ev1_target }}A.
+      - action: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.ev1_master_switch
+    - conditions:
+      - alias: Target is 0 and EV1 master switch is ON
+        condition: template
+        value_template: '{{ ev1_target == 0 and ev1_master }}'
+      sequence:
+      - action: notify.send_message
+        target:
+          entity_id: notify.ev_fleet_log
+        data:
+          message: 'Pausing EV1 charging: Vehicle is full/disconnected, or suggested
+            current is 0.'
+      - action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.ev1_master_switch
+  - alias: Execute EV2 Changes (Remainder)
     choose:
     - conditions:
       - alias: Target is >= 13A but current does not match
         condition: template
         value_template: '{{ ev2_target >= 13 and ev2_cur != ev2_target }}'
       sequence:
-      - alias: Log EV2 Adjustment to Fleet Log
-        action: notify.send_message
+      - action: notify.send_message
         target:
           entity_id: notify.ev_fleet_log
         data:
-          message: Adjusting EV2 to {{ ev2_target }}A.
-      - alias: Turn Off EV2 Master Switch to allow current change
-        action: input_boolean.turn_off
+          message: Adjusting EV2 to {{ ev2_target }}A based on remaining pool.
+      - action: input_boolean.turn_off
         target:
           entity_id: input_boolean.ev2_master_switch
-      - alias: Wait for charger to pause
-        delay:
+      - delay:
           seconds: 5
-      - alias: Set EV2 Current
-        action: number.set_value
+      - action: number.set_value
         target:
           entity_id: number.ev_charger_2_charging_current
         data:
           value: '{{ ev2_target }}'
-      - alias: Allow current settings to propagate
-        delay:
+      - delay:
           seconds: 2
-      - alias: Turn On EV2 Master Switch
-        action: input_boolean.turn_on
+      - action: input_boolean.turn_on
         target:
           entity_id: input_boolean.ev2_master_switch
     - conditions:
@@ -3108,14 +3169,12 @@
         value_template: '{{ ev2_target >= 13 and ev2_cur == ev2_target and not ev2_master
           }}'
       sequence:
-      - alias: Log EV2 Resume to Fleet Log
-        action: notify.send_message
+      - action: notify.send_message
         target:
           entity_id: notify.ev_fleet_log
         data:
           message: Resuming EV2 charging at {{ ev2_target }}A.
-      - alias: Turn On EV2 Master Switch
-        action: input_boolean.turn_on
+      - action: input_boolean.turn_on
         target:
           entity_id: input_boolean.ev2_master_switch
     - conditions:
@@ -3123,51 +3182,16 @@
         condition: template
         value_template: '{{ ev2_target == 0 and ev2_master }}'
       sequence:
-      - alias: Log EV2 Pause to Fleet Log
-        action: notify.send_message
+      - action: notify.send_message
         target:
           entity_id: notify.ev_fleet_log
         data:
-          message: 'Pausing EV2 charging: suggested current ({{ ev2_sug }}A) is below
-            the 13A minimum threshold.'
-      - alias: Turn Off EV2 Master Switch to stop charging
-        action: input_boolean.turn_off
+          message: 'Pausing EV2 charging: Remaining capacity ({{ rem_capacity }}A)
+            or active demand ({{ ev2_sug }}A) is below 13A minimum, or vehicle is
+            full.'
+      - action: input_boolean.turn_off
         target:
           entity_id: input_boolean.ev2_master_switch
-  - alias: Execute EV1 Changes
-    choose:
-    - conditions:
-      - alias: Target is > 0 but current does not match
-        condition: template
-        value_template: '{{ ev1_target > 0 and ev1_cur != ev1_target }}'
-      sequence:
-      - alias: Log EV1 Adjustment to Fleet Log
-        action: notify.send_message
-        target:
-          entity_id: notify.ev_fleet_log
-        data:
-          message: 'Adjusting EV1 to {{ ev1_target }}A. (Remaining pool: {{ rem_capacity
-            }}A)'
-      - alias: Turn Off EV1 Master Switch to allow current change
-        action: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.ev1_master_switch
-      - alias: Wait for charger to pause
-        delay:
-          seconds: 5
-      - alias: Set EV1 Current
-        action: number.set_value
-        target:
-          entity_id: number.ev_charger_charging_current
-        data:
-          value: '{{ ev1_target }}'
-      - alias: Allow current settings to propagate
-        delay:
-          seconds: 2
-      - alias: Turn On EV1 Master Switch
-        action: input_boolean.turn_on
-        target:
-          entity_id: input_boolean.ev1_master_switch
   mode: queued
   max: 10
 - id: '1777934747829'
