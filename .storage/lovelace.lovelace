@@ -4800,6 +4800,11 @@
                           "icon": "mdi:thermometer-lines"
                         },
                         {
+                          "entity": "binary_sensor.dacia_wican_active",
+                          "name": "Dacia Status",
+                          "icon": "mdi:car-electric-outline"
+                        },
+                        {
                           "entity": "sensor.garage_dacia_spring_charger_temp",
                           "name": "Charger Temperature",
                           "icon": "mdi:car-electric-outline"

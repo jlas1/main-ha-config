@@ -632,15 +632,55 @@
       state: >
         {{ (states('sensor.edp_trihorario_price')|float(0) / 1000 * 1.23 | round(6)) }}
 
-### Coppernico cost in euros/kwh
+### Energy cost in euros/kwh
+
+### Coopernico cost in euros/kwh
 
     - unique_id: energy_adjusted_price
       name: "Energy adjusted Price"
       device_class: monetary
       unit_of_measurement: "€/kWh"
       state: >
-        {% set input_power = states('sensor.solax_grid_import')|int %}
-        {{ input_power/states('sensor.solax_house_load')|int * states('sensor.coopernico_current_price')|float | round(6) }}
+        {% set house_load = states('sensor.solax_house_load') | float(1) %}
+        {% set grid_import = states('sensor.solax_grid_import') | float(0) %}
+        
+        {% set solax_pwr = states('sensor.solax_battery_power_charge') | float(0) %}
+        {% set victron_pwr = states('sensor.gx_device_dc_battery_power') | float(0) %}
+        
+        {# 1. Grid Ratio (Strictly Capped at 1.0) #}
+        {% set grid_ratio = grid_import / house_load %}
+        {% set grid_ratio = grid_ratio if grid_ratio <= 1.0 else 1.0 %}
+        
+        {# 2. SolaX Battery Ratio (Only counted when negative/discharging) #}
+        {% set solax_ratio = 0.0 %}
+        {% if solax_pwr < 0 %}
+          {% set solax_ratio = (solax_pwr | abs) / house_load %}
+        {% endif %}
+        
+        {# 3. Victron Battery Ratio (Only counted when negative/discharging) #}
+        {% set victron_ratio = 0.0 %}
+        {% if victron_pwr < 0 %}
+          {% set victron_ratio = (victron_pwr | abs) / house_load %}
+        {% endif %}
+
+        {# 4. Proportional Scaler (Ensures Grid + Batteries <= 100% total) #}
+        {% set max_bat_ratio = 1.0 - grid_ratio %}
+        {% set total_bat_ratio = solax_ratio + victron_ratio %}
+        
+        {% if total_bat_ratio > max_bat_ratio and total_bat_ratio > 0 %}
+          {% set scale = max_bat_ratio / total_bat_ratio %}
+          {% set solax_ratio = solax_ratio * scale %}
+          {% set victron_ratio = victron_ratio * scale %}
+        {% endif %}
+        
+        {# 5. Dynamic Prices #}
+        {% set grid_price = states('sensor.coopernico_current_price') | float(0) %}
+        {% set solax_price = states('sensor.solax_battery_energy_cost') | float(0) %}
+        {% set victron_price = states('sensor.victron_battery_energy_cost') | float(0) %}
+        
+        {# 6. Final Blended Cost #}
+        {{ ((grid_ratio * grid_price) + (solax_ratio * solax_price) + (victron_ratio * victron_price)) | round(6) }}
+
 
 ### Energy savings
 
@@ -1067,3 +1107,41 @@
         last_raw: >
           {% set curr_raw = states('sensor.ev_charger_2_energy') | float(-1) %}
           {{ curr_raw if curr_raw >= 0 else this.attributes.get('last_raw') }}
+
+- trigger:
+    - trigger: time_pattern
+      minutes: "/5"
+  sensor:
+    - name: "SolaX Battery Energy Cost"
+      unique_id: solax_battery_energy_cost
+      unit_of_measurement: "€/kWh"
+      device_class: monetary
+      state: >
+        {% set prev_cost = this.state | float(0) %}
+        {% set charge_pwr = states('sensor.solax_battery_power_charge') | float(0) %}
+        {% set grid_pwr = states('sensor.grid_meter_power') | float(0) %}
+        
+        {% if charge_pwr > 100 %}
+          {% set grid_price = states('sensor.coopernico_current_price') | float(0) %}
+          {% set incoming_price = grid_price if grid_pwr > 100 else 0.0 %}
+          {{ ((prev_cost * 0.85) + (incoming_price * 0.15)) | round(4) }}
+        {% else %}
+          {{ prev_cost }}
+        {% endif %}
+
+    - name: "Victron Battery Energy Cost"
+      unique_id: victron_battery_energy_cost
+      unit_of_measurement: "€/kWh"
+      device_class: monetary
+      state: >
+        {% set prev_cost = this.state | float(0) %}
+        {% set charge_pwr = states('sensor.gx_device_dc_battery_power') | float(0) %}
+        {% set grid_pwr = states('sensor.grid_meter_power') | float(0) %}
+        
+        {% if charge_pwr > 100 %}
+          {% set grid_price = states('sensor.coopernico_current_price') | float(0) %}
+          {% set incoming_price = grid_price if grid_pwr > 100 else 0.0 %}
+          {{ ((prev_cost * 0.85) + (incoming_price * 0.15)) | round(4) }}
+        {% else %}
+          {{ prev_cost }}
+        {% endif %}
